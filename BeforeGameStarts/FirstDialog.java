@@ -85,8 +85,12 @@ public class FirstDialog extends JFrame {
         pack();
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException  {
+        ChoosePokemon cp = new ChoosePokemon();
+        cp.setVisible(true);
+        cp.pack();
+        cp.setLocationRelativeTo(null);
+        this.dispose();
     }
 
     public static void main(String args[]) {
