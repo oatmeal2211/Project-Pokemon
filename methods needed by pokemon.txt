@@ -1,0 +1,17 @@
+pokemon class:
+name, level, current XP, moves,type1,type2(null for default), strength and weakness, current HP, max HP, current MP, max MP
+capture probability:(max HP - current HP)/max HP * 100(condition: =0 or <0 will fail)
+
+method:
+check level up
+storage of moves(stacks of size 4)
+moves selection(level condition)
+be attacked
+capture: 根据capture probability来确定概率,然后从100中间随机选出个数）(random 1),再使用另一个random 2来pop一个数字,如果random 2在random 
+
+moves class
+name, type, damage, mp cost
+
+toString:()
+    
+
