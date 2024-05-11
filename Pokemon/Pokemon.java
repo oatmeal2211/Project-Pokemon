@@ -10,8 +10,9 @@ public abstract class Pokemon {
     private int defense;
     private int currenthp;
     private int maxhp;
-    private int currentmp;
-    private int maxmp;
+    private int sp_attack;
+    private int sp_defense;
+    private int speed;
     private int threshold;
 
     public Pokemon(String info){
@@ -25,8 +26,6 @@ public abstract class Pokemon {
         this.defense = Integer.parseInt(stats[6]);
         this.currenthp = Integer.parseInt(stats[7]);
         this.maxhp = Integer.parseInt(stats[8]);
-        this.currentmp = Integer.parseInt(stats[9]);
-        this.maxmp = Integer.parseInt(stats[10]);
     }
 
     public abstract void advantage();
