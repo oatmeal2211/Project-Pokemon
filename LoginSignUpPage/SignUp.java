@@ -204,6 +204,8 @@ public class SignUp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Invalid Email", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        GmailSender.sendEmail(email);
     }
         
     //GEN-LAST:event_jButton2ActionPerformed
