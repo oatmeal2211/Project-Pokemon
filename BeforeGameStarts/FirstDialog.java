@@ -2,13 +2,26 @@ import java.awt.*;
 import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.event.*;
+import java.util.*;
 
-public class FirstDialog extends JFrame {
+public class FirstDialogTest extends JFrame {
 
-    public FirstDialog() throws FontFormatException {
+    private Timer timer;
+    private int index = 0;
+    private String text = "Hello there! Welcome to the world of Pokémon!\n\nMy name is Oak! People call me the Pokémon Prof!\n\n" + //
+            "This world is inhabited by creatures called Pokémon! \n\nFor some people, Pokémon are pets. Others use them for fights. \n\nMyself... I study Pokémon as a profession.\r\n" + //
+            "\n\nFirst, what is your name?";
+    private JTextArea jTextArea1;
+    private JLabel jLabel2;
+    private JButton jButton1;
+
+    public FirstDialogTest() throws FontFormatException {
         initComponents();
         loadCustomFont();
         setBackgroundImage();
+        startTypewriterEffect();
     }
 
     private void loadCustomFont() throws FontFormatException {
@@ -18,9 +31,10 @@ public class FirstDialog extends JFrame {
             // Set the font size (optional)
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 30);
+            Font heading = customFont.deriveFont(Font.PLAIN, 15);
+            jTextArea1.setFont(heading);
             jLabel2.setFont(title);
             jButton1.setFont(font);
-            jTextArea1.setFont(font);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,10 +57,11 @@ public class FirstDialog extends JFrame {
 
             // Add components to the layered pane
             jLabel2.setBounds(100, 500, 500, 30);
+            jLabel2.setForeground(Color.WHITE);
             layeredPane.add(jLabel2, JLayeredPane.PALETTE_LAYER);
 
-            jScrollPane1.setBounds(100, 550, 1200, 200);
-            layeredPane.add(jScrollPane1, JLayeredPane.PALETTE_LAYER);
+            jTextArea1.setBounds(100, 550, 1200, 200);
+            layeredPane.add(jTextArea1, JLayeredPane.PALETTE_LAYER);
 
             jButton1.setBounds(1350, 650, 100, 30);
             layeredPane.add(jButton1, JLayeredPane.PALETTE_LAYER);
@@ -59,7 +74,6 @@ public class FirstDialog extends JFrame {
     }
 
     private void initComponents() {
-        jScrollPane1 = new JScrollPane();
         jTextArea1 = new JTextArea();
         jLabel2 = new JLabel();
         jButton1 = new JButton();
@@ -67,30 +81,61 @@ public class FirstDialog extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Set to full screen
 
-        jTextArea1.setColumns(90);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Sample Text");
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea1.setColumns(50);
+        jTextArea1.setRows(6);
 
-        jLabel2.setText("Character Name");
-        jLabel2.setForeground(Color.WHITE);
+        jLabel2.setText("Oak");
 
         jButton1.setText("Next");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                try {
+                    jButton1ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         pack();
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException  {
-        ChoosePokemon cp = new ChoosePokemon();
-        cp.setVisible(true);
-        cp.pack();
-        cp.setLocationRelativeTo(null);
-        this.dispose();
+    private void startTypewriterEffect() {
+        timer = new Timer(1000, new ActionListener() {
+            boolean firstTime = true;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (firstTime) {
+                    firstTime = false;
+                    timer.setDelay(50);
+                }
+                if (index < text.length()) {
+                    jTextArea1.append(String.valueOf(text.charAt(index)));
+                    index++;
+                } else {
+                    timer.stop();
+                }
+            }
+        });
+        timer.start();
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+        String playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
+
+        // If the user entered a name and clicked OK
+        if (playerName != null && !playerName.isEmpty()) {
+            // Pass the player name to the ChoosePokemon constructor
+            ChoosePokemon cp = new ChoosePokemon(playerName);
+            cp.setVisible(true);
+            cp.pack();
+            cp.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            // If the user clicked Cancel or did not enter a name
+            JOptionPane.showMessageDialog(this, "Please enter a valid name.");
+        }
     }
 
     public static void main(String args[]) {
@@ -121,18 +166,11 @@ public class FirstDialog extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FirstDialog().setVisible(true);
+                    new FirstDialogTest().setVisible(true);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
-    // Variables declaration - do not modify
-    private JButton jButton1;
-    private JLabel jLabel2;
-    private JScrollPane jScrollPane1;
-    private JTextArea jTextArea1;
-    // End of variables declaration
 }

@@ -154,13 +154,10 @@ private void setBackgroundImage() {
         sm.setVisible(true);
         sm.pack();
         sm.setLocationRelativeTo(null);
-        this.dispose();
+        dispose();
             }
 
-            private void dispose() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'dispose'");
-            }
+           
         });
 
 
@@ -217,12 +214,7 @@ private void setBackgroundImage() {
         sb.setVisible(true);
         sb.pack();
         sb.setLocationRelativeTo(null);
-        this.dispose();
-            }
-
-            private void dispose() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'dispose'");
+        dispose();
             }
         });
         
