@@ -15,6 +15,12 @@ public class Pokemon {
     private int exp;
     private String type1;
     private String type2;
+    private int baseHp;
+    private int baseAttack;
+    private int baseDefense;
+    private int baseSpecialAttack;
+    private int baseSpecialDefense;
+    private int baseSpeed;
     private int hp;
     private int attack;
     private int defense;
@@ -60,19 +66,30 @@ public class Pokemon {
         typeEffectiveness.put("Fairy", Map.of("Fire", 0.5, "Fighting", 2.0, "Poison", 0.5, "Dragon", 2.0, "Dark", 2.0, "Steel", 0.5));
     }
 
-    public Pokemon(String name, String type1, String type2, int hp, int attack, int defense, int sp_attack, int sp_defense, int speed, int level) {
+    public Pokemon(String name, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
         this.name = name;
         this.type1 = type1;
         this.type2 = type2;
-        this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-        this.sp_attack = sp_attack;
-        this.sp_defense = sp_defense;
-        this.speed = speed;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
         this.level = level;
         this.exp = 0; // Starting XP is 0
         this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
+
+    private int scaleStat(int baseStat, int level) {
+        return baseStat + (int)((baseStat * level / 100.0) * 2);
     }
 
     // Getters and Setters
