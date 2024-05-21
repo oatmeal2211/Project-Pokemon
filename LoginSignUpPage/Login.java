@@ -168,7 +168,7 @@ public class Login extends javax.swing.JFrame {
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null);
-        this.dispose();
+        this.dispose();}
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
         // Handle sign up button click event
