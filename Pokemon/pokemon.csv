@@ -73,3 +73,5 @@ id,name,type1,type2,total,hp,attack,defense,sp_atk,sp_def,speed
 72,Dratini,Dragon,None,300,41,64,45,50,50,50
 73,Mewtwo,Psychic,None,680,106,110,90,154,154,130
 74,Mew,Psychic,None,600,100,100,100,100,100,100
+75,Tangela,Grass,None,495,65,55,115,100,100,60
+76,Magnemite,Electric,Steel,365,25,35,70,95,95,45
