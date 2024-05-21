@@ -1,83 +1,90 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-/**
- *
- * @author HP
- */
+// Assuming RegionExplorer is a generic class with a method getNeighbours
 public class MainMenu extends javax.swing.JFrame {
+    RegionExplorer<String, Integer> regionExplorer = MapPokemon.getMapData();
+    ArrayList<String> list = new ArrayList<>();
+    static String currentLocation = "Pallet Town";
 
-    /**
-     * Creates new form MainMenu
-     */
-    public MainMenu() throws FontFormatException{
+    public MainMenu() throws FontFormatException {
         initComponents();
-         loadCustomFont();
-         setBackgroundImage();
+        loadCustomFont();
+        setBackgroundImage();
+        MapPokemon map = new MapPokemon(); // Instantiate your MapPokemon class
+    
+        // Set up jComboBox2
+        updateGymLeaderOptions(currentLocation);
+    
+        // Call setCurrentLocation with the initial current location
+        setCurrentLocation(currentLocation); // Set the current location after initializing components
     }
-private void setBackgroundImage() {
-    try {
-        // Load the background image
-        Image backgroundImage = ImageIO.read(new File("a56806bce812d4ec85665792d83b809b.png"));
-        ImageIcon imageIcon = new ImageIcon(backgroundImage);
+    
 
-        // Create a layered pane
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
+    private void setBackgroundImage() {
+        try {
+            // Load the background image
+            Image backgroundImage = ImageIO.read(new File("a56806bce812d4ec85665792d83b809b.png"));
+            ImageIcon imageIcon = new ImageIcon(backgroundImage);
 
-        // Add a label to display the background image
-        JLabel backgroundLabel = new JLabel(imageIcon);
-        backgroundLabel.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
-        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+            // Create a layered pane
+            JLayeredPane layeredPane = new JLayeredPane();
+            layeredPane.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
 
-        // Adjust the size and position of jPanel1 to match the background image
-        jPanel1.setOpaque(true); // Make jPanel1 transparent
-        jPanel1.setBounds(0, 0, 300, imageIcon.getIconHeight()); // Adjust position and size
-        jPanel1.revalidate(); // Revalidate the panel
+            // Add a label to display the background image
+            JLabel backgroundLabel = new JLabel(imageIcon);
+            backgroundLabel.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+            layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
 
-        // Add the side menu bar components
-        jButton2.setBounds(10, 50, 194, 40);
-        jButton3.setBounds(10, 110, 194, 40);
-        jButton5.setBounds(10, 170, 194, 40);
-        jButton4.setBounds(10, 230, 194, 40);
-        layeredPane.add(jPanel1, JLayeredPane.PALETTE_LAYER);
+            // Adjust the size and position of jPanel1 to match the background image
+            jPanel1.setOpaque(true); // Make jPanel1 transparent
+            jPanel1.setBounds(0, 0, 300, imageIcon.getIconHeight()); // Adjust position and size
+            jPanel1.revalidate(); // Revalidate the panel
 
-        // Add other components
-        jLabel1.setBounds(520, 50, 800, 30);
-        jLabel2.setBounds(620, 120, 800, 30);
-        jLabel3.setBounds(800, 300, 800, 30);
-        jLabel4.setBounds(400, 300, 800, 30);
-        jLabel5.setBounds(1200, 300, 800, 30);
-        jComboBox1.setBounds(400, 350, 200, 30);
-        jComboBox2.setBounds(800, 350, 200, 30);
-        jComboBox3.setBounds(1200, 350, 200, 30);
-        layeredPane.add(jLabel1, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jLabel2, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jLabel3, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jLabel4, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jLabel5, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jComboBox1, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jComboBox2, JLayeredPane.PALETTE_LAYER);
-        layeredPane.add(jComboBox3, JLayeredPane.PALETTE_LAYER);
+            // Add the side menu bar components
+            jButton2.setBounds(10, 50, 194, 40);
+            jButton3.setBounds(10, 110, 194, 40);
+            jButton5.setBounds(10, 170, 194, 40);
+            jButton4.setBounds(10, 230, 194, 40);
+            layeredPane.add(jPanel1, JLayeredPane.PALETTE_LAYER);
 
-        // Set layered pane as the content pane
-        setContentPane(layeredPane);
-    } catch (IOException e) {
-        e.printStackTrace();
+            // Add other components
+            jLabel1.setBounds(520, 50, 800, 30);
+            jLabel2.setBounds(620, 120, 800, 30);
+            jLabel3.setBounds(800, 300, 800, 30);
+            jLabel4.setBounds(400, 300, 800, 30);
+            jLabel5.setBounds(1200, 300, 800, 30);
+            jComboBox1.setBounds(400, 350, 200, 30);
+            jComboBox2.setBounds(800, 350, 200, 30);
+            jComboBox3.setBounds(1200, 350, 200, 30);
+            layeredPane.add(jLabel1, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jLabel2, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jLabel3, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jLabel4, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jLabel5, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jComboBox1, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jComboBox2, JLayeredPane.PALETTE_LAYER);
+            layeredPane.add(jComboBox3, JLayeredPane.PALETTE_LAYER);
+
+            // Set layered pane as the content pane
+            setContentPane(layeredPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
     private void loadCustomFont() throws FontFormatException {
         try {
@@ -85,17 +92,16 @@ private void setBackgroundImage() {
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
             // Set the font size (optional)
             Font font = customFont.deriveFont(Font.PLAIN, 11);
-            Font title = customFont.deriveFont(Font.PLAIN, 40);
+            Font title = customFont.deriveFont(Font.PLAIN, 37);
             // Set the font for the labels and buttons
             jLabel1.setFont(title);
             jLabel2.setFont(title);
             jLabel3.setFont(font);
             jLabel5.setFont(font);
             jLabel4.setFont(font);
-        jComboBox1.setFont(font);
-        jComboBox2.setFont(font);
-        jComboBox3.setFont(font);
-    
+            jComboBox1.setFont(font);
+            jComboBox2.setFont(font);
+            jComboBox3.setFont(font);
             jButton2.setFont(font);
             jButton3.setFont(font);
             jButton4.setFont(font);
@@ -104,6 +110,187 @@ private void setBackgroundImage() {
             e.printStackTrace();
         }
     }
+
+    private void setCurrentLocation(String newLocation) {
+        currentLocation = newLocation;
+        jLabel1.setText("You are currently at "); // Update jLabel1 with the current location
+        jLabel2.setText(currentLocation); // Update jLabel2 with the current location
+    
+        // Update jLabel3 text based on the new currentLocation
+        jLabel3.setText(jLabel3Text(currentLocation));
+    
+        populateAdjacentCities(currentLocation); // Run populateAdjacentCities again with the new currentLocation
+    }
+    
+    private void populateAdjacentCities(String currentCity) {
+        ArrayList<String> adjacentCities = regionExplorer.getNeighbours(currentCity);
+        //System.out.println("Adjacent cities: " + adjacentCities); // Debugging line
+        if (adjacentCities != null && !adjacentCities.isEmpty()) {
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(adjacentCities.toArray(new String[0])));
+        } else {
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{""}));
+        }
+    
+        // Clear any existing ActionListeners to avoid duplication
+        for (ActionListener al : jComboBox1.getActionListeners()) {
+            jComboBox1.removeActionListener(al);
+        }
+    
+        // Add ActionListener to jComboBox1
+        jComboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedCity = (String) jComboBox1.getSelectedItem();
+                if (selectedCity != null) {
+                    updateGymLeaderOptions(selectedCity);
+                    setCurrentLocation(selectedCity); // Update currentLocation variable and run populateAdjacentCities
+                }
+            }
+        });
+    }
+
+    private void jButton2ActionPerformed(ActionEvent evt) throws FontFormatException {
+        // Assuming you have already retrieved the map data and stored it in a variable named 'map'
+        RegionExplorer<String, Integer> map = MapPokemon.getMapData();
+
+        // Pass the map data to the ShowMap constructor
+        ShowMap sm = new ShowMap(map);
+        sm.setVisible(true);
+        sm.pack();
+        sm.setLocationRelativeTo(null);
+        dispose();
+    }
+
+    private void jButton3ActionPerformed(ActionEvent evt) throws FontFormatException {
+        ShowPokemon sp = new ShowPokemon();
+        sp.setVisible(true);
+        sp.pack();
+        sp.setLocationRelativeTo(null);
+        dispose();
+    }
+
+    private void jButton4ActionPerformed(ActionEvent evt) {
+        dispose(); // Corrected disposal of the current frame
+    }
+
+    private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
+        ShowBadges sb = new ShowBadges();
+        sb.setVisible(true);
+        sb.pack();
+        sb.setLocationRelativeTo(null);
+        dispose();
+    }
+
+    private String jLabel3Text(String currentCity) {
+        String textLabel3;
+    
+        switch (currentCity) {
+            case "Pallet Town":
+                textLabel3 = "Talk to Mom";
+                break;
+            case "Lavender Town":
+                textLabel3 = "Pokemaze";
+                break;
+            default:
+                textLabel3 = "Challenge Gym Leader";
+                break;
+        }
+        return textLabel3;
+    }
+
+    
+    private void updateGymLeaderOptions(String currentCity) { //gym leader
+        switch (currentCity) {
+            case "Saffron City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
+                break;
+            case "Fuchsia City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Koga - Poison type"}));
+                break;
+            case "Pewter City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Brock - Rock type"}));
+                break;
+            case "Viridian City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Giovanni"}));
+                break;
+            case "Cinnabar Island":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Blaine - Fire type"}));
+                break;
+            case "Celadon City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Erica - Grass type"}));
+                break;
+            case "Cerulean City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Misty - Water type"}));
+                break;
+            case "Vermilion City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Lt. Surge - Electric type"}));
+                break;
+            case "Pallet Town":
+                // Set the message for Pallet Town indicating no gym leader
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Your hometown has no gym"}));
+                   // Clear existing ActionListeners
+                   for (ActionListener al : jComboBox2.getActionListeners()) {
+                       jComboBox2.removeActionListener(al);
+                   }
+                   // Add ActionListener to jComboBox2 for the "Pokemaze" option
+                   jComboBox2.addActionListener(new ActionListener() {
+                       @Override
+                       public void actionPerformed(ActionEvent e) {
+                           String selectedOption = (String) jComboBox2.getSelectedItem();
+                           if (selectedOption != null && selectedOption.equals("Your hometown has no gym")) {
+                               try {
+                                   openTalkWithMomWindow();
+                               } catch (FontFormatException e1) {
+                                   e1.printStackTrace();
+                               }
+                           }
+                       }
+                   });
+                break;
+            case "Lavender Town":
+                // Run Pokemaze when the option is clicked
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Start Challenge"}));
+                // Clear existing ActionListeners
+                for (ActionListener al : jComboBox2.getActionListeners()) {
+                    jComboBox2.removeActionListener(al);
+                }
+                // Add ActionListener to jComboBox2 for the "Pokemaze" option
+                jComboBox2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String selectedOption = (String) jComboBox2.getSelectedItem();
+                        if (selectedOption != null && selectedOption.equals("Start Challenge")) {
+                            try {
+                                openPokemazeWindow();
+                            } catch (FontFormatException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                break;
+            default:
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{""}));
+                break;
+        }
+        
+    }
+    private void openPokemazeWindow() throws FontFormatException {
+        // Create an instance of the PokemazeWindow class and show it
+        PokemazeWithGUI pokemazeWindow = new PokemazeWithGUI();
+        pokemazeWindow.setVisible(true);
+    }
+
+    private void openTalkWithMomWindow() throws FontFormatException {
+        // Create an instance of the PokemazeWindow class and show it
+        TalkWithMom twm = new TalkWithMom();
+        twm.setVisible(true);
+    }
+    
+    public static String getCurrentLocation(){
+        return currentLocation;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,12 +337,18 @@ private void setBackgroundImage() {
             }
 
             private void jButton2ActionPerformed(ActionEvent evt) throws FontFormatException {
-                ShowMap sm = new ShowMap();
-        sm.setVisible(true);
-        sm.pack();
-        sm.setLocationRelativeTo(null);
-        dispose();
+                // Assuming you have already retrieved the map data and stored it in a variable named 'map'
+                RegionExplorer<String, Integer> map = MapPokemon.getMapData();
+            
+                // Pass the map data to the ShowMap constructor
+                ShowMap sm = new ShowMap(map);
+                sm.setVisible(true);
+                sm.pack();
+                sm.setLocationRelativeTo(null);
+                dispose();
             }
+            
+            
 
            
         });
@@ -192,7 +385,6 @@ private void setBackgroundImage() {
             } 
         }
     );
-    //bug still unsolved
 
       
         jButton5.setBackground(new java.awt.Color(0, 0, 0));
@@ -249,19 +441,17 @@ private void setBackgroundImage() {
         jLabel1.setText("You are currently at");
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setText("Location Name");
+        
+        jLabel2.setText(currentLocation);
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel3.setText("Challenge Gym Leader");
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel4.setText("Move To");
+        jLabel4.setText("Move To:");
+        
+        
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setText("Fight Wild Pokemon");
@@ -326,13 +516,7 @@ private void setBackgroundImage() {
         pack();
     }// </editor-fold>      
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton3ActionPerformed
-        ShowPokemon sp = new ShowPokemon();
-        sp.setVisible(true);
-        sp.pack();
-        sp.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -372,6 +556,7 @@ private void setBackgroundImage() {
                 }
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -390,3 +575,5 @@ private void setBackgroundImage() {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
+
+

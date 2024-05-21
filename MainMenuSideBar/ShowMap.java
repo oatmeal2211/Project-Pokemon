@@ -12,6 +12,7 @@ import java.util.Map;
 public class ShowMap extends javax.swing.JFrame {
 
     private RegionExplorer<String, Integer> map;
+    String currentLocation = MainMenu.getCurrentLocation();
 
     public ShowMap(RegionExplorer<String, Integer> map) throws FontFormatException {
         this.map = map;
@@ -70,7 +71,7 @@ public class ShowMap extends javax.swing.JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                drawMap(g);
+                drawMap(g, currentLocation);
             }
         };
 
@@ -133,7 +134,7 @@ public class ShowMap extends javax.swing.JFrame {
         pack();
     }
 
-    private void drawMap(Graphics g) {
+    private void drawMap(Graphics g, String currentLocation) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(4)); // Thicker lines
     
@@ -166,10 +167,14 @@ public class ShowMap extends javax.swing.JFrame {
         // Draw cities
         for (String city : cities) {
             Point cityPosition = cityPositions.get(city);
-            g.setColor(Color.RED);
+            Color cityColor = Color.RED; // Default color
+            if (city.equals(currentLocation)) {
+                cityColor = Color.GREEN; // Change color to green if it's the current location
+            }
+            g.setColor(cityColor);
             g.fillOval(cityPosition.x - 5, cityPosition.y - 5, 10, 10);
             g.setColor(Color.BLACK);
-            Font font = new Font("Arial", Font.BOLD, 15); 
+            Font font = new Font("Arial", Font.BOLD, 15);
             g.setFont(font);
             g.drawString(city, cityPosition.x + 15, cityPosition.y + 10);
         }

@@ -2,22 +2,19 @@ import java.awt.*;
 import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.event.*;
-import java.util.*;
 
-public class FirstDialog extends JFrame {
-    public static String playerName;
+import java.awt.event.*;
+
+public class TalkWithMom extends JFrame {
+
     private Timer timer;
     private int index = 0;
-    private String text = "Hello there! Welcome to the world of Pokémon!\n\nMy name is Oak! People call me the Pokémon Prof!\n\n" + //
-            "This world is inhabited by creatures called Pokémon! \n\nFor some people, Pokémon are pets. Others use them for fights. \n\nMyself... I study Pokémon as a profession.\r\n" + //
-            "\n\nFirst, what is your name?";
+    private static String text;
     private JTextArea jTextArea1;
     private JLabel jLabel2;
     private JButton jButton1;
 
-    public FirstDialog() throws FontFormatException {
+    public TalkWithMom() throws FontFormatException {
         initComponents();
         loadCustomFont();
         setBackgroundImage();
@@ -74,6 +71,8 @@ public class FirstDialog extends JFrame {
             e.printStackTrace();
         }
     }
+    
+
 
     private void initComponents() {
         jTextArea1 = new JTextArea();
@@ -84,9 +83,9 @@ public class FirstDialog extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Set to full screen
 
         jTextArea1.setColumns(50);
-        jTextArea1.setRows(6);
+        jTextArea1.setRows(10);
 
-        jLabel2.setText("Oak");
+        jLabel2.setText("Mom");
 
         jButton1.setText("Next");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +102,7 @@ public class FirstDialog extends JFrame {
     }
 
     private void startTypewriterEffect() {
+        text = "Oh, " + FirstDialogTest.getPlayerName() + "! You're leaving on your adventure with Pokémon? How exciting! I know you've always dreamed of this day. \n\nRemember, the bond you share with your Pokémon is the most important thing. Take care of them, and they'll take care of you.Don't worry about me; I'll be just fine here. \n\nI can't wait to hear all about your adventures and the newfriends you're going to make.Remember, no matter how far you go, I'm always here for you. \n\nBe brave, be kind, and everything will turn out just fine.I'm so proud of you already! Now, go on, your adventure awaits!\n\nOh, and don’t forget to change your underwear every day! Safe travels, my dear!";
         timer = new Timer(1000, new ActionListener() {
             boolean firstTime = true;
 
@@ -110,7 +110,7 @@ public class FirstDialog extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (firstTime) {
                     firstTime = false;
-                    timer.setDelay(50);
+                    timer.setDelay(30);
                 }
                 if (index < text.length()) {
                     jTextArea1.append(String.valueOf(text.charAt(index)));
@@ -124,25 +124,11 @@ public class FirstDialog extends JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-         playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
-
-        // If the user entered a name and clicked OK
-        if (playerName != null && !playerName.isEmpty()) {
-            // Pass the player name to the ChoosePokemon constructor
-            ChoosePokemon cp = new ChoosePokemon(playerName);
-            cp.setVisible(true);
-            cp.pack();
-            cp.setLocationRelativeTo(null);
-            this.dispose();
-        } else {
-            // If the user clicked Cancel or did not enter a name
-            JOptionPane.showMessageDialog(this, "Please enter a valid name.");
-            playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
-        }
-    }
-
-    public static String getPlayerName(){
-        return playerName;
+        MainMenu mm = new MainMenu();
+        mm.setVisible(true);
+        mm.pack();
+        mm.setLocationRelativeTo(null);
+        this.dispose();
     }
 
     public static void main(String args[]) {
@@ -173,7 +159,7 @@ public class FirstDialog extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FirstDialogTest().setVisible(true);
+                    new TalkWithMom().setVisible(true);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }
