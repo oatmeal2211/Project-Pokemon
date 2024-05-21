@@ -173,7 +173,7 @@ public class FirstDialog extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FirstDialogTest().setVisible(true);
+                    new FirstDialog().setVisible(true);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }
