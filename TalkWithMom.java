@@ -102,7 +102,7 @@ public class TalkWithMom extends JFrame {
     }
 
     private void startTypewriterEffect() {
-        text = "Oh, " + FirstDialogTest.getPlayerName() + "! You're leaving on your adventure with Pokémon? How exciting! I know you've always dreamed of this day. \n\nRemember, the bond you share with your Pokémon is the most important thing. Take care of them, and they'll take care of you.Don't worry about me; I'll be just fine here. \n\nI can't wait to hear all about your adventures and the newfriends you're going to make.Remember, no matter how far you go, I'm always here for you. \n\nBe brave, be kind, and everything will turn out just fine.I'm so proud of you already! Now, go on, your adventure awaits!\n\nOh, and don’t forget to change your underwear every day! Safe travels, my dear!";
+        text = "Oh, " + FirstDialog.getPlayerName() + "! You're leaving on your adventure with Pokémon? How exciting! I know you've always dreamed of this day. \n\nRemember, the bond you share with your Pokémon is the most important thing. Take care of them, and they'll take care of you.Don't worry about me; I'll be just fine here. \n\nI can't wait to hear all about your adventures and the newfriends you're going to make.Remember, no matter how far you go, I'm always here for you. \n\nBe brave, be kind, and everything will turn out just fine.I'm so proud of you already! Now, go on, your adventure awaits!\n\nOh, and don’t forget to change your underwear every day! Safe travels, my dear!";
         timer = new Timer(1000, new ActionListener() {
             boolean firstTime = true;
 
