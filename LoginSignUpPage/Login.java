@@ -30,8 +30,11 @@ public class Login extends javax.swing.JFrame {
         }
     }
 
+
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents                       
     private void initComponents() {
-        jPanel1 = new javax.swing.JPanel();
+
+        jLabel8 = new javax.swing.JLabel();
         Left = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -41,102 +44,124 @@ public class Login extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("LOGIN");
+        setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(800, 400));
-        jPanel1.setLayout(null);
+        jLabel8.setText("jLabel8");
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("loginpage image resize3.jpg")));
 
         Left.setBackground(new java.awt.Color(255, 255, 255));
         Left.setMinimumSize(new java.awt.Dimension(400, 500));
-        Left.setLayout(null);
-
-        jLabel1.setFont(new java.awt.Font("Press Start 2P", 1, 36));
+ 
         jLabel1.setForeground(new java.awt.Color(28, 103, 88));
         jLabel1.setText("LOGIN");
-        jLabel1.setBounds(100, 30, 200, 40);
-        Left.add(jLabel1);
 
         jLabel2.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel2.setFont(new java.awt.Font("Press Start 2P", 0, 14));
         jLabel2.setText("Email");
-        jLabel2.setBounds(30, 90, 100, 20);
-        Left.add(jLabel2);
 
-        jTextField1.setFont(new java.awt.Font("Press Start 2P", 0, 14));
-        jTextField1.setForeground(new java.awt.Color(28, 103, 88));
-        jTextField1.setBounds(30, 110, 240, 30);
-        Left.add(jTextField1);
+        jTextField1.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel3.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel3.setFont(new java.awt.Font("Press Start 2P", 0, 14));
         jLabel3.setText("Password");
-        jLabel3.setBounds(30, 160, 100, 20);
-        Left.add(jLabel3);
 
-        jPasswordField1.setFont(new java.awt.Font("Press Start 2P", 0, 14));
-        jPasswordField1.setForeground(new java.awt.Color(28, 103, 88));
-        jPasswordField1.setBounds(30, 180, 240, 30);
-        Left.add(jPasswordField1);
-
-        jButton1.setBackground(new java.awt.Color(28, 103, 88));
-        jButton1.setFont(new java.awt.Font("Press Start 2P", 0, 14));
+        jButton1.setBackground(new java.awt.Color(0, 102, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Login");
-        jButton1.setBounds(30, 230, 93, 36);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                try {
+                    jButton1ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
-        Left.add(jButton1);
 
         jLabel4.setText("I don't have an account");
-        jLabel4.setBounds(30, 300, 300, 20);
-        Left.add(jLabel4);
 
-        jButton2.setFont(new java.awt.Font("Press Start 2P", 0, 14));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 51, 51));
         jButton2.setText("Sign Up");
-        jButton2.setBounds(100, 330, 150, 20);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     jButton2ActionPerformed(evt);
                 } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
-        Left.add(jButton2);
 
-        Left.setBounds(400, 0, 400, 500);
-        jPanel1.add(Left);
+        javax.swing.GroupLayout LeftLayout = new javax.swing.GroupLayout(Left);
+        Left.setLayout(LeftLayout);
+        LeftLayout.setHorizontalGroup(
+            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LeftLayout.createSequentialGroup()
+                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LeftLayout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(jLabel1))
+                    .addGroup(LeftLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(LeftLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(jButton2)))
+                .addContainerGap(406, Short.MAX_VALUE))
+        );
+        LeftLayout.setVerticalGroup(
+            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LeftLayout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jLabel1)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(3332, Short.MAX_VALUE))
+        );
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("loginpage image.jpg")));
-        jLabel8.setText("jLabel8");
-        jLabel8.setBounds(0,0, 400, 600);
-        jPanel1.add(jLabel8);
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Left, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 2588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Left, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         pack();
-    }
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        String email = jTextField1.getText();
-        String password = new String(jPasswordField1.getPassword());
-
-        DatabaseManager dbManager = new DatabaseManager();
-        if (dbManager.validateUser(email, password)) {
-            JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    }// </editor-fold>                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
         SignUp SignUpFrame = new SignUp();
@@ -144,8 +169,19 @@ public class Login extends javax.swing.JFrame {
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null);
         this.dispose();
-    }
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
+        // Handle sign up button click event
+        //String email = jTextField1.getText();
+        //String password = new String(jPasswordField1.getPassword());
+        WelcomePage WelcomeFrame = new WelcomePage();
+        WelcomeFrame.setVisible(true);
+        WelcomeFrame.pack();
+        WelcomeFrame.setLocationRelativeTo(null);
+        this.dispose();}
+
+
+    //GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify
     private javax.swing.JPanel Left;
     private javax.swing.JButton jButton1;
