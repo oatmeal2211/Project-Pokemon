@@ -172,19 +172,13 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
         // Handle sign up button click event
-        String email = jTextField1.getText();
-        String password = new String(jPasswordField1.getPassword());
-        DatabaseManager dbManager = new DatabaseManager();
-        if (dbManager.validateUser(email, password)) {
-            JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        //String email = jTextField1.getText();
+        //String password = new String(jPasswordField1.getPassword());
         WelcomePage WelcomeFrame = new WelcomePage();
         WelcomeFrame.setVisible(true);
         WelcomeFrame.pack();
         WelcomeFrame.setLocationRelativeTo(null);
-        this.dispose();
+        this.dispose();}
     }
 
 
