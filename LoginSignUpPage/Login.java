@@ -2,6 +2,7 @@ import java.io.File;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
@@ -12,12 +13,9 @@ public class Login extends javax.swing.JFrame {
 
     private void loadCustomFont() throws FontFormatException {
         try {
-            // Load the font file
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
-            // Set the font size (optional)
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 40);
-            // Set the font for the labels and buttons
             jLabel1.setFont(title);
             jLabel2.setFont(font);
             jLabel3.setFont(font);
@@ -31,6 +29,7 @@ public class Login extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents                       
     private void initComponents() {
@@ -54,24 +53,19 @@ public class Login extends javax.swing.JFrame {
 
         Left.setBackground(new java.awt.Color(255, 255, 255));
         Left.setMinimumSize(new java.awt.Dimension(400, 500));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 102, 102));
+ 
+        jLabel1.setForeground(new java.awt.Color(28, 103, 88));
         jLabel1.setText("LOGIN");
 
         jLabel2.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Email");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel3.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Password");
 
         jButton1.setBackground(new java.awt.Color(0, 102, 102));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -169,15 +163,12 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton2ActionPerformed
-
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
         SignUp SignUpFrame = new SignUp();
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
         // Handle sign up button click event
@@ -191,9 +182,7 @@ public class Login extends javax.swing.JFrame {
 
 
     //GEN-LAST:event_jButton1ActionPerformed
-
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify
     private javax.swing.JPanel Left;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -205,5 +194,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
 }
