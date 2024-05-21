@@ -25,10 +25,11 @@ public class FirstDialog extends JFrame {
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try {
-            // Load the font file
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
-            // Set the font size (optional)
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 30);
             Font heading = customFont.deriveFont(Font.PLAIN, 15);
@@ -37,41 +38,41 @@ public class FirstDialog extends JFrame {
             jButton1.setFont(font);
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: Unable to load custom font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void setBackgroundImage() {
-        try {
-            // Load the background image
-            Image backgroundImage = ImageIO.read(new File("pinwheel-forest-pokemon-pixel-thumb.jpg"));
+        try (InputStream is = getClass().getResourceAsStream("/pinwheel-forest-pokemon-pixel-thumb.jpg")) {
+            if (is == null) {
+                throw new FileNotFoundException("Background image file not found in resources");
+            }
+            Image backgroundImage = ImageIO.read(is);
             ImageIcon imageIcon = new ImageIcon(backgroundImage);
 
-            // Create a layered pane
             JLayeredPane layeredPane = new JLayeredPane();
             layeredPane.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
 
-            // Add a label to display the background image
             JLabel backgroundLabel = new JLabel(imageIcon);
             backgroundLabel.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
             layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
 
-            // Add components to the layered pane
             jLabel2.setBounds(100, 500, 500, 30);
             jLabel2.setForeground(Color.WHITE);
             layeredPane.add(jLabel2, JLayeredPane.PALETTE_LAYER);
 
             jTextArea1.setBounds(100, 550, 1200, 200);
             jTextArea1.setLineWrap(true); // Enable text wrapping
-        jTextArea1.setWrapStyleWord(true);
+            jTextArea1.setWrapStyleWord(true);
             layeredPane.add(jTextArea1, JLayeredPane.PALETTE_LAYER);
 
             jButton1.setBounds(1350, 650, 100, 30);
             layeredPane.add(jButton1, JLayeredPane.PALETTE_LAYER);
 
-            // Set layered pane as the content pane
             setContentPane(layeredPane);
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: Unable to load background image.", "Image Load Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

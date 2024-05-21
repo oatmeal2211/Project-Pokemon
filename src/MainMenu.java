@@ -2,7 +2,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -35,11 +37,12 @@ public class MainMenu extends javax.swing.JFrame {
     
 
     private void setBackgroundImage() {
-        try {
-            // Load the background image
-            Image backgroundImage = ImageIO.read(new File("a56806bce812d4ec85665792d83b809b.png"));
-            ImageIcon imageIcon = new ImageIcon(backgroundImage);
-
+            try (InputStream is = getClass().getResourceAsStream("a56806bce812d4ec85665792d83b809b.png")) {
+                if (is == null) {
+                    throw new FileNotFoundException("Background image file not found in resources");
+                }
+                Image backgroundImage = ImageIO.read(is);
+                ImageIcon imageIcon = new ImageIcon(backgroundImage);
             // Create a layered pane
             JLayeredPane layeredPane = new JLayeredPane();
             layeredPane.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
@@ -87,10 +90,11 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try {
-            // Load the font file
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
-            // Set the font size (optional)
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 37);
             // Set the font for the labels and buttons

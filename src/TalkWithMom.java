@@ -23,8 +23,12 @@ public class TalkWithMom extends JFrame {
 
     private void loadCustomFont() throws FontFormatException {
         try {
-            // Load the font file
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
+            // Load the font file from the classpath
+            InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf");
+            if (is == null) {
+                throw new IOException("Font file not found");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             // Set the font size (optional)
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 30);
@@ -37,10 +41,15 @@ public class TalkWithMom extends JFrame {
         }
     }
 
+
     private void setBackgroundImage() {
         try {
-            // Load the background image
-            Image backgroundImage = ImageIO.read(new File("pinwheel-forest-pokemon-pixel-thumb.jpg"));
+            // Load the background image from the classpath
+            InputStream is = getClass().getResourceAsStream("/pinwheel-forest-pokemon-pixel-thumb.jpg");
+            if (is == null) {
+                throw new IOException("Background image not found");
+            }
+            Image backgroundImage = ImageIO.read(is);
             ImageIcon imageIcon = new ImageIcon(backgroundImage);
 
             // Create a layered pane

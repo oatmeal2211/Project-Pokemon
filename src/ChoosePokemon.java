@@ -19,8 +19,11 @@ public class ChoosePokemon extends JFrame {
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 11);
             Font title = customFont.deriveFont(Font.PLAIN, 30);
             Font heading = customFont.deriveFont(Font.PLAIN, 25);
@@ -36,8 +39,11 @@ public class ChoosePokemon extends JFrame {
     }
 
     private void setBackgroundImage() {
-        try {
-            Image backgroundImage = ImageIO.read(new File("pinwheel-forest-pokemon-pixel-thumb.jpg"));
+        try (InputStream is = getClass().getResourceAsStream("/pinwheel-forest-pokemon-pixel-thumb.jpg")) {
+            if (is == null) {
+                throw new FileNotFoundException("Background image file not found in resources");
+            }
+            Image backgroundImage = ImageIO.read(is);
             ImageIcon imageIcon = new ImageIcon(backgroundImage);
             JLayeredPane layeredPane = new JLayeredPane();
             layeredPane.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
