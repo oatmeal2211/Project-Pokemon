@@ -179,7 +179,7 @@ public class Login extends javax.swing.JFrame {
         // Handle sign up button click event
         //String email = jTextField1.getText();
         //String password = new String(jPasswordField1.getPassword());
-        String email = jTextField1.getText();
+        /*String email = jTextField1.getText();
         String password = new String(jPasswordField1.getPassword());
 
         DatabaseManager dbManager = new DatabaseManager();
@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }*/
         WelcomePage WelcomeFrame = new WelcomePage();
         WelcomeFrame.setVisible(true);
         WelcomeFrame.pack();
