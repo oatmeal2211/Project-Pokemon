@@ -99,13 +99,13 @@ public class Player {
     }
 
     // Save the player's progress using file I/O
-    public void saveProgress() {
+    public void saveProgress() { //接数据库
         // Implement file I/O to save player data
         System.out.println("Progress saved.");
     }
 
     // Load the player's progress using file I/O
-    public void loadProgress() {
+    public void loadProgress() { //接数据库
         // Implement file I/O to load player data
         System.out.println("Progress loaded.");
     }
