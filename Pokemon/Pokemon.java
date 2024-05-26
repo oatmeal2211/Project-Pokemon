@@ -15,6 +15,12 @@ public class Pokemon {
     private int exp;
     private String type1;
     private String type2;
+    private int baseHp;
+    private int baseAttack;
+    private int baseDefense;
+    private int baseSpecialAttack;
+    private int baseSpecialDefense;
+    private int baseSpeed;
     private int hp;
     private int attack;
     private int defense;
@@ -24,7 +30,7 @@ public class Pokemon {
     private List<Move> moves;
 
     // Type effectiveness mapping
-    private static final Map<String, Map<String, Double>> typeEffectiveness = new HashMap<>();
+    /*private static final Map<String, Map<String, Double>> typeEffectiveness = new HashMap<>();
 
     static {
         // Initialize type effectiveness chart
@@ -58,21 +64,32 @@ public class Pokemon {
         typeEffectiveness.put("Dark", Map.of("Fighting", 0.5, "Psychic", 2.0, "Ghost", 2.0, "Dark", 0.5, "Fairy", 0.5));
         typeEffectiveness.put("Steel", Map.of("Fire", 0.5, "Water", 0.5, "Electric", 0.5, "Ice", 2.0, "Rock", 2.0, "Steel", 0.5, "Fairy", 2.0));
         typeEffectiveness.put("Fairy", Map.of("Fire", 0.5, "Fighting", 2.0, "Poison", 0.5, "Dragon", 2.0, "Dark", 2.0, "Steel", 0.5));
-    }
+    }*/
 
-    public Pokemon(String name, String type1, String type2, int hp, int attack, int defense, int sp_attack, int sp_defense, int speed, int level) {
+    public Pokemon(String name, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
         this.name = name;
         this.type1 = type1;
         this.type2 = type2;
-        this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-        this.sp_attack = sp_attack;
-        this.sp_defense = sp_defense;
-        this.speed = speed;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
         this.level = level;
         this.exp = 0; // Starting XP is 0
         this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
+
+    private int scaleStat(int baseStat, int level) {
+        return baseStat + (int)((baseStat * level / 100.0) * 2);
     }
 
     // Getters and Setters
@@ -176,14 +193,8 @@ public class Pokemon {
         }
     }
 
-    public void forgetMove(String moveName) {
-        Move moveToForget = findMoveByName(moveName);
-        if (moveToForget != null) {
-            moves.remove(moveToForget);
-            System.out.println(name + " forgot " + moveName + ".");
-        } else {
-            System.out.println(name + " does not know " + moveName + ".");
-        }
+    public void forgetMove(Move move) {
+        moves.remove(move);
     }
 
     public void displayStats() {
@@ -202,57 +213,7 @@ public class Pokemon {
             System.out.println(move);
         }
     }
-
-    public void attack(Pokemon target, String moveName) {
-        Move move = findMoveByName(moveName);
-        if (move != null) {
-            if (move.getPp() > 0) {
-                move.useMove();
-                // Damage calculation considering type effectiveness
-                int baseDamage = this.attack + move.getPower() - target.getDefense();
-                double effectiveness = calculateTypeEffectiveness(move.getType(), target.getType1(), target.getType2());
-                int damage = (int) (baseDamage * effectiveness);
-                if (damage < 0) damage = 1; // Ensure at least 1 damage
-                target.takeDamage(damage);
-                System.out.println(this.name + " used " + move.getName() + " on " + target.getName() + " causing " + damage + " damage!");
-                if (effectiveness > 1) {
-                    System.out.println("It's super effective!");
-                } else if (effectiveness < 1) {
-                    System.out.println("It's not very effective...");
-                }
-            } else {
-                System.out.println(this.name + " tried to use " + move.getName() + " but it has no PP left!");
-            }
-        } else {
-            System.out.println(this.name + " doesn't know " + moveName);
-        }
-    }
-
-    // Method to calculate type effectiveness
-    private double calculateTypeEffectiveness(String moveType, String targetType1, String targetType2) {
-        double effectiveness = 1.0;
-        if (typeEffectiveness.containsKey(moveType)) {
-            Map<String, Double> moveTypeMap = typeEffectiveness.get(moveType);
-            if (moveTypeMap.containsKey(targetType1)) {
-                effectiveness *= moveTypeMap.get(targetType1);
-            }
-            if (!targetType2.isEmpty() && moveTypeMap.containsKey(targetType2)) {
-                effectiveness *= moveTypeMap.get(targetType2);
-            }
-        }
-        return effectiveness;
-    }
-
-    // Method to find a move by name
-    private Move findMoveByName(String name) {
-        for (Move move : moves) {
-            if (move.getName().equalsIgnoreCase(name)) {
-                return move;
-            }
-        }
-        return null;
-    }
-
+    
     // Method to take damage
     public void takeDamage(int damage) {
         this.hp -= damage;
