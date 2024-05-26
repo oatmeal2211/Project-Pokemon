@@ -89,7 +89,19 @@ public class GymLeaders {
     public Player getFuchsiaCityLeader() {
         return fuchsiaCityLeader;
     }
-    
 
+    public Player getSaffronCityLeader() {
+        return saffronCityLeader;
+    }
+
+    public Player getCinnabarIslanndPlayer() {
+        return cinnabarIslanndPlayer;
+    }
+
+    public Player getViridianCityLeader() {
+        return viridianCityLeader;
+    }
+    
+    
     
 }
