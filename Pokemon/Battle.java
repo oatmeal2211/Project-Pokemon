@@ -1,7 +1,11 @@
 package Pokemon;
 
+import java.util.List;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Battle {
     private Pokemon playerPokemon;
@@ -117,17 +121,19 @@ public class Battle {
     }
 
     public static void main(String[] args) {
-        // Example Pokémon and moves (simplified)
-        Pokemon pikachu = new Pokemon("Pikachu", "Electric", null, 35, 55, 40, 50, 50, 90, 50);
-        Move thunderbolt = new Move("Thunderbolt", "Electric", "Special", 90, 1.0, 15, null);
-        pikachu.learnMove(thunderbolt);
+        String movesFilePath = "Pokemon/Move.csv";
+        String pokemonFilePath = "Pokemon/pokemon.csv";
 
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 50);
-        Move vineWhip = new Move("Vine Whip", "Grass", "Physical", 45, 1.0, 25, null);
-        bulbasaur.learnMove(vineWhip);
+        List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
+        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+
+        // Generate random Pokémon for player and opponent
+        Random rand = new Random();
+        Pokemon playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        Pokemon opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
 
         // Start a battle
-        Battle battle = new Battle(bulbasaur, pikachu);
+        Battle battle = new Battle(playerPokemon, opponentPokemon);
         battle.startBattle();
     }
 }
