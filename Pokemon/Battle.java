@@ -109,6 +109,7 @@ public class Battle {
 
         if (playerPokemon.getHp() > 0) {
             System.out.println("You won the battle!");
+            System.out.println("You have gained " + opponentPokemon.getLevel()*5 + " exp");
             playerPokemon.gainExperience(opponentPokemon.getLevel()*5);
         } else {
             System.out.println("You lost the battle...");
@@ -126,7 +127,7 @@ public class Battle {
         bulbasaur.learnMove(vineWhip);
 
         // Start a battle
-        Battle battle = new Battle(pikachu, bulbasaur);
+        Battle battle = new Battle(bulbasaur, pikachu);
         battle.startBattle();
     }
 }
