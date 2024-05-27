@@ -48,33 +48,48 @@ public class Battle {
 
     // Method to simulate one turn of the battle
     public void executeTurn(Move playerMove, Move opponentMove) {
-        System.out.println(playerPokemon.getName() + " used " + playerMove.getName() + "!");
-        DamageInfo playerDamageInfo = calculateDamage(playerPokemon, opponentPokemon, playerMove);
-        opponentPokemon.setHp(opponentPokemon.getHp() - playerDamageInfo.getDamage());
-        System.out.println("It dealt " + playerDamageInfo.getDamage() + " damage!");
-        if (!playerDamageInfo.getEffectivenessMessage().isEmpty()) {
-            System.out.println(playerDamageInfo.getEffectivenessMessage());
-        }
+        // Determine the attack order based on speed
+        boolean playerFirst = playerPokemon.getSpeed() >= opponentPokemon.getSpeed();
 
-        if (opponentPokemon.getHp() <= 0) {
-            System.out.println(opponentPokemon.getName() + " fainted!");
-            return;
-        }
-
-        System.out.println(opponentPokemon.getName() + " used " + opponentMove.getName() + "!");
-        DamageInfo opponentDamageInfo = calculateDamage(opponentPokemon, playerPokemon, opponentMove);
-        playerPokemon.setHp(playerPokemon.getHp() - opponentDamageInfo.getDamage());
-        System.out.println("It dealt " + opponentDamageInfo.getDamage() + " damage!");
-        if (!opponentDamageInfo.getEffectivenessMessage().isEmpty()) {
-            System.out.println(opponentDamageInfo.getEffectivenessMessage());
-        }
-
-        if (playerPokemon.getHp() <= 0) {
-            System.out.println(playerPokemon.getName() + " fainted!");
-            return;
+        if (playerFirst) {
+            performMove(playerPokemon, opponentPokemon, playerMove);
+            if (opponentPokemon.getHp() > 0) {
+                try {
+                    Thread.sleep(1000); // 1-second delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                performMove(opponentPokemon, playerPokemon, opponentMove);
+            }
+        } else {
+            performMove(opponentPokemon, playerPokemon, opponentMove);
+            if (playerPokemon.getHp() > 0) {
+                try {
+                    Thread.sleep(1000); // 1-second delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                performMove(playerPokemon, opponentPokemon, playerMove);
+            }
         }
 
         displayPokemonHealth();
+    }
+
+    private void performMove(Pokemon attacker, Pokemon defender, Move move) {
+        System.out.println(attacker.getName() + " used " + move.getName() + "!");
+        DamageInfo damageInfo = calculateDamage(attacker, defender, move);
+        defender.setHp(defender.getHp() - damageInfo.getDamage());
+        System.out.println("It dealt " + damageInfo.getDamage() + " damage!");
+        if (!damageInfo.getEffectivenessMessage().isEmpty()) {
+            System.out.println(damageInfo.getEffectivenessMessage());
+        }
+
+        move.setPp(move.getPp() - 1); // Decrement PP after use
+
+        if (defender.getHp() <= 0) {
+            System.out.println(defender.getName() + " fainted!");
+        }
     }
 
     public void displayPokemonHealth() {
@@ -86,7 +101,8 @@ public class Battle {
     private Move chooseMove(Pokemon pokemon) {
         System.out.println("Choose a move:");
         for (int i = 0; i < pokemon.getMoves().size(); i++) {
-            System.out.println((i + 1) + ": " + pokemon.getMoves().get(i).getName());
+            Move move = pokemon.getMoves().get(i);
+            System.out.println((i + 1) + ": " + move.getName() + " (PP: " + move.getPp() + ")");
         }
 
         int choice = -1;
