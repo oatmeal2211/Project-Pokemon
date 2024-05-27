@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Race {
     private RegionExplorer<String, Integer> map;
@@ -60,29 +57,53 @@ public class Race {
     }
 
     private ArrayList<String> findShortestPath(String start, String end) {
-        ArrayList<String> visited = new ArrayList<>();
-        ArrayList<String> path = new ArrayList<>();
-        findShortestPathHelper(start, end, visited, path);
-        return path;
-    }
+        PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparingInt(v -> v.distance));
+        Map<String, Vertex> vertices = new HashMap<>();
 
-    private boolean findShortestPathHelper(String current, String end, ArrayList<String> visited, ArrayList<String> path) {
-        visited.add(current);
-        if (current.equals(end)) {
-            path.addAll(visited);
-            return true;
+        for (String city : map.getAllVertexObjects()) {
+            vertices.put(city, new Vertex(city, Integer.MAX_VALUE));
         }
 
-        ArrayList<String> neighbors = map.getNeighbours(current);
-        for (String neighbor : neighbors) {
-            if (!visited.contains(neighbor)) {
-                if (findShortestPathHelper(neighbor, end, visited, path)) {
-                    return true;
+        vertices.get(start).distance = 0;
+        pq.add(vertices.get(start));
+
+        while (!pq.isEmpty()) {
+            Vertex current = pq.poll();
+            if (current.name.equals(end)) {
+                break;
+            }
+
+            for (String neighbor : map.getNeighbours(current.name)) {
+                int weight = map.getEdgeWeight(current.name, neighbor);
+                Vertex neighborVertex = vertices.get(neighbor);
+
+                int newDist = current.distance + weight;
+                if (newDist < neighborVertex.distance) {
+                    neighborVertex.distance = newDist;
+                    neighborVertex.previous = current;
+                    pq.add(neighborVertex);
                 }
             }
         }
-        visited.remove(visited.size() - 1);
-        return false;
+
+        ArrayList<String> path = new ArrayList<>();
+        for (Vertex at = vertices.get(end); at != null; at = at.previous) {
+            path.add(at.name);
+        }
+        Collections.reverse(path);
+        return path;
+    }
+
+    private static class Vertex {
+        String name;
+        int distance;
+        Vertex previous;
+
+        Vertex(String name, int distance) {
+            this.name = name;
+            this.distance = distance;
+            this.previous = null;
+        }
     }
 
     public static void main(String[] args) {
