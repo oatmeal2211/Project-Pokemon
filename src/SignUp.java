@@ -1,12 +1,8 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.swing.*;
-
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -19,7 +15,7 @@ public class SignUp extends javax.swing.JFrame {
     private void loadCustomFont() throws FontFormatException {
         try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
             if (is == null) {
-                throw new FileNotFoundException("Font file not found in resources");
+                throw new IOException("Font file not found");
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 12);
@@ -61,7 +57,7 @@ public class SignUp extends javax.swing.JFrame {
 
         Left2.setBackground(new java.awt.Color(255, 255, 255));
         Left2.setMinimumSize(new java.awt.Dimension(400, 500));
-        
+
         jLabel12.setForeground(new java.awt.Color(0, 102, 102));
         jLabel12.setText("SIGN UP");
 
@@ -179,7 +175,8 @@ public class SignUp extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }
+
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
         String username = jTextField5.getText();
         String email = jTextField6.getText();
@@ -197,8 +194,6 @@ public class SignUp extends javax.swing.JFrame {
             dbManager.addUser(email, password);
             JOptionPane.showMessageDialog(this, "Account created successfully. Please login.", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        //GmailSender.sendEmail(email);
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
@@ -207,11 +202,6 @@ public class SignUp extends javax.swing.JFrame {
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
         this.dispose();
-    }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return email.matches(emailRegex);
     }
 
     public static void main(String args[]) {
@@ -243,21 +233,19 @@ public class SignUp extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-     // Variables declaration - do not modify                     
-     private javax.swing.JPanel Left2;
-     private javax.swing.JButton jButton5;
-     private javax.swing.JButton jButton6;
-     private javax.swing.JLabel jLabel12;
-     private javax.swing.JLabel jLabel13;
-     private javax.swing.JLabel jLabel14;
-     private javax.swing.JLabel jLabel15;
-     private javax.swing.JLabel jLabel16;
-     private javax.swing.JLabel jLabel17;
-     private javax.swing.JPanel jPanel1;
-     private javax.swing.JPasswordField jPasswordField4;
-     private javax.swing.JTextField jTextField5;
-     private javax.swing.JTextField jTextField6;
-     // End of variables declaration            
-
+    // Variables declaration - do not modify                     
+    private javax.swing.JPanel Left2;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    // End of variables declaration                   
 }

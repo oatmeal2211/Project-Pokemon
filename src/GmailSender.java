@@ -3,7 +3,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class GmailSender {
-    public static void sendEmail(String recipientEmail){
+    public static void sendEmail(String recipientEmail) {
         // 设置SMTP服务器属性
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");  // 开启认证
@@ -22,18 +22,19 @@ public class GmailSender {
             // 创建邮件
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("yongbinzhang514@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("z13933825916@163.com"));
-            message.setSubject("Test");
-            message.setText("Hello,world");
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            message.setSubject("Welcome to Pokemon - Kanto Adventures!");
+            message.setText("Dear Trainer,\n\nWelcome to the world of Pokemon! We are excited to have you join us on this adventure.\n\nBest regards,\nPokemon Team");
 
             // 发送邮件
             Transport.send(message);
 
-            System.out.println("Email is sent!");
+            System.out.println("Email sent to " + recipientEmail);
 
         } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {}
 }
