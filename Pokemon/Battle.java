@@ -1,7 +1,13 @@
 package Pokemon;
 
+
+import java.util.List;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Collections;
+
 
 public class Battle {
     private Pokemon playerPokemon;
@@ -44,33 +50,49 @@ public class Battle {
 
     // Method to simulate one turn of the battle
     public void executeTurn(Move playerMove, Move opponentMove) {
-        System.out.println(playerPokemon.getName() + " used " + playerMove.getName() + "!");
-        DamageInfo playerDamageInfo = calculateDamage(playerPokemon, opponentPokemon, playerMove);
-        opponentPokemon.setHp(opponentPokemon.getHp() - playerDamageInfo.getDamage());
-        System.out.println("It dealt " + playerDamageInfo.getDamage() + " damage!");
-        if (!playerDamageInfo.getEffectivenessMessage().isEmpty()) {
-            System.out.println(playerDamageInfo.getEffectivenessMessage());
-        }
+        // Determine the attack order based on speed
+        boolean playerFirst = playerPokemon.getSpeed() >= opponentPokemon.getSpeed();
 
-        if (opponentPokemon.getHp() <= 0) {
-            System.out.println(opponentPokemon.getName() + " fainted!");
-            return;
-        }
-
-        System.out.println(opponentPokemon.getName() + " used " + opponentMove.getName() + "!");
-        DamageInfo opponentDamageInfo = calculateDamage(opponentPokemon, playerPokemon, opponentMove);
-        playerPokemon.setHp(playerPokemon.getHp() - opponentDamageInfo.getDamage());
-        System.out.println("It dealt " + opponentDamageInfo.getDamage() + " damage!");
-        if (!opponentDamageInfo.getEffectivenessMessage().isEmpty()) {
-            System.out.println(opponentDamageInfo.getEffectivenessMessage());
-        }
-
-        if (playerPokemon.getHp() <= 0) {
-            System.out.println(playerPokemon.getName() + " fainted!");
-            return;
+        if (playerFirst) {
+            performMove(playerPokemon, opponentPokemon, playerMove);
+            if (opponentPokemon.getHp() > 0) {
+                try {
+                    Thread.sleep(1000); // 1-second delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                performMove(opponentPokemon, playerPokemon, opponentMove);
+            }
+        } else {
+            performMove(opponentPokemon, playerPokemon, opponentMove);
+            if (playerPokemon.getHp() > 0) {
+                try {
+                    Thread.sleep(1000); // 1-second delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                performMove(playerPokemon, opponentPokemon, playerMove);
+            }
         }
 
         displayPokemonHealth();
+    }
+
+    private void performMove(Pokemon attacker, Pokemon defender, Move move) {
+        System.out.println(attacker.getName() + " used " + move.getName() + "!");
+        DamageInfo damageInfo = calculateDamage(attacker, defender, move);
+        defender.setHp(defender.getHp() - damageInfo.getDamage());
+        System.out.println("It dealt " + damageInfo.getDamage() + " damage!");
+        if (!damageInfo.getEffectivenessMessage().isEmpty()) {
+            System.out.println(damageInfo.getEffectivenessMessage());
+        }
+
+        move.setPp(move.getPp() - 1); // Decrement PP after use
+
+        if (defender.getHp() <= 0) {
+            System.out.println(defender.getName() + " fainted!");
+        }
+
     }
 
     public void displayPokemonHealth() {
@@ -82,7 +104,9 @@ public class Battle {
     private Move chooseMove(Pokemon pokemon) {
         System.out.println("Choose a move:");
         for (int i = 0; i < pokemon.getMoves().size(); i++) {
-            System.out.println((i + 1) + ": " + pokemon.getMoves().get(i).getName());
+
+            Move move = pokemon.getMoves().get(i);
+            System.out.println((i + 1) + ": " + move.getName() + " (PP: " + move.getPp() + ")");
         }
 
         int choice = -1;
@@ -109,6 +133,7 @@ public class Battle {
 
         if (playerPokemon.getHp() > 0) {
             System.out.println("You won the battle!");
+            System.out.println("You have gained " + opponentPokemon.getLevel()*5 + " exp");
             playerPokemon.gainExperience(opponentPokemon.getLevel()*5);
         } else {
             System.out.println("You lost the battle...");
@@ -116,17 +141,19 @@ public class Battle {
     }
 
     public static void main(String[] args) {
-        // Example Pokémon and moves (simplified)
-        Pokemon pikachu = new Pokemon("Pikachu", "Electric", null, 35, 55, 40, 50, 50, 90, 50);
-        Move thunderbolt = new Move("Thunderbolt", "Electric", "Special", 90, 1.0, 15, null);
-        pikachu.learnMove(thunderbolt);
+        String movesFilePath = "Pokemon/Move.csv";
+        String pokemonFilePath = "Pokemon/pokemon.csv";
 
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 50);
-        Move vineWhip = new Move("Vine Whip", "Grass", "Physical", 45, 1.0, 25, null);
-        bulbasaur.learnMove(vineWhip);
+        List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
+        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+
+        // Generate random Pokémon for player and opponent
+        Random rand = new Random();
+        Pokemon playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        Pokemon opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
 
         // Start a battle
-        Battle battle = new Battle(pikachu, bulbasaur);
+        Battle battle = new Battle(playerPokemon, opponentPokemon);
         battle.startBattle();
     }
 }

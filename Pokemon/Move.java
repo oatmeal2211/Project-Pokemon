@@ -50,6 +50,30 @@ public class Move {
         return pp;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public void setPower(Integer power) {
+        this.power = power;
+    }
+
+    public void setAccuracy(Double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public void setPp(int pp) {
+        this.pp = pp;
+    }
+
     public void useMove() {
         if (pp > 0) {
             pp--;
@@ -89,7 +113,8 @@ public class Move {
                 }
                 int pp = Integer.parseInt(data[4]);
 
-                Move move = new Move(name, type, category, power, accuracy, pp, category);
+
+                Move move = new Move(name, type, category, power, accuracy, pp, null);
                 moveList.add(move);
             }
         } catch (IOException e) {
