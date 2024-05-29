@@ -41,6 +41,8 @@ public class DatabaseManager {
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             pstmt.executeUpdate();
+            // 调用 GmailSender 发送欢迎邮件
+            GmailSender.sendEmail(email);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,4 +62,3 @@ public class DatabaseManager {
         return false;
     }
 }
-

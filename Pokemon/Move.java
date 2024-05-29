@@ -113,6 +113,7 @@ public class Move {
                 }
                 int pp = Integer.parseInt(data[4]);
 
+
                 Move move = new Move(name, type, category, power, accuracy, pp, null);
                 moveList.add(move);
             }
