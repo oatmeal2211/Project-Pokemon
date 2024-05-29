@@ -9,7 +9,7 @@ public class GymLeaders {
     private Player celadonCityLeader;
     private Player fuchsiaCityLeader;
     private Player saffronCityLeader;
-    private Player cinnabarIslanndPlayer;
+    private Player cinnabarIslandPlayer;
     private Player viridianCityLeader;
     
     public GymLeaders() {
@@ -19,7 +19,7 @@ public class GymLeaders {
         celadonCityLeader = new Player("Celadon City Leader", "Celadon");
         fuchsiaCityLeader = new Player("Fuchsia City Leader", "Fuchsia");
         saffronCityLeader = new Player("Saffron City Leader", "Saffron");
-        cinnabarIslanndPlayer = new Player("Cinnabar Island Player", "Cinnabar");
+        cinnabarIslandPlayer = new Player("Cinnabar Island Player", "Cinnabar");
         viridianCityLeader = new Player("Viridian City Leader", "Viridian");
 
         // pewterCityLeader set up
@@ -51,11 +51,11 @@ public class GymLeaders {
         saffronCityLeader.addPokemon(new Pokemon("Venonat","Bug","Poison",60,55,50,40,40,45,38));
         saffronCityLeader.addPokemon(new Pokemon("Jynx","Ice","Psychic",65,50,35,95,95,95,43));
 
-        // cinnabarIslanndPlayer set up
-        cinnabarIslanndPlayer.addPokemon(new Pokemon("Growlithe","Fire","None",55,70,45,50,50,60,42));
-        cinnabarIslanndPlayer.addPokemon(new Pokemon("Ponyta","Fire","None",50,85,55,65,65,90,40));
-        cinnabarIslanndPlayer.addPokemon(new Pokemon("Moltres","Fire","Flying",90,100,90,125,125,90,42));
-        cinnabarIslanndPlayer.addPokemon(new Pokemon("Growlithe","Fire","None",55,70,45,50,50,60,47));
+        // cinnabarIslandPlayer set up
+        cinnabarIslandPlayer.addPokemon(new Pokemon("Growlithe","Fire","None",55,70,45,50,50,60,42));
+        cinnabarIslandPlayer.addPokemon(new Pokemon("Ponyta","Fire","None",50,85,55,65,65,90,40));
+        cinnabarIslandPlayer.addPokemon(new Pokemon("Moltres","Fire","Flying",90,100,90,125,125,90,42));
+        cinnabarIslandPlayer.addPokemon(new Pokemon("Growlithe","Fire","None",55,70,45,50,50,60,47));
 
         // viridianCityLeader set up
         viridianCityLeader.addPokemon(new Pokemon("Rhyhorn","Ground","Rock",80,85,95,30,30,25,45));
@@ -94,8 +94,8 @@ public class GymLeaders {
         return saffronCityLeader;
     }
 
-    public Player getCinnabarIslanndPlayer() {
-        return cinnabarIslanndPlayer;
+    public Player getCinnabarIslandPlayer() {
+        return cinnabarIslandPlayer;
     }
 
     public Player getViridianCityLeader() {
