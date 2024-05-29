@@ -1,5 +1,3 @@
-package Pokemon;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 public class Pokemon {
     private String name;
@@ -209,15 +209,26 @@ public class Pokemon {
 
     // Method to level up
     private void levelUp() {
-        this.level++;
-        this.hp += 10; // Simple stat increase for demonstration
-        this.attack += 2;
-        this.defense += 2;
-        this.sp_attack += 2;
-        this.sp_defense += 2;
-        this.speed += 2;
-        System.out.println(this.name + " leveled up to " + this.level + "!");
-    }
+    this.level++;
+    this.hp += 10; // Simple stat increase for demonstration
+    this.attack += 2;
+    this.defense += 2;
+    this.sp_attack += 2;
+    this.sp_defense += 2;
+    this.speed += 2;
+    
+    // Construct the message for JOptionPane
+    String message = this.name + " leveled up to " + this.level + "!\n";
+    message += "HP +10\n";
+    message += "Attack +2\n";
+    message += "Defense +2\n";
+    message += "Special Attack +2\n";
+    message += "Special Defense +2\n";
+    message += "Speed +2";
+    
+    JOptionPane.showMessageDialog(null, message, "Level Up", JOptionPane.INFORMATION_MESSAGE);
+}
+
 
     @Override
     public String toString() {

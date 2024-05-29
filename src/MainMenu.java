@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 // Assuming RegionExplorer is a generic class with a method getNeighbours
@@ -21,6 +22,8 @@ public class MainMenu extends javax.swing.JFrame {
     RegionExplorer<String, Integer> regionExplorer = MapPokemon.getMapData();
     ArrayList<String> list = new ArrayList<>();
     static String currentLocation = "Pallet Town";
+    JButton pokemonSortButton;
+    JButton rivalRaceButton;
 
     public MainMenu() throws FontFormatException {
         initComponents();
@@ -226,34 +229,84 @@ public class MainMenu extends javax.swing.JFrame {
 
     
     private void updateGymLeaderOptions(String currentCity) throws FontFormatException { //gym leader
+        if (rivalRaceButton != null) {
+            jPanel1.remove(rivalRaceButton);
+            rivalRaceButton = null;
+        }
+        if (pokemonSortButton != null) {
+            jPanel1.remove(pokemonSortButton);
+            pokemonSortButton = null;
+        }
+        jPanel1.revalidate();
+        jPanel1.repaint();
+    
         switch (currentCity) {
             case "Saffron City":
-            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
-            JButton rivalRaceButton = new JButton("Rival's Race");
-            rivalRaceButton.setBackground(new Color(0, 0, 0));
-            rivalRaceButton.setForeground(new Color(255, 255, 255));
-            rivalRaceButton.setBorderPainted(false);
-            rivalRaceButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        Race race = new Race(regionExplorer, currentCity);
-                        race.setVisible(true);
-                        race.pack();
-                        race.setLocationRelativeTo(null);
-                        dispose();
-                    } catch (FontFormatException e) {
-                        e.printStackTrace();
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
+                rivalRaceButton = new JButton("Rival's Race");
+                rivalRaceButton.setBackground(new Color(0, 0, 0));
+                rivalRaceButton.setForeground(new Color(255, 255, 255));
+                rivalRaceButton.setBorderPainted(false);
+                rivalRaceButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        try {
+                            Race race = new Race(regionExplorer, currentCity);
+                            race.setVisible(true);
+                            race.pack();
+                            race.setLocationRelativeTo(null);
+                            dispose();
+                        } catch (FontFormatException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
-            // Add the button to the jPanel1
-            jPanel1.add(rivalRaceButton);
-            loadCustomFontSpecial(rivalRaceButton);
-            rivalRaceButton.setBounds(0, 525, 300, 100);
-            break;
-            case "Fuchsia City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Koga - Poison type"}));
+                });
+                // Add the button to the jPanel1
+                jPanel1.add(rivalRaceButton);
+                loadCustomFontSpecial(rivalRaceButton);
+                rivalRaceButton.setBounds(0, 525, 300, 100);
+                jPanel1.revalidate();
+                jPanel1.repaint();
                 break;
+    
+            case "Fuschia City":
+    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Koga - Poison type"}));
+    pokemonSortButton = new JButton("Safari Zone");
+    pokemonSortButton.setBackground(new Color(0, 0, 0));
+    pokemonSortButton.setForeground(new Color(255, 255, 255));
+    pokemonSortButton.setBorderPainted(false);
+    pokemonSortButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                // Prompt user for the number of Pokemon to sort
+                int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
+
+                // Create and show the PokemonSort frame
+                PokemonSort ps = new PokemonSort(numberOfPokemon);
+                ps.setVisible(true);
+                ps.setLocationRelativeTo(null);
+                
+                // Load the Pokemon with the specified number of Pokemon
+                ps.loadPokemon(numberOfPokemon);
+                
+                // Dispose of the current frame (main menu)
+                dispose();
+            } catch (NumberFormatException e) {
+                // Handle invalid input from JOptionPane
+                JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    // Add the button to the jPanel1
+    jPanel1.add(pokemonSortButton);
+    loadCustomFontSpecial(pokemonSortButton);
+    pokemonSortButton.setBounds(0, 525, 300, 100);
+    jPanel1.revalidate();
+    jPanel1.repaint();
+    break;
+
+
             case "Pewter City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Brock - Rock type"}));
                 break;
@@ -492,7 +545,34 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2.setText(currentLocation);
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Start Battle!" }));
+jComboBox3.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JComboBox comboBox = (JComboBox) e.getSource();
+        String selectedItem = (String) comboBox.getSelectedItem();
+        if (selectedItem.equals("Start Battle!")) {
+            try {
+                startBattle();
+            } catch (FontFormatException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    }
+    private void startBattle() throws FontFormatException, IOException {
+        PokemonBattle pokemonBattle = new PokemonBattle();
+        pokemonBattle.setVisible(true);
+        pokemonBattle.setLocationRelativeTo(null);
+        dispose(); // Close the current window
+    }
+});
+
+
+
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
 

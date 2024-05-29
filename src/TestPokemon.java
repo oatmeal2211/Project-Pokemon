@@ -1,4 +1,3 @@
-package Pokemon;
 import java.util.List;
 
 public class TestPokemon {
