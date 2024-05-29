@@ -1,11 +1,13 @@
 package Pokemon;
 
+
 import java.util.List;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.Collections;
+
 
 public class Battle {
     private Pokemon playerPokemon;
@@ -90,6 +92,7 @@ public class Battle {
         if (defender.getHp() <= 0) {
             System.out.println(defender.getName() + " fainted!");
         }
+
     }
 
     public void displayPokemonHealth() {
@@ -101,6 +104,7 @@ public class Battle {
     private Move chooseMove(Pokemon pokemon) {
         System.out.println("Choose a move:");
         for (int i = 0; i < pokemon.getMoves().size(); i++) {
+
             Move move = pokemon.getMoves().get(i);
             System.out.println((i + 1) + ": " + move.getName() + " (PP: " + move.getPp() + ")");
         }
