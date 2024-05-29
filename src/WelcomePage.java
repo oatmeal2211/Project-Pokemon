@@ -1,7 +1,9 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class WelcomePage extends javax.swing.JFrame{
 
@@ -11,10 +13,11 @@ public class WelcomePage extends javax.swing.JFrame{
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try {
-            // Load the font file
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("PressStart2P-Regular.ttf"));
-            // Set the font size (optional)
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 12);
             Font title = customFont.deriveFont(Font.PLAIN, 30);
             // Set the font for the labels and buttons
