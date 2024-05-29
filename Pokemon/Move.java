@@ -9,16 +9,21 @@ import java.util.List;
 public class Move {
     private String name;
     private String type;
+    private String category;
     private Integer power;
     private Double accuracy;
-    private int pp; // Power Points
+    private int pp; //Power points
+    private String effect;
 
-    public Move(String name, String type, Integer power, Double accuracy, int pp) {
+
+    public Move(String name, String type, String category, Integer power, Double accuracy, int pp, String effect) {
         this.name = name;
         this.type = type;
+        this.category = category;
         this.power = power;
         this.accuracy = accuracy;
         this.pp = pp;
+        this.effect = effect;
     }
 
     public String getName() {
@@ -29,16 +34,44 @@ public class Move {
         return type;
     }
 
-    public int getPower() {
+    public String getCategory(){
+        return category;
+    }
+
+    public Integer getPower() {
         return power;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
     public int getPp() {
         return pp;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public void setPower(Integer power) {
+        this.power = power;
+    }
+
+    public void setAccuracy(Double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public void setPp(int pp) {
+        this.pp = pp;
     }
 
     public void useMove() {
@@ -51,7 +84,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{name='" + name + "', type='" + type + "', power=" + power + ", accuracy=" + accuracy + ", pp=" + pp + '}';
+        return String.format("Move{name='%s', type='%s', category='%s', power=%s, accuracy=%s, pp=%d}", name, type, category, power, accuracy, pp);
     }
 
     public static List<Move> loadMovesFromCSV(String filePath) {
@@ -67,11 +100,9 @@ public class Move {
                 }          
                 String[] data = line.split(",");
                 String name = data[1];
-                System.out.println(name);
                 String type = data[2];
-                System.out.println(type);
+                String category = data[3];
                 Integer power = data[5].equalsIgnoreCase("null") ? null : Integer.parseInt(data[5]);
-                System.out.println(power);
                 Double accuracy;
                 if (data[6].equalsIgnoreCase("null")) {
                     accuracy = null;
@@ -80,11 +111,9 @@ public class Move {
                 } else {
                     accuracy = Double.parseDouble(data[6]);
                 }
-                System.out.println(accuracy);
                 int pp = Integer.parseInt(data[4]);
-                System.out.println(pp);
 
-                Move move = new Move(name, type, power, accuracy, pp);
+                Move move = new Move(name, type, category, power, accuracy, pp, null);
                 moveList.add(move);
             }
         } catch (IOException e) {

@@ -200,6 +200,14 @@ public class Login extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        WelcomePage WelcomeFrame = new WelcomePage();
+        WelcomeFrame.setVisible(true);
+        WelcomeFrame.pack();
+        WelcomeFrame.setLocationRelativeTo(null);
+        this.dispose();}
+
+
+        }
     }
 
     // Variables declaration - do not modify
