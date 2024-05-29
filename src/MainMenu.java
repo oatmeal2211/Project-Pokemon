@@ -52,6 +52,8 @@ public class MainMenu extends javax.swing.JFrame {
             backgroundLabel.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
             layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
 
+            
+
             // Adjust the size and position of jPanel1 to match the background image
             jPanel1.setOpaque(true); // Make jPanel1 transparent
             jPanel1.setBounds(0, 0, 300, imageIcon.getIconHeight()); // Adjust position and size
@@ -115,6 +117,21 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }
 
+    private void loadCustomFontSpecial(JButton button) throws FontFormatException {
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            Font font = customFont.deriveFont(Font.PLAIN, 11);
+            Font title = customFont.deriveFont(Font.PLAIN, 37);
+            // Set the font for the labels and buttons
+            button.setFont(font);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setCurrentLocation(String newLocation) {
         currentLocation = newLocation;
         jLabel1.setText("You are currently at "); // Update jLabel1 with the current location
@@ -146,7 +163,12 @@ public class MainMenu extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 String selectedCity = (String) jComboBox1.getSelectedItem();
                 if (selectedCity != null) {
-                    updateGymLeaderOptions(selectedCity);
+                    try {
+                        updateGymLeaderOptions(selectedCity);
+                    } catch (FontFormatException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     setCurrentLocation(selectedCity); // Update currentLocation variable and run populateAdjacentCities
                 }
             }
@@ -203,11 +225,32 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     
-    private void updateGymLeaderOptions(String currentCity) { //gym leader
+    private void updateGymLeaderOptions(String currentCity) throws FontFormatException { //gym leader
         switch (currentCity) {
             case "Saffron City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
-                break;
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
+            JButton rivalRaceButton = new JButton("Rival's Race");
+            rivalRaceButton.setBackground(new Color(0, 0, 0));
+            rivalRaceButton.setForeground(new Color(255, 255, 255));
+            rivalRaceButton.setBorderPainted(false);
+            rivalRaceButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        Race race = new Race(regionExplorer, currentCity);
+                        race.setVisible(true);
+                        race.pack();
+                        race.setLocationRelativeTo(null);
+                        dispose();
+                    } catch (FontFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            // Add the button to the jPanel1
+            jPanel1.add(rivalRaceButton);
+            loadCustomFontSpecial(rivalRaceButton);
+            rivalRaceButton.setBounds(0, 525, 300, 100);
+            break;
             case "Fuchsia City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Koga - Poison type"}));
                 break;

@@ -1,12 +1,12 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.swing.*;
-
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -40,8 +40,20 @@ public class SignUp extends javax.swing.JFrame {
         }
     }
 
-    private void initComponents() {
+    private void loadImage() {
+        try {
+            InputStream is = getClass().getResourceAsStream("/loginpage image.jpg");
+            if (is == null) {
+                throw new FileNotFoundException("Image file not found in resources");
+            }
+            ImageIcon imageIcon = new ImageIcon(ImageIO.read(is));
+            jLabel17.setIcon(imageIcon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void initComponents() {
         jPanel1 = new javax.swing.JPanel();
         Left2 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -72,35 +84,26 @@ public class SignUp extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(0, 102, 102));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Sign Up");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
+        jButton5.addActionListener(evt -> jButton5ActionPerformed(evt));
 
         jLabel14.setText("I have an account");
 
         jButton6.setForeground(new java.awt.Color(255, 51, 51));
         jButton6.setText("Login");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jButton6ActionPerformed(evt);
-                } catch (FontFormatException e) {
-                    e.printStackTrace();
-                }
+        jButton6.addActionListener(evt -> {
+            try {
+                jButton6ActionPerformed(evt);
+            } catch (FontFormatException e) {
+                e.printStackTrace();
             }
         });
 
         jLabel15.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14));
         jLabel15.setText("Password");
 
         jLabel16.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14));
         jLabel16.setText("Email");
         jTextField6.setForeground(new java.awt.Color(102, 102, 102));
-
 
         javax.swing.GroupLayout Left2Layout = new javax.swing.GroupLayout(Left2);
         Left2.setLayout(Left2Layout);
@@ -150,7 +153,7 @@ public class SignUp extends javax.swing.JFrame {
         );
 
         jLabel17.setText("jLabel8");
-        jLabel17.setIcon(new javax.swing.ImageIcon("loginpage image.jpg"));
+        loadImage();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -179,7 +182,8 @@ public class SignUp extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }
+
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
         String username = jTextField5.getText();
         String email = jTextField6.getText();
@@ -232,32 +236,28 @@ public class SignUp extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new SignUp().setVisible(true);
-                } catch (FontFormatException e) {
-                    e.printStackTrace();
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new SignUp().setVisible(true);
+            } catch (FontFormatException e) {
+                e.printStackTrace();
             }
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-     // Variables declaration - do not modify                     
-     private javax.swing.JPanel Left2;
-     private javax.swing.JButton jButton5;
-     private javax.swing.JButton jButton6;
-     private javax.swing.JLabel jLabel12;
-     private javax.swing.JLabel jLabel13;
-     private javax.swing.JLabel jLabel14;
-     private javax.swing.JLabel jLabel15;
-     private javax.swing.JLabel jLabel16;
-     private javax.swing.JLabel jLabel17;
-     private javax.swing.JPanel jPanel1;
-     private javax.swing.JPasswordField jPasswordField4;
-     private javax.swing.JTextField jTextField5;
-     private javax.swing.JTextField jTextField6;
-     // End of variables declaration            
-
+    // Variables declaration - do not modify                     
+    private javax.swing.JPanel Left2;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    // End of variables declaration                   
 }

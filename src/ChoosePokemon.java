@@ -12,9 +12,9 @@ public class ChoosePokemon extends JFrame {
         initComponents();
         loadCustomFont();
         setBackgroundImage();
-        scaleAndSetImage("charmander.jpg", jLabel2);
-        scaleAndSetImage("squirtle.jpg", jLabel3);
-        scaleAndSetImage("bulbasaur.jpg", jLabel1);
+        scaleAndSetImage("/charmander.jpg", jLabel2);
+        scaleAndSetImage("/squirtle.jpg", jLabel3);
+        scaleAndSetImage("/bulbasaur.jpg", jLabel1);
         startTypewriterEffect();
     }
 
@@ -86,8 +86,6 @@ public class ChoosePokemon extends JFrame {
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         jTextArea1.setColumns(90);
         jTextArea1.setRows(5);
-        //jTextArea1.setText("Right! So your name is " + playerName + "!\n\nWelcome to the world of Pokemon.\n\n" +
-                //"It's time to choose your starting pokemon.");
         jScrollPane1.setViewportView(jTextArea1);
         jLabel4.setText("Oak");
         jLabel4.setForeground(Color.WHITE);
@@ -172,8 +170,11 @@ public class ChoosePokemon extends JFrame {
     }
 
     private void scaleAndSetImage(String imagePath, JLabel label) {
-        try {
-            Image img = ImageIO.read(new File(imagePath));
+        try (InputStream is = getClass().getResourceAsStream(imagePath)) {
+            if (is == null) {
+                throw new FileNotFoundException("Image file not found in resources");
+            }
+            Image img = ImageIO.read(is);
             ImageIcon scaledIcon = new ImageIcon(img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH));
             label.setIcon(scaledIcon);
         } catch (IOException e) {
@@ -182,27 +183,10 @@ public class ChoosePokemon extends JFrame {
     }
 
     public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChoosePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChoosePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChoosePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChoosePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ChoosePokemon(playerName).setVisible(true);
+                    new ChoosePokemon("PlayerName").setVisible(true); // Pass a valid player name
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }
