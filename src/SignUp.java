@@ -19,7 +19,7 @@ public class SignUp extends javax.swing.JFrame {
     private void loadCustomFont() throws FontFormatException {
         try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
             if (is == null) {
-                throw new FileNotFoundException("Font file not found in resources");
+                throw new IOException("Font file not found");
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             Font font = customFont.deriveFont(Font.PLAIN, 12);
@@ -73,7 +73,7 @@ public class SignUp extends javax.swing.JFrame {
 
         Left2.setBackground(new java.awt.Color(255, 255, 255));
         Left2.setMinimumSize(new java.awt.Dimension(400, 500));
-        
+
         jLabel12.setForeground(new java.awt.Color(0, 102, 102));
         jLabel12.setText("SIGN UP");
 
@@ -201,8 +201,6 @@ public class SignUp extends javax.swing.JFrame {
             dbManager.addUser(email, password);
             JOptionPane.showMessageDialog(this, "Account created successfully. Please login.", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        //GmailSender.sendEmail(email);
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
@@ -211,11 +209,6 @@ public class SignUp extends javax.swing.JFrame {
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
         this.dispose();
-    }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return email.matches(emailRegex);
     }
 
     public static void main(String args[]) {
