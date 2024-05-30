@@ -22,20 +22,29 @@ public class MainMenu extends javax.swing.JFrame {
     RegionExplorer<String, Integer> regionExplorer = MapPokemon.getMapData();
     ArrayList<String> list = new ArrayList<>();
     static String currentLocation = "Pallet Town";
+    static Player player;
+    private GymLeaders gymLeaders;
     JButton pokemonSortButton;
     JButton rivalRaceButton;
 
-    public MainMenu() throws FontFormatException {
+    private void updateCurrentLocation() {
+        currentLocation = player.getLocation();
+        jLabel2.setText(currentLocation); // Update jLabel2 with the current location
+    }
+
+    public MainMenu(Player player) throws FontFormatException {
+       this.player = player;
         initComponents();
         loadCustomFont();
         setBackgroundImage();
         MapPokemon map = new MapPokemon(); // Instantiate your MapPokemon class
-    
+        gymLeaders = new GymLeaders();
         // Set up jComboBox2
-        updateGymLeaderOptions(currentLocation);
+        updateGymLeaderOptions(player.getLocation());
     
         // Call setCurrentLocation with the initial current location
-        setCurrentLocation(currentLocation); // Set the current location after initializing components
+        setCurrentLocation(player.getLocation()); // Set the current location after initializing components
+        updateCurrentLocation();
     }
     
 
@@ -183,7 +192,7 @@ public class MainMenu extends javax.swing.JFrame {
         RegionExplorer<String, Integer> map = MapPokemon.getMapData();
 
         // Pass the map data to the ShowMap constructor
-        ShowMap sm = new ShowMap(map);
+        ShowMap sm = new ShowMap(player, map);
         sm.setVisible(true);
         sm.pack();
         sm.setLocationRelativeTo(null);
@@ -191,7 +200,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton3ActionPerformed(ActionEvent evt) throws FontFormatException {
-        ShowPokemon sp = new ShowPokemon();
+        ShowPokemon sp = new ShowPokemon(player);
         sp.setVisible(true);
         sp.pack();
         sp.setLocationRelativeTo(null);
@@ -203,7 +212,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
-        ShowBadges sb = new ShowBadges();
+        ShowBadges sb = new ShowBadges(player);
         sb.setVisible(true);
         sb.pack();
         sb.setLocationRelativeTo(null);
@@ -239,10 +248,83 @@ public class MainMenu extends javax.swing.JFrame {
         }
         jPanel1.revalidate();
         jPanel1.repaint();
+        
+        jComboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedGymLeader = (String) jComboBox2.getSelectedItem();
+                if (selectedGymLeader != null) {
+                    // Open GymLeaderWithGUI window based on the selected gym leader
+                    switch (selectedGymLeader) {
+                        case "Sabrina - Psychic Type":
+    try {
+        openGymLeaderWindow(currentCity, player, gymLeaders);
+    } catch (FontFormatException | IOException e1) {
+        e1.printStackTrace();
+    }
+    break;
+
+                        case "Koga - Poison type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                       
+                        case "Brock - Rock type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        case "Rhyhorn - Ground Type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        case "Blaine - Fire type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        case "Erica - Grass type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        case "Misty - Water type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        case "Lt. Surge - Electric type":
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeaders);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
     
         switch (currentCity) {
             case "Saffron City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
+                
                 rivalRaceButton = new JButton("Rival's Race");
                 rivalRaceButton.setBackground(new Color(0, 0, 0));
                 rivalRaceButton.setForeground(new Color(255, 255, 255));
@@ -311,7 +393,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Brock - Rock type"}));
                 break;
             case "Viridian City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Giovanni"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Rhyhorn - Ground Type"}));
                 break;
             case "Cinnabar Island":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Blaine - Fire type"}));
@@ -375,6 +457,23 @@ public class MainMenu extends javax.swing.JFrame {
         }
         
     }
+
+    private void openGymLeaderWindow(String currentCity, Player player, GymLeaders gymLeaders) throws FontFormatException, IOException {
+        player.setLocation(currentCity); // Set the player's current location
+        if (!player.getPokemonTeam().isEmpty()) {
+            GymLeaderWithGUI gym = new GymLeaderWithGUI(player, currentCity, gymLeaders);
+            gym.setVisible(true);
+            gym.pack();
+            gym.setLocationRelativeTo(null);
+            dispose();
+        } else {
+            // Handle the case when the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "You don't have any Pokémon in your team!");
+        }
+    }
+    
+    
+
     private void openPokemazeWindow() throws FontFormatException {
         // Create an instance of the PokemazeWindow class and show it
         PokemazeWithGUI pokemazeWindow = new PokemazeWithGUI();
@@ -383,7 +482,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void openTalkWithMomWindow() throws FontFormatException {
         // Create an instance of the PokemazeWindow class and show it
-        TalkWithMom twm = new TalkWithMom();
+        TalkWithMom twm = new TalkWithMom(player);
         twm.setVisible(true);
     }
     
@@ -441,7 +540,7 @@ public class MainMenu extends javax.swing.JFrame {
                 RegionExplorer<String, Integer> map = MapPokemon.getMapData();
             
                 // Pass the map data to the ShowMap constructor
-                ShowMap sm = new ShowMap(map);
+                ShowMap sm = new ShowMap(player,map);
                 sm.setVisible(true);
                 sm.pack();
                 sm.setLocationRelativeTo(null);
@@ -502,7 +601,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
 
             private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
-                ShowBadges sb = new ShowBadges();
+                ShowBadges sb = new ShowBadges(player);
         sb.setVisible(true);
         sb.pack();
         sb.setLocationRelativeTo(null);
@@ -564,12 +663,14 @@ jComboBox3.addActionListener(new ActionListener() {
         }
     }
     private void startBattle() throws FontFormatException, IOException {
-        PokemonBattle pokemonBattle = new PokemonBattle();
+        PokemonBattle pokemonBattle = new PokemonBattle(player);
         pokemonBattle.setVisible(true);
         pokemonBattle.setLocationRelativeTo(null);
         dispose(); // Close the current window
     }
 });
+
+
 
 
 
@@ -676,7 +777,7 @@ jComboBox3.addActionListener(new ActionListener() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new MainMenu().setVisible(true);
+                    new MainMenu(player).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

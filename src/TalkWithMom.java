@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class TalkWithMom extends JFrame {
-
+    static Player player;
     private Timer timer;
     private int index = 0;
     private static String text;
@@ -14,7 +14,8 @@ public class TalkWithMom extends JFrame {
     private JLabel jLabel2;
     private JButton jButton1;
 
-    public TalkWithMom() throws FontFormatException {
+    public TalkWithMom(Player player) throws FontFormatException {
+        this.player = player;
         initComponents();
         loadCustomFont();
         setBackgroundImage();
@@ -133,7 +134,7 @@ public class TalkWithMom extends JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        MainMenu mm = new MainMenu();
+        MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();
         mm.setLocationRelativeTo(null);
@@ -168,7 +169,7 @@ public class TalkWithMom extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new TalkWithMom().setVisible(true);
+                    new TalkWithMom(player).setVisible(true);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }

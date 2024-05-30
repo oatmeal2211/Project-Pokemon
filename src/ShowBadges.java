@@ -2,18 +2,22 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class ShowBadges extends javax.swing.JFrame {
+    static Player player;
 
-    public ShowBadges() throws FontFormatException {
+    public ShowBadges(Player player) throws FontFormatException {
+        this.player = player;
         initComponents();
         setBackgroundImage();
         loadCustomFont();
+        displayBadges(); // Display the badges on the panel
     }
+
     private void loadCustomFont() throws FontFormatException {
         try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
             if (is == null) {
@@ -24,6 +28,21 @@ public class ShowBadges extends javax.swing.JFrame {
             Font title = customFont.deriveFont(Font.PLAIN, 30);
             Font heading = customFont.deriveFont(Font.PLAIN, 25);
             jButton1.setFont(font);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCustomFontSpecial(JLabel label) throws FontFormatException {
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            Font font = customFont.deriveFont(Font.PLAIN, 11);
+            Font title = customFont.deriveFont(Font.PLAIN, 37);
+            // Set the font for the labels and buttons
+            label.setFont(font);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,6 +80,25 @@ public class ShowBadges extends javax.swing.JFrame {
         }
     }
 
+    private void displayBadges() {
+        List<String> badges = player.getBadges();
+        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
+        for (String badge : badges) {
+            JLabel badgeLabel = new JLabel(badge);
+            badgeLabel.setFont(new Font("Press Start 2P", Font.PLAIN, 18));
+            badgeLabel.setForeground(Color.WHITE); // Set text color to white for visibility
+            jPanel1.add(badgeLabel);
+
+            try {
+                loadCustomFontSpecial(badgeLabel);
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        jPanel1.revalidate();
+        jPanel1.repaint();
+    }
+
     private void initComponents() {
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -80,11 +118,11 @@ public class ShowBadges extends javax.swing.JFrame {
             }
 
             private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException {
-                MainMenu mm = new MainMenu();
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        dispose();
+                MainMenu mm = new MainMenu(player);
+                mm.setVisible(true);
+                mm.pack();
+                mm.setLocationRelativeTo(null);
+                dispose();
             }
         });
 
@@ -123,7 +161,7 @@ public class ShowBadges extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ShowBadges().setVisible(true);
+                    new ShowBadges(player).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -135,4 +173,3 @@ public class ShowBadges extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
 }
-

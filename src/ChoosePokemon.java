@@ -5,10 +5,12 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class ChoosePokemon extends JFrame {
-    private static String playerName;
+    //private static String playerName;
+    private Player player;
 
-    public ChoosePokemon(String playerName) throws FontFormatException {
-        ChoosePokemon.playerName = playerName;
+    public ChoosePokemon(Player player) throws FontFormatException {
+        //ChoosePokemon.playerName = playerName;
+        this.player = player;
         initComponents();
         loadCustomFont();
         setBackgroundImage();
@@ -123,7 +125,7 @@ public class ChoosePokemon extends JFrame {
     }
 
     private void startTypewriterEffect() {
-        String text = "Right! So your name is " + playerName + "!\n\nWelcome to the world of Pokemon.\n\n" +
+        String text = "Right! So your name is " + player.getName() + "!\n\nWelcome to the world of Pokemon.\n\n" +
                 "It's time to choose your starting pokemon.";
 
         Timer timer = new Timer(100, new ActionListener() {
@@ -143,32 +145,64 @@ public class ChoosePokemon extends JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        JOptionPane.showMessageDialog(this, "You chose Bulbasaur, an amazing choice. Best of luck!");
-        MainMenu mm = new MainMenu();
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        this.dispose();
+        // Create and add Bulbasaur to the player's team
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 318, 45, 49, 49, 65, 65, 45);
+        player.addPokemon(bulbasaur);
+    
+        // Proceed to the MainMenu only if the player has at least one Pokémon in their team
+        if (!player.getPokemonTeam().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You chose Bulbasaur, an amazing choice. Best of luck!");
+            MainMenu mm = new MainMenu(player);
+            mm.setVisible(true);
+            mm.pack();
+            mm.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            // Display an error message if the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "Error: You must choose a Pokémon to start your journey!");
+        }
     }
-
+    
+    // Similar modifications for jButton2ActionPerformed and jButton3ActionPerformed
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        JOptionPane.showMessageDialog(this, "You chose Charmander, an amazing choice. Best of luck!");
-        MainMenu mm = new MainMenu();
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        this.dispose();
+        // Create and add Charmander to the player's team
+        Pokemon charmander = new Pokemon("Charmander", "Fire", "None", 309, 39, 52, 43, 50, 50, 65);
+        player.addPokemon(charmander);
+    
+        // Proceed to the MainMenu only if the player has at least one Pokémon in their team
+        if (!player.getPokemonTeam().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You chose Charmander, an amazing choice. Best of luck!");
+            MainMenu mm = new MainMenu(player);
+            mm.setVisible(true);
+            mm.pack();
+            mm.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            // Display an error message if the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "Error: You must choose a Pokémon to start your journey!");
+        }
     }
-
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        JOptionPane.showMessageDialog(this, "You chose Squirtle, an amazing choice. Best of luck!");
-        MainMenu mm = new MainMenu();
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        this.dispose();
+        // Create and add Squirtle to the player's team
+        Pokemon squirtle = new Pokemon("Squirtle", "Water", "None", 314, 44, 48, 65, 50, 50, 43);
+        player.addPokemon(squirtle);
+    
+        // Proceed to the MainMenu only if the player has at least one Pokémon in their team
+        if (!player.getPokemonTeam().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You chose Squirtle, an amazing choice. Best of luck!");
+            MainMenu mm = new MainMenu(player);
+            mm.setVisible(true);
+            mm.pack();
+            mm.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            // Display an error message if the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "Error: You must choose a Pokémon to start your journey!");
+        }
     }
-
+    
     private void scaleAndSetImage(String imagePath, JLabel label) {
         try (InputStream is = getClass().getResourceAsStream(imagePath)) {
             if (is == null) {
@@ -186,7 +220,8 @@ public class ChoosePokemon extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ChoosePokemon("PlayerName").setVisible(true); // Pass a valid player name
+                    Player player = new Player("PlayerName", "Pallet Town");
+                    new ChoosePokemon(player).setVisible(true); // Pass a valid player name
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }

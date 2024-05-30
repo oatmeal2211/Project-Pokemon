@@ -72,7 +72,7 @@ public class PokemonSort extends javax.swing.JFrame {
             }
 
             private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-                MainMenu mm = new MainMenu();
+                MainMenu mm = new MainMenu(null);
                 mm.setVisible(true);
                 mm.pack();
                 mm.setLocationRelativeTo(null);

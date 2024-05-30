@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Race extends javax.swing.JFrame {
-
+static Player player;
     private RegionExplorer<String, Integer> map;
     private String currentLocation;
     private String destination;
@@ -190,7 +190,7 @@ public class Race extends javax.swing.JFrame {
     }// </editor-fold>               
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        MainMenu mm = new MainMenu();
+        MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();
         mm.setLocationRelativeTo(null);

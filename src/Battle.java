@@ -10,11 +10,12 @@ public class Battle {
     private Pokemon opponentPokemon;
     private Scanner scanner;
 
-    public Battle(Pokemon playerPokemon, Pokemon opponentPokemon) {
+    public Battle(Pokemon playerPokemon, Pokemon opponentPokemon2) {
         this.playerPokemon = playerPokemon;
-        this.opponentPokemon = opponentPokemon;
+        this.opponentPokemon = opponentPokemon2;
         this.scanner = new Scanner(System.in);
     }
+
 
     // Method to calculate damage
     public static DamageInfo calculateDamage(Pokemon attacker, Pokemon defender, Move move) {

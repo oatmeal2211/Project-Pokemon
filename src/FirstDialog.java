@@ -16,6 +16,7 @@ public class FirstDialog extends JFrame {
     private JTextArea jTextArea1;
     private JLabel jLabel2;
     private JButton jButton1;
+    private static Player player;
 
     public FirstDialog() throws FontFormatException {
         initComponents();
@@ -129,8 +130,9 @@ public class FirstDialog extends JFrame {
 
         // If the user entered a name and clicked OK
         if (playerName != null && !playerName.isEmpty()) {
-            // Pass the player name to the ChoosePokemon constructor
-            ChoosePokemon cp = new ChoosePokemon(playerName);
+            player = new Player(playerName, "Pallet Town");
+            // Pass the Player object to the ChoosePokemon constructor
+            ChoosePokemon cp = new ChoosePokemon(player);
             cp.setVisible(true);
             cp.pack();
             cp.setLocationRelativeTo(null);

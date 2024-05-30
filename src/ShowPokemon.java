@@ -8,11 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ShowPokemon extends javax.swing.JFrame {
+    static Player player;
 
-    public ShowPokemon() throws FontFormatException {
+    public ShowPokemon(Player player) throws FontFormatException {
+        this.player = player;
         initComponents();
         setBackgroundImage();
         loadCustomFont();
+        showPokemon();
     }
 
     private void loadCustomFont() throws FontFormatException {
@@ -25,6 +28,21 @@ public class ShowPokemon extends javax.swing.JFrame {
             Font title = customFont.deriveFont(Font.PLAIN, 30);
             Font heading = customFont.deriveFont(Font.PLAIN, 25);
             jButton1.setFont(font);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadCustomFontSpecial(JLabel label) throws FontFormatException {
+        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+            if (is == null) {
+                throw new FileNotFoundException("Font file not found in resources");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            Font font = customFont.deriveFont(Font.PLAIN, 11);
+            Font title = customFont.deriveFont(Font.PLAIN, 37);
+            // Set the font for the labels and buttons
+            label.setFont(font);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +99,7 @@ public class ShowPokemon extends javax.swing.JFrame {
             }
 
             private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException {
-                MainMenu mm = new MainMenu();
+                MainMenu mm = new MainMenu(player);
                 mm.setVisible(true);
                 mm.pack();
                 mm.setLocationRelativeTo(null);
@@ -120,11 +138,52 @@ public class ShowPokemon extends javax.swing.JFrame {
         pack();
     }
 
+    public void showPokemon() {
+        jPanel1.removeAll(); // Clear any existing components in jPanel1
+        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS)); // Set layout to vertical BoxLayout
+        
+        for (Pokemon pokemon : player.getPokemonTeam()) {
+            // Create a panel to display the Pokémon information
+            JPanel pokemonPanel = new JPanel(new GridLayout(5, 9)); // 3 columns for name, experience points, and level
+            
+            // Add labels for each piece of information
+            JLabel nameLabel = new JLabel("Name: " + pokemon.getName());
+            JLabel typeLabel = new JLabel("Experience Points: " + pokemon.getExperiencePoints());
+            JLabel levelLabel = new JLabel("Level: " + pokemon.getLevel());
+            
+            // Apply special font to labels
+            try {
+                loadCustomFontSpecial(nameLabel);
+                loadCustomFontSpecial(typeLabel);
+                loadCustomFontSpecial(levelLabel);
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
+            
+            // Add the labels to the pokemonPanel
+            pokemonPanel.add(nameLabel);
+            pokemonPanel.add(typeLabel);
+            pokemonPanel.add(levelLabel);
+            
+            // Add some padding between each Pokémon's panel
+            pokemonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            
+            // Add the pokemonPanel to jPanel1
+            jPanel1.add(pokemonPanel);
+        }
+    
+        // Repaint jPanel1 to reflect the changes
+        jPanel1.revalidate();
+        jPanel1.repaint();
+    }
+    
+    
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ShowPokemon().setVisible(true);
+                    new ShowPokemon(player).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

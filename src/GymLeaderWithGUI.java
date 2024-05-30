@@ -10,11 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class PokemonBattle extends javax.swing.JFrame {
+public class GymLeaderWithGUI extends javax.swing.JFrame {
     private Battle battle;
-    private Pokemon playerPokemon;
-    private Pokemon opponentPokemon;
-    static Player player;
+    private GymLeaders gymLeader;
+    private static  Player player;
+    private Player opponentGymLeader;
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel3;
@@ -29,13 +29,27 @@ public class PokemonBattle extends javax.swing.JFrame {
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
     private Image backgroundImage;
+    private Pokemon playerPokemon;
+    private Pokemon opponentPokemon;
 
-    public PokemonBattle(Player player) throws FontFormatException, IOException {
+    public GymLeaderWithGUI(Player player, String currentLocation, GymLeaders gymLeaders) throws FontFormatException, IOException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         this.player = player;
+        this.opponentGymLeader = getOpponentGymLeader(currentLocation);
+        this.gymLeader = gymLeaders;
+        
+        List<Pokemon> pokemonTeam = player.getPokemonTeam();
+        if (!pokemonTeam.isEmpty()) {
+            // Assuming the player's active Pokemon is the first one in the team
+            this.playerPokemon = pokemonTeam.get(0);
+        } else {
+            // Handle the case when the player has no Pokemon in their team
+            // You can throw an exception, display an error message, etc.
+            throw new IllegalStateException("Player has no Pokemon in their team.");
+        }
         // Initialize Pokemon and battle
-        initBattle();
+        initBattle(player, gymLeader);
         
         // Initialize components
         initComponents();
@@ -80,21 +94,88 @@ public class PokemonBattle extends javax.swing.JFrame {
          }
      }
 
-    private void initBattle() {
-        String movesFilePath = "src/Move.csv";
-        String pokemonFilePath = "src/pokemon.csv";
-
-        List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
-        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
-
-        // Generate random Pokémon for player and opponent
-        Random rand = new Random();
-        playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
-        opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
-
-        // Initialize the battle
+     private void initBattle(Player player, GymLeaders gymLeaders) {
+        // Initialize the battle logic here
+        Pokemon playerPokemon = null;
+        
+        // Get the current location using the method from the Player class
+        String currentLocation = player.getLocation();
+        
+        // Retrieve the opponent gym leader based on the current location
+        Player opponentGymLeader = null;
+        switch (currentLocation) {
+            case "Pewter City":
+            opponentGymLeader = gymLeaders.getPewterCityLeader();
+            break;
+            case "Cerulean City":
+            opponentGymLeader = gymLeaders.getCeruleanLeader();
+            break;
+            case "Vermilion City":
+            opponentGymLeader = gymLeaders.getVermilionLeader();
+            break;
+            case "Celadon City":
+            opponentGymLeader = gymLeaders.getCeladonCityLeader();
+            break;
+            case "Fuchsia City":
+            opponentGymLeader = gymLeaders.getFuchsiaCityLeader();
+            break;
+            case "Saffron City":
+            opponentGymLeader = gymLeaders.getSaffronCityLeader();
+            break;
+            case "Cinnabar Island":
+            opponentGymLeader = gymLeaders.getCinnabarIslandPlayer();
+            break;
+            case "Viridian City":
+            opponentGymLeader = gymLeaders.getViridianCityLeader();
+            break;
+            default:
+                System.out.println("No gym leader available for the current location.");
+                return; // Exit the method if no gym leader is found for the current location
+        }
+        
+        // Get the Pokémon for the player and opponent gym leader
+        if (!player.getPokemonTeam().isEmpty() && !opponentGymLeader.getPokemonTeam().isEmpty()) {
+            playerPokemon = player.getPokemonTeam().get(0);  // Assuming player always has at least one Pokémon
+            opponentPokemon = opponentGymLeader.getPokemonTeam().get(0);
+        } else {
+            System.out.println("Error initializing battle: Missing Pokémon.");
+            return; // Exit the method if either player or opponent has no Pokémon
+        }
+        
+        // Start the battle if both player and opponent have Pokémon
         battle = new Battle(playerPokemon, opponentPokemon);
     }
+    
+    
+    
+    
+    private Player getOpponentGymLeader(String currentLocation) {
+        GymLeaders gymLeaders = new GymLeaders();
+        
+        switch (currentLocation) {
+            case "Pewter City":
+                return gymLeaders.getPewterCityLeader();
+            case "Cerulean City":
+                return gymLeaders.getCeruleanLeader();
+            case "Vermilion City":
+                return gymLeaders.getVermilionLeader();
+            case "Celadon City":
+                return gymLeaders.getCeladonCityLeader();
+            case "Fuchsia City":
+                return gymLeaders.getFuchsiaCityLeader();
+            case "Saffron City":
+                return gymLeaders.getSaffronCityLeader();
+            case "Cinnabar Island":
+                return gymLeaders.getCinnabarIslandPlayer();
+            case "Viridian City":
+                return gymLeaders.getViridianCityLeader();
+            default:
+                // Return a default opponent (if location doesn't match any gym leader)
+                return new Player("Default Opponent", "Default");
+        }
+    }
+    
+        
 
     private void initComponents() throws IOException {
         
@@ -218,12 +299,19 @@ public class PokemonBattle extends javax.swing.JFrame {
     private void setMoveButtons() {
         List<Move> playerMoves = playerPokemon.getMoves();
         JButton[] buttons = {jButton1, jButton2, jButton3, jButton4};
+        jButton1.setEnabled(true);
+        jButton2.setEnabled(true);
+        jButton3.setEnabled(true);
+        jButton4.setEnabled(true);
         
-        for (int i = 0; i < playerMoves.size(); i++) {
+        for (int i = 0; i < playerMoves.size() && i < buttons.length; i++) {
             buttons[i].setText(playerMoves.get(i).getName());
-            buttons[i].addActionListener(new MoveButtonListener(playerMoves.get(i)));
+            Move move = playerMoves.get(i); // Get the move for this button
+            buttons[i].addActionListener(new MoveButtonListener(move)); // Attach listener
         }
     }
+    
+    
     
     private void displayInitialBattleState() throws FontFormatException {
         jTextArea1.append("A wild " + opponentPokemon.getName() + " appeared!\n");
@@ -235,13 +323,14 @@ public class PokemonBattle extends javax.swing.JFrame {
     
     private class MoveButtonListener implements ActionListener {
         private Move move;
-
+    
         public MoveButtonListener(Move move) {
             this.move = move;
         }
-
+    
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println("Button clicked: " + move.getName());
             Move opponentMove = opponentPokemon.getMoves().get(new Random().nextInt(opponentPokemon.getMoves().size()));
             performMove(playerPokemon, opponentPokemon, move);
             if (opponentPokemon.getHp() > 0) { // Only perform opponent's move if it's still alive
@@ -250,11 +339,11 @@ public class PokemonBattle extends javax.swing.JFrame {
             try {
                 updateBattleState();
             } catch (FontFormatException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         }
     }
+    
     
     private void updateBattleState() throws FontFormatException {
         jLabel1.setText(opponentPokemon.getName() + " - HP: " + opponentPokemon.getHp());
@@ -272,10 +361,11 @@ public class PokemonBattle extends javax.swing.JFrame {
             playerPokemon.gainExperience(expGained);
             JOptionPane.showMessageDialog(this, "You won the battle!\nYou have gained " + expGained + " exp", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
     
-            // Add the opponent's Pokémon to the player's team
-            addPokemon(opponentPokemon);
-            // Display message in JOptionPane
-            JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+            // Award the badge to the player
+            String badge = getBadgeForCurrentGymLeader();
+            player.earnBadge(badge);
+            JOptionPane.showMessageDialog(this, "You earned the " + badge + " badge!", "Badge Earned", JOptionPane.INFORMATION_MESSAGE);
+    
             MainMenu mm = new MainMenu(player);
             mm.setVisible(true);
             mm.pack();
@@ -284,55 +374,29 @@ public class PokemonBattle extends javax.swing.JFrame {
         }
     }
     
-    public void addPokemon(Pokemon pokemon) {
-        if (player.getPokemonTeam().size() < 6) {
-            player.getPokemonTeam().add(pokemon);
-        } else {
-            // Display JOptionPane with combobox to remove a Pokémon
-            JComboBox<String> comboBox = new JComboBox<>();
-            for (Pokemon p : player.getPokemonTeam()) {
-                comboBox.addItem(p.getName());
-            }
-    
-            int choice = JOptionPane.showConfirmDialog(
-                this, 
-                comboBox, 
-                "Your team is full. Select a Pokémon to remove:", 
-                JOptionPane.OK_CANCEL_OPTION, 
-                JOptionPane.PLAIN_MESSAGE
-            );
-            
-            // Set the preferred width of the dialog
-            JDialog dialog = (JDialog) SwingUtilities.getRoot(comboBox);
-            dialog.setPreferredSize(new Dimension(300, dialog.getPreferredSize().height));
-            
-            if (choice == JOptionPane.OK_OPTION) {
-                String selectedPokemonName = (String) comboBox.getSelectedItem();
-                for (Pokemon p : player.getPokemonTeam()) {
-                    if (p.getName().equals(selectedPokemonName)) {
-                        player.removePokemon(p);
-                        break;
-                    }
-                }
-                player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
-                JOptionPane.showMessageDialog(
-                    this, 
-                    pokemon.getName() + " added to your team!", 
-                    "Team Update", 
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-            } else {
-                JOptionPane.showMessageDialog(
-                    this, 
-                    "You decided not to add " + pokemon.getName() + " to your team.", 
-                    "Team Update", 
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-            
-                
+    private String getBadgeForCurrentGymLeader() {
+        switch (player.getLocation()) {
+            case "Pewter City":
+                return "Boulder Badge";
+            case "Cerulean City":
+                return "Cascade Badge";
+            case "Vermilion City":
+                return "Thunder Badge";
+            case "Celadon City":
+                return "Rainbow Badge";
+            case "Fuschia City":
+                return "Soul Badge";
+            case "Saffron City":
+                return "Marsh Badge";
+            case "Cinnabar Island":
+                return "Volcano Badge";
+            case "Viridian City":
+                return "Earth Badge";
+            default:
+                return "";
+        }
     }
-}
+    
     
     private void performMove(Pokemon attacker, Pokemon defender, Move move) {
         jTextArea1.append(attacker.getName() + " used " + move.getName() + "!\n");
@@ -373,7 +437,8 @@ public class PokemonBattle extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new PokemonBattle(player).setVisible(true);
+                    GymLeaders gymLeader = new GymLeaders(); // Instantiate GymLeaders object
+                    new GymLeaderWithGUI(player,player.getLocation(), gymLeader).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -385,3 +450,4 @@ public class PokemonBattle extends javax.swing.JFrame {
         });
     }
 }
+
