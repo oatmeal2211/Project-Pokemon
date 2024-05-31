@@ -104,6 +104,9 @@ public class TalkWithMom extends JFrame {
                     jButton1ActionPerformed(evt);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
@@ -133,7 +136,7 @@ public class TalkWithMom extends JFrame {
         timer.start();
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();

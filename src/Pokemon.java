@@ -136,6 +136,11 @@ public class Pokemon {
         this.level = level;
     }
 
+    public void restoreFullHealth() {
+        this.hp = this.scaleStat(this.baseHp, this.level);
+    }
+    
+
     public int getExperiencePoints() {
         return exp;
     }

@@ -120,6 +120,9 @@ static Player player;
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
@@ -189,7 +192,7 @@ static Player player;
         pack();
     }// </editor-fold>               
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();

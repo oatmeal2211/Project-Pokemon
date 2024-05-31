@@ -54,6 +54,21 @@ public class Player {
         return badges;
     }
 
+    public boolean hasBadge(String badgeName) {
+        for (badge badge : badges) {
+            if (badge.getName().equals(badgeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAllBadges() {
+        // Assuming there are 8 unique badges to collect
+        return badges.size() == 6;
+    }
+
+    
     // Methods for the Player class
 
     // Move the player to a new location

@@ -15,8 +15,9 @@ public class PokemonSort extends javax.swing.JFrame {
     static int numberOfPokemon;
     private static int selectedCount = 0;
     private Image backgroundImage;
+    static Player player;
 
-    public PokemonSort(int numberOfPokemon) throws IOException, FontFormatException {
+    public PokemonSort(int numberOfPokemon, Player player) throws IOException, FontFormatException {
         this.numberOfPokemon = numberOfPokemon;
         pokemonList = new String[numberOfPokemon];
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,11 +69,14 @@ public class PokemonSort extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
 
-            private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-                MainMenu mm = new MainMenu(null);
+            private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
+                MainMenu mm = new MainMenu(player);
                 mm.setVisible(true);
                 mm.pack();
                 mm.setLocationRelativeTo(null);
@@ -280,7 +284,7 @@ public class PokemonSort extends javax.swing.JFrame {
             public void run() {
                 PokemonSort pokemonSort;
                 try {
-                    pokemonSort = new PokemonSort(numberOfPokemon);
+                    pokemonSort = new PokemonSort(numberOfPokemon, player);
                     pokemonSort.setVisible(true);
                     pokemonSort.setLocationRelativeTo(null);
                 } catch (IOException | FontFormatException e) {

@@ -32,7 +32,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2.setText(currentLocation); // Update jLabel2 with the current location
     }*/
 
-    public MainMenu(Player player) throws FontFormatException {
+    public MainMenu(Player player) throws FontFormatException, IOException {
        this.player = player;
         currentLocation = player.getLocation(); 
         initComponents();
@@ -41,10 +41,11 @@ public class MainMenu extends javax.swing.JFrame {
         MapPokemon map = new MapPokemon(); // Instantiate your MapPokemon class
         gymLeaders = new GymLeaders();
         // Set up jComboBox2
+        
         updateGymLeaderOptions(player.getLocation());
-    
         // Call setCurrentLocation with the initial current location
-        setCurrentLocation(currentLocation); // Set the current location after initializing components
+        setCurrentLocation(player.getLocation()); // Set the current location after initializing components
+        
         updateCurrentLocation();
     }
     
@@ -147,8 +148,10 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void setCurrentLocation(String newLocation) {
         currentLocation = newLocation;
+        player.setLocation(newLocation); // Update the player's location
         jLabel2.setText(currentLocation);
         jLabel3.setText(jLabel3Text(currentLocation));
+        updateCurrentLocation();
         populateAdjacentCities(currentLocation);
         if (!regionExplorer.hasVertex(currentLocation)) {
             System.out.println("Invalid location: " + currentLocation);
@@ -157,7 +160,6 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void updateCurrentLocation() {
         jLabel2.setText(currentLocation);
-        setCurrentLocation(currentLocation);
         System.out.println("DEBUG: Current Location updated to: " + currentLocation);
     }
 
@@ -177,10 +179,10 @@ public class MainMenu extends javax.swing.JFrame {
                 String selectedCity = (String) jComboBox1.getSelectedItem();
                 if (selectedCity != null && !selectedCity.equals(currentLocation)) {
                     System.out.println("DEBUG: Moving from " + currentLocation + " to " + selectedCity);
-                    setCurrentLocation(selectedCity); // Update current location here
+                    setCurrentLocation(selectedCity);
                     try {
                         updateGymLeaderOptions(selectedCity);
-                    } catch (FontFormatException e1) {
+                    } catch (FontFormatException | IOException e1) {
                         e1.printStackTrace();
                     }
                 }
@@ -188,6 +190,7 @@ public class MainMenu extends javax.swing.JFrame {
         });
         System.out.println("DEBUG: Adjacent cities for " + currentCity + ": " + adjacentCities);
     }
+
     
     private void jButton2ActionPerformed(ActionEvent evt) throws FontFormatException {
         // Assuming you have already retrieved the map data and stored it in a variable named 'map'
@@ -264,7 +267,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     
-    private void updateGymLeaderOptions(String currentCity) throws FontFormatException { //gym leader
+    private void updateGymLeaderOptions(String currentCity) throws FontFormatException, IOException { //gym leader
         System.out.println("DEBUG: Current City: " + currentCity);
         if (rivalRaceButton != null) {
             jPanel1.remove(rivalRaceButton);
@@ -366,7 +369,7 @@ public class MainMenu extends javax.swing.JFrame {
                 int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
 
                 // Create and show the PokemonSort frame
-                PokemonSort ps = new PokemonSort(numberOfPokemon);
+                PokemonSort ps = new PokemonSort(numberOfPokemon, null);
                 ps.setVisible(true);
                 ps.setLocationRelativeTo(null);
                 
@@ -394,9 +397,9 @@ public class MainMenu extends javax.swing.JFrame {
 
             case "Pewter City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Pewter City Leader"}));
-                break;
+                 break;
             case "Viridian City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Viridian City Leader"}));
                 break;
             case "Cinnabar Island":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cinnabar Island Player"}));
@@ -407,7 +410,7 @@ public class MainMenu extends javax.swing.JFrame {
             case "Cerulean City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cerulean Leader"}));
                 break;
-            case "Vermilion City":
+            case "Vermillion City":
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
                 break;
             case "Pallet Town":
@@ -462,7 +465,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void openGymLeaderWindow(String currentCity, Player player, Player player2) throws FontFormatException, IOException {
-        player.setLocation(currentCity); // Set the player's current location
+        // Set the player's current location
         if (!player.getPokemonTeam().isEmpty()) {
             System.out.println("DEBUG: Gym Leader's City: " + currentCity);
             GymLeaderWithGUI gym = new GymLeaderWithGUI(player, currentCity, player2);
@@ -488,6 +491,7 @@ public class MainMenu extends javax.swing.JFrame {
         // Create an instance of the PokemazeWindow class and show it
         TalkWithMom twm = new TalkWithMom(player);
         twm.setVisible(true);
+        dispose();
     }
     
     public static String getCurrentLocation(){
@@ -781,7 +785,12 @@ jComboBox3.addActionListener(new ActionListener() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new MainMenu(player).setVisible(true);
+                    try {
+                        new MainMenu(player).setVisible(true);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

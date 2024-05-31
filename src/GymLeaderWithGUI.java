@@ -31,6 +31,8 @@ import java.io.InputStream;
         private Player player;
 private Player gymLeader;
 private String currentLocation;
+private int originalPlayerPokemonHP;
+
 
             
         public GymLeaderWithGUI(Player player, String currentLocation, Player gymLeader) throws FontFormatException, IOException {
@@ -93,13 +95,33 @@ private String currentLocation;
     
             // Generate random Pokémon for player and a fixed gym leader's Pokémon
             Random rand = new Random();
-            playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+            
+
+            playerPokemon = player.getPokemonTeam().get(rand.nextInt(player.getPokemonTeam().size()));
+            originalPlayerPokemonHP = playerPokemon.getHp();
             gymLeaderPokemon = getGymLeaderPokemon(pokemonList, moves);
-    
+            assignRandomMoves(playerPokemon, moves, rand);
             // Initialize the battle
             battle = new Battle(playerPokemon, gymLeaderPokemon);
         }
+
+        private void resetPlayerPokemonHP() {
+            if (playerPokemon != null) {
+                playerPokemon.setHp(originalPlayerPokemonHP);
+            }
+        }
+        
+       
+        
     
+        private void assignRandomMoves(Pokemon pokemon, List<Move> allMoves, Random rand) {
+            int movesToAssign = Math.min(4, allMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
+            //pokemon.clearMoves();  // Clear existing moves, if any
+            for (int i = 0; i < movesToAssign; i++) {
+                Move randomMove = allMoves.get(rand.nextInt(allMoves.size()));
+                pokemon.learnMove(randomMove);
+            }
+        }
         private Pokemon getGymLeaderPokemon(List<Pokemon> pokemonList, List<Move> moves) {
             // Logic to get gym leader's Pokémon based on player's location
             String gymLeaderPokemonName = getGymLeaderPokemonName(player.getLocation());
@@ -171,6 +193,9 @@ private String currentLocation;
                     try {
                         jButton5ActionPerformed(evt);
                     } catch (FontFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -253,7 +278,8 @@ private String currentLocation;
             pack();
         }// </editor-fold>                          
 
-private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
+    resetPlayerPokemonHP();
     MainMenu mm = new MainMenu(player);
     mm.setVisible(true);
     mm.pack();
@@ -271,7 +297,7 @@ private void setMoveButtons() {
     }
 }
 
-private void displayInitialBattleState() throws FontFormatException {
+private void displayInitialBattleState() throws FontFormatException, IOException {
     if (gymLeaderPokemon == null) {
         System.out.println("DEBUG: gymLeaderPokemon is null.");
     } else {
@@ -309,6 +335,10 @@ private class MoveButtonListener implements ActionListener {
             updateBattleState();
         } catch (FontFormatException e1) {
             e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+            
         }
     }
 }
@@ -319,29 +349,61 @@ private Move getRandomGymLeaderMove() {
     return gymLeaderPokemon.getMoves().get(new Random().nextInt(gymLeaderPokemon.getMoves().size()));
 }
 
-private void updateBattleState() throws FontFormatException {
+private void updateBattleState() throws FontFormatException, IOException {
     jLabel1.setText(gymLeaderPokemon.getName() + " - HP: " + gymLeaderPokemon.getHp());
     jLabel2.setText(playerPokemon.getName() + " - HP: " + playerPokemon.getHp());
 
     if (playerPokemon.getHp() <= 0) {
         JOptionPane.showMessageDialog(this, "You lost the battle...", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
-        MainMenu mm = new MainMenu(player);
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        dispose();
+        concludeBattle();
     } else if (gymLeaderPokemon.getHp() <= 0) {
-        // Award badge to player
-        player.earnBadge(new badge(getBadgeForCurrentGymLeader()));
-        JOptionPane.showMessageDialog(this, "Congratulations! You defeated the Gym Leader and earned a badge!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
-        MainMenu mm = new MainMenu(player);
-        mm.setVisible(true);
-        mm.pack();
-        mm.setLocationRelativeTo(null);
-        dispose();
+        String badgeName = getBadgeForCurrentGymLeader();
+        if (!player.hasBadge(badgeName)) {
+            player.earnBadge(new badge(badgeName));
+            JOptionPane.showMessageDialog(this, "Congratulations! You defeated the Gym Leader and earned the " + badgeName + "!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+            if (player.hasAllBadges()) {
+                playCredits();  // Call the method to play credits if all badges are collected
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Congratulations! You defeated the Gym Leader again!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+        }
+        concludeBattle();
     }
 }
 
+private void playCredits() {
+    // Show initial congratulations message
+    JOptionPane.showMessageDialog(this, 
+        "Congratulations on collecting all 8 badges! You are now a Pokémon Master!", 
+        "Pokémon Master!", JOptionPane.INFORMATION_MESSAGE);
+
+    // Show the credits
+    String credits = "<html><body style='width: 200px; padding: 10px;'>" +
+                     "<h1>Game Credits</h1>" +
+                     "<p><strong>Developers:</strong><br>" +
+                     "- Tan Lian<br>" +
+                     "- ZhangYongBin<br><br>" +
+                     "- Maxwell Jared Daniel<br>" +
+                     "- Wong Jo-Ey<br><br>" +
+                     "And You, Thank You for Playing!</p></body></html>";
+
+    JOptionPane.showMessageDialog(this, credits, "Credits", JOptionPane.INFORMATION_MESSAGE);
+}
+
+
+
+private void returnToMainMenu() throws FontFormatException, IOException {
+    MainMenu mm = new MainMenu(player);
+    mm.setVisible(true);
+    mm.pack();
+    mm.setLocationRelativeTo(null);
+    dispose();
+}
+
+private void concludeBattle() throws FontFormatException, IOException {
+    resetPlayerPokemonHP();
+    returnToMainMenu();
+}
 private void performMove(Pokemon attacker, Pokemon defender, Move move) {
     jTextArea1.append(attacker.getName() + " used " + move.getName() + "!\n");
     jTextArea1.append("\n");

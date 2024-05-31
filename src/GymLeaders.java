@@ -13,8 +13,8 @@ public class GymLeaders {
     public GymLeaders() {
         pewterCityLeader = new Player("Pewter City Leader", "Pewter City", MapPokemon.getMapData());
         ceruleanLeader = new Player("Cerulean Leader", "Cerulean City", MapPokemon.getMapData());
-        vermilionLeader = new Player("Vermilion Leader", "Vermilion City", MapPokemon.getMapData());
-        celadonCityLeader = new Player("Celadon City Leader", "Celadon", MapPokemon.getMapData());
+        vermilionLeader = new Player("Vermilion Leader", "Vermillion City", MapPokemon.getMapData());
+        celadonCityLeader = new Player("Celadon City Leader", "Celadon City", MapPokemon.getMapData());
         fuchsiaCityLeader = new Player("Fuchsia City Leader", "Fuschia City", MapPokemon.getMapData());
         saffronCityLeader = new Player("Saffron City Leader", "Saffron City",MapPokemon.getMapData());
         cinnabarIslandPlayer = new Player("Cinnabar Island Player", "Cinnabar Island", MapPokemon.getMapData());
@@ -33,8 +33,8 @@ public class GymLeaders {
         vermilionLeader.addPokemon(new Pokemon("Pikachu","Electric","None",35,55,30,50,50,90,18));
 
         // celadonCityLeader set up
-        //celadonCityLeader.addPokemon(new Pokemon("Bellsprout","Grass","Poison",50,75,35,70,70,40,29));
-        celadonCityLeader.addPokemon(new Pokemon("Tangela","Grass","None",65,55,115,100,100,60,24));
+        celadonCityLeader.addPokemon(new Pokemon("Bellsprout","Grass","Poison",50,75,35,70,70,40,29));
+        //celadonCityLeader.addPokemon(new Pokemon("Tangela","Grass","None",65,55,115,100,100,60,24));
         //celadonCityLeader.addPokemon(new Pokemon("Oddish","Grass","Poison",45,50,55,75,75,30,29));
 
         // fuchsiaCityLeader set up

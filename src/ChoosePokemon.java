@@ -98,6 +98,9 @@ public class ChoosePokemon extends JFrame {
                     jButton1ActionPerformed(evt);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
@@ -108,6 +111,9 @@ public class ChoosePokemon extends JFrame {
                     jButton2ActionPerformed(evt);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
@@ -117,6 +123,9 @@ public class ChoosePokemon extends JFrame {
                 try {
                     jButton3ActionPerformed(evt);
                 } catch (FontFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -144,7 +153,7 @@ public class ChoosePokemon extends JFrame {
         timer.start();
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Bulbasaur to the player's team
         Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 318, 45, 49, 49, 65, 65, 45);
         player.addPokemon(bulbasaur);
@@ -165,7 +174,7 @@ public class ChoosePokemon extends JFrame {
     
     // Similar modifications for jButton2ActionPerformed and jButton3ActionPerformed
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Charmander to the player's team
         Pokemon charmander = new Pokemon("Charmander", "Fire", "None", 309, 39, 52, 43, 50, 50, 65);
         player.addPokemon(charmander);
@@ -184,7 +193,7 @@ public class ChoosePokemon extends JFrame {
         }
     }
     
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Squirtle to the player's team
         Pokemon squirtle = new Pokemon("Squirtle", "Water", "None", 314, 44, 48, 65, 50, 50, 43);
         player.addPokemon(squirtle);

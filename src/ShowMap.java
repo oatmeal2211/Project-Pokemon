@@ -92,10 +92,13 @@ public class ShowMap extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
 
-            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException {
+            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException, IOException {
                 MainMenu mm = new MainMenu(player);
                 mm.setVisible(true);
                 mm.pack();

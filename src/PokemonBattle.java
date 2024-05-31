@@ -31,7 +31,7 @@ public class PokemonBattle extends javax.swing.JFrame {
     private JTextArea jTextArea1;
     private Image backgroundImage;
     private static String currentLocation;
-
+    private int originalPlayerPokemonHP;
     
     public PokemonBattle(Player player,String currentLocation) throws FontFormatException, IOException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,11 +93,23 @@ public class PokemonBattle extends javax.swing.JFrame {
 
         // Generate random Pokémon for player and opponent
         Random rand = new Random();
-        playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        if (!player.getPokemonTeam().isEmpty()) {
+            playerPokemon = player.getPokemonTeam().get(rand.nextInt(player.getPokemonTeam().size()));
+            originalPlayerPokemonHP = playerPokemon.getHp();
+        }
         opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        assignRandomMoves(playerPokemon, moves, rand);
 
         // Initialize the battle
         battle = new Battle(playerPokemon, opponentPokemon);
+    }
+
+    private void assignRandomMoves(Pokemon pokemon, List<Move> allMoves, Random rand) {
+        int movesToAssign = Math.min(4, allMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
+        for (int i = 0; i < movesToAssign; i++) {
+            Move randomMove = allMoves.get(rand.nextInt(allMoves.size()));
+            pokemon.learnMove(randomMove);
+        }
     }
 
     private void initComponents() throws IOException {
@@ -130,6 +142,9 @@ public class PokemonBattle extends javax.swing.JFrame {
                 try {
                     jButton5ActionPerformed(evt);
                 } catch (FontFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -211,7 +226,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                                              
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();
@@ -229,7 +244,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         }
     }
     
-    private void displayInitialBattleState() throws FontFormatException {
+    private void displayInitialBattleState() throws FontFormatException, IOException {
         jTextArea1.append("A wild " + opponentPokemon.getName() + " appeared!\n");
         jTextArea1.append("\n");
         jTextArea1.append("Go " + playerPokemon.getName() + "!\n");
@@ -256,41 +271,48 @@ public class PokemonBattle extends javax.swing.JFrame {
             } catch (FontFormatException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
             }
         }
     }
+
+    private void concludeBattle() throws FontFormatException, IOException {
+        playerPokemon.setHp(originalPlayerPokemonHP);  // Reset HP to its original value
+        MainMenu mm = new MainMenu(player);
+        mm.setVisible(true);
+        mm.pack();
+        mm.setLocationRelativeTo(null);
+        dispose();
+    }
     
-    private void updateBattleState() throws FontFormatException {
+    private void updateBattleState() throws FontFormatException, IOException {
         jLabel1.setText(opponentPokemon.getName() + " - HP: " + opponentPokemon.getHp());
         jLabel2.setText(playerPokemon.getName() + " - HP: " + playerPokemon.getHp());
     
         if (playerPokemon.getHp() <= 0) {
             JOptionPane.showMessageDialog(this, "You lost the battle...", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
-            MainMenu mm = new MainMenu(player);
-            mm.setVisible(true);
-            mm.pack();
-            mm.setLocationRelativeTo(null);
-            dispose();
+            concludeBattle();
         } else if (opponentPokemon.getHp() <= 0) {
             int expGained = opponentPokemon.getLevel() * 5;
             playerPokemon.gainExperience(expGained);
+            opponentPokemon.restoreFullHealth();
             JOptionPane.showMessageDialog(this, "You won the battle!\nYou have gained " + expGained + " exp", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
     
             // Add the opponent's Pokémon to the player's team
             addPokemon(opponentPokemon);
             // Display message in JOptionPane
             JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
-            MainMenu mm = new MainMenu(player);
-            mm.setVisible(true);
-            mm.pack();
-            mm.setLocationRelativeTo(null);
-            dispose();
+            concludeBattle();
         }
     }
     
     public void addPokemon(Pokemon pokemon) {
         if (player.getPokemonTeam().size() < 6) {
+            pokemon.restoreFullHealth();
             player.getPokemonTeam().add(pokemon);
+            
         } else {
             // Display JOptionPane with combobox to remove a Pokémon
             JComboBox<String> comboBox = new JComboBox<>();
@@ -318,6 +340,7 @@ public class PokemonBattle extends javax.swing.JFrame {
                         break;
                     }
                 }
+                
                 player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
                 JOptionPane.showMessageDialog(
                     this, 

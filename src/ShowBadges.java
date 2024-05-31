@@ -39,7 +39,7 @@ public class ShowBadges extends javax.swing.JFrame {
                 throw new FileNotFoundException("Font file not found in resources");
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            Font font = customFont.deriveFont(Font.PLAIN, 11);
+            Font font = customFont.deriveFont(Font.PLAIN, 30);
             Font title = customFont.deriveFont(Font.PLAIN, 37);
             // Set the font for the labels and buttons
             label.setFont(font);
@@ -85,8 +85,8 @@ public class ShowBadges extends javax.swing.JFrame {
         jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
         for (badge badge : badges) {
             JLabel badgeLabel = new JLabel(badge.getName());
-            badgeLabel.setFont(new Font("Press Start 2P", Font.PLAIN, 18));
-            badgeLabel.setForeground(Color.WHITE); // Set text color to white for visibility
+            badgeLabel.setFont(new Font("Press Start 2P", Font.PLAIN, 70));
+            badgeLabel.setForeground(Color.BLACK); // Set text color to white for visibility
             jPanel1.add(badgeLabel);
 
             try {
@@ -114,10 +114,13 @@ public class ShowBadges extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
 
-            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException {
+            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException, IOException {
                 MainMenu mm = new MainMenu(player);
                 mm.setVisible(true);
                 mm.pack();
