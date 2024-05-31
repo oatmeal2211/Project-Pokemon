@@ -93,7 +93,7 @@ public class PokemonBattle extends javax.swing.JFrame {
 
         // Generate random Pokémon for player and opponent
         Random rand = new Random();
-        playerPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        playerPokemon = player.getPokemonByIndex(rand.nextInt(player.getPokemonTeamSize()));
         opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
 
         // Initialize the battle
@@ -266,6 +266,7 @@ public class PokemonBattle extends javax.swing.JFrame {
     
         if (playerPokemon.getHp() <= 0) {
             JOptionPane.showMessageDialog(this, "You lost the battle...", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+            playerPokemon.setHp(playerPokemon.getBaseHp());
             MainMenu mm = new MainMenu(player);
             mm.setVisible(true);
             mm.pack();
@@ -277,6 +278,7 @@ public class PokemonBattle extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You won the battle!\nYou have gained " + expGained + " exp", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
     
             // Add the opponent's Pokémon to the player's team
+            opponentPokemon.setHp(opponentPokemon.getBaseHp());
             addPokemon(opponentPokemon);
             // Display message in JOptionPane
             JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);

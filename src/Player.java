@@ -7,14 +7,16 @@ public class Player {
     private List<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
     private List<badge> badges;  // List of badges earned by the player
     private RegionExplorer<String, Integer> map; // Map data for location tracking
+    private List<Move> allMoves;
 
     // Constructor to initialize the Player object with a name, location, and map data
-    public Player(String name, String location, RegionExplorer<String, Integer> map) {
+    public Player(String name, String location, RegionExplorer<String, Integer> map,List<Move> allMoves) {
         this.name = name;
         this.location = location;
         this.pokemonTeam = new ArrayList<>();
         this.badges = new ArrayList<>();
         this.map = map;
+        this.allMoves = allMoves;
     }
 
     // Getters and Setters for name, location, pokemonTeam, and badges
@@ -49,6 +51,19 @@ public class Player {
         return pokemonTeam;
     }
 
+    public int getPokemonTeamSize(){
+        return pokemonTeam.size();
+    }
+
+    public Pokemon getPokemonByIndex(int index) {
+        if (index >= 0 && index < pokemonTeam.size()) {
+            return pokemonTeam.get(index);
+        } else {
+            System.out.println("Invalid index.");
+            return null;
+        }
+    }
+
     // Get the list of badges earned by the player
     public List<badge> getBadges() {
         return badges;
@@ -69,6 +84,11 @@ public class Player {
     // Add a Pokémon to the player's team
     public void addPokemon(Pokemon Pokemon) { //需要接数据库
         if (pokemonTeam.size() < 6) {
+            // Assign 4 random moves to the Pokémon
+            Random rand = new Random();
+            for (int i = 0; i < 4; i++) {
+                Pokemon.learnMove(allMoves.get(rand.nextInt(allMoves.size())));
+            }
             pokemonTeam.add(Pokemon);
             System.out.println(Pokemon.getName() + " added to your team!");
         } else {

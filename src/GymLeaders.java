@@ -11,14 +11,14 @@ public class GymLeaders {
     private Player viridianCityLeader;
     
     public GymLeaders() {
-        pewterCityLeader = new Player("Pewter City Leader", "Pewter City", MapPokemon.getMapData());
-        ceruleanLeader = new Player("Cerulean Leader", "Cerulean City", MapPokemon.getMapData());
-        vermilionLeader = new Player("Vermilion Leader", "Vermilion City", MapPokemon.getMapData());
-        celadonCityLeader = new Player("Celadon City Leader", "Celadon", MapPokemon.getMapData());
-        fuchsiaCityLeader = new Player("Fuchsia City Leader", "Fuschia City", MapPokemon.getMapData());
-        saffronCityLeader = new Player("Saffron City Leader", "Saffron City",MapPokemon.getMapData());
-        cinnabarIslandPlayer = new Player("Cinnabar Island Player", "Cinnabar Island", MapPokemon.getMapData());
-        viridianCityLeader = new Player("Viridian City Leader", "Viridian City",MapPokemon.getMapData());
+        pewterCityLeader = new Player("Pewter City Leader", "Pewter City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        ceruleanLeader = new Player("Cerulean Leader", "Cerulean City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        vermilionLeader = new Player("Vermilion Leader", "Vermilion City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        celadonCityLeader = new Player("Celadon City Leader", "Celadon", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        fuchsiaCityLeader = new Player("Fuchsia City Leader", "Fuschia City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        saffronCityLeader = new Player("Saffron City Leader", "Saffron City",MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        cinnabarIslandPlayer = new Player("Cinnabar Island Player", "Cinnabar Island", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        viridianCityLeader = new Player("Viridian City Leader", "Viridian City",MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
 
         // pewterCityLeader set up
         pewterCityLeader.addPokemon(new Pokemon("Geodude","Rock","Ground",40,80,100,30,30,20,12));   
