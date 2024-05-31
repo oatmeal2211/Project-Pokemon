@@ -129,7 +129,7 @@ private String currentLocation;
             return "Pikachu";
         case "Celadon City":
             return "Tangela";
-        case "Fuchsia City":
+        case "Fuschia City": // wrong name change
             return "Koffing";
         case "Saffron City":
             return "Abra";
