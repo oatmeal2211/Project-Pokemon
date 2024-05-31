@@ -51,7 +51,7 @@ public class Pokemon {
         this.speed = scaleStat(baseSpeed, level);
     }
 
-    private int scaleStat(int baseStat, int level) {
+    public static int scaleStat(int baseStat, int level) {
         return baseStat + (int)((baseStat * level / 100.0) * 2);
     }
 

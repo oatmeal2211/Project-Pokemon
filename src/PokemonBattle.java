@@ -98,6 +98,13 @@ public class PokemonBattle extends javax.swing.JFrame {
             originalPlayerPokemonHP = playerPokemon.getHp();
         }
         opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        opponentPokemon.setLevel(playerPokemon.getLevel() + rand.nextInt(5) - rand.nextInt(5));
+        opponentPokemon.setHp(Pokemon.scaleStat(opponentPokemon.getBaseHp(), opponentPokemon.getLevel()));
+        opponentPokemon.setAttack(Pokemon.scaleStat(opponentPokemon.getAttack(), opponentPokemon.getLevel()));
+        opponentPokemon.setDefense(Pokemon.scaleStat(opponentPokemon.getDefense(), opponentPokemon.getLevel()));
+        opponentPokemon.setSpecialAttack(Pokemon.scaleStat(opponentPokemon.getSpecialAttack(), opponentPokemon.getLevel()));
+        opponentPokemon.setSpecialDefense(Pokemon.scaleStat(opponentPokemon.getSpecialDefense(), opponentPokemon.getLevel()));
+        opponentPokemon.setSpeed(Pokemon.scaleStat(opponentPokemon.getSpeed(), opponentPokemon.getLevel()));
         assignRandomMoves(playerPokemon, moves, rand);
 
         // Initialize the battle

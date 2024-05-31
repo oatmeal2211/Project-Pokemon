@@ -155,7 +155,7 @@ public class ChoosePokemon extends JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Bulbasaur to the player's team
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 318, 45, 49, 49, 65, 65, 45);
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5);
         player.addPokemon(bulbasaur);
     
         // Proceed to the MainMenu only if the player has at least one Pokémon in their team
@@ -176,7 +176,7 @@ public class ChoosePokemon extends JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Charmander to the player's team
-        Pokemon charmander = new Pokemon("Charmander", "Fire", "None", 309, 39, 52, 43, 50, 50, 65);
+        Pokemon charmander = new Pokemon("Charmander", "Fire", "None", 39, 52, 43, 50, 50, 65, 5);
         player.addPokemon(charmander);
     
         // Proceed to the MainMenu only if the player has at least one Pokémon in their team
@@ -195,7 +195,7 @@ public class ChoosePokemon extends JFrame {
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
         // Create and add Squirtle to the player's team
-        Pokemon squirtle = new Pokemon("Squirtle", "Water", "None", 314, 44, 48, 65, 50, 50, 43);
+        Pokemon squirtle = new Pokemon("Squirtle", "Water", "None", 44, 48, 65, 50, 50, 43,5);
         player.addPokemon(squirtle);
     
         // Proceed to the MainMenu only if the player has at least one Pokémon in their team
