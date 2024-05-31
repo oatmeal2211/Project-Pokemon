@@ -135,6 +135,70 @@ public class Battle {
         }
     }
 
+    //Gym Leader code starts here
+    public String executeGymBattleTurn(Move playerMove, Move opponentMove) {
+        StringBuilder result = new StringBuilder();
+        
+        // Determine the attack order based on speed
+        boolean playerFirst = playerPokemon.getSpeed() >= opponentPokemon.getSpeed();
+
+        if (playerFirst) {
+            result.append(performGymMove(playerPokemon, opponentPokemon, playerMove));
+            if (opponentPokemon.getHp() > 0) {
+                result.append("\n");
+                result.append(performGymMove(opponentPokemon, playerPokemon, opponentMove));
+            }
+        } else {
+            result.append(performGymMove(opponentPokemon, playerPokemon, opponentMove));
+            if (playerPokemon.getHp() > 0) {
+                result.append("\n");
+                result.append(performGymMove(playerPokemon, opponentPokemon, playerMove));
+            }
+        }
+
+        result.append(displayGymPokemonHealth());
+        return result.toString();
+    }
+
+    public String performGymMove(Pokemon attacker, Pokemon defender, Move move) {
+        StringBuilder result = new StringBuilder();
+        result.append(attacker.getName() + " used " + move.getName() + "!");
+        DamageInfo damageInfo = calculateDamage(attacker, defender, move);
+        defender.setHp(defender.getHp() - damageInfo.getDamage());
+        result.append("\nIt dealt " + damageInfo.getDamage() + " damage!");
+        if (!damageInfo.getEffectivenessMessage().isEmpty()) {
+            result.append("\n" + damageInfo.getEffectivenessMessage());
+        }
+
+        move.setPp(move.getPp() - 1); // Decrement PP after use
+
+        if (defender.getHp() <= 0) {
+            result.append("\n" + defender.getName() + " fainted!");
+        }
+        return result.toString();
+    }
+
+    public String displayGymPokemonHealth() {
+        return "\n\nPlayer's Pokémon: " + playerPokemon.getName() + " - HP: " + playerPokemon.getHp() + "\n" +
+               "Opponent's Pokémon: " + opponentPokemon.getName() + " - HP: " + opponentPokemon.getHp() + "\n";
+    }
+
+    public boolean isOver() {
+        // Logic to determine if the battle is over
+        // For example, if any Pokémon's HP drops to 0
+        return playerPokemon.getHp() <= 0 || opponentPokemon.getHp() <= 0;
+    }
+    
+    public Pokemon getWinner() {
+        if (playerPokemon.getHp() <= 0) {
+            return opponentPokemon;
+        } else if (opponentPokemon.getHp() <= 0) {
+            return playerPokemon;
+        } else {
+            return null; // No winner yet
+        }
+    }
+    
     public static void main(String[] args) {
         String movesFilePath = "Move.csv";
         String pokemonFilePath = "pokemon.csv";

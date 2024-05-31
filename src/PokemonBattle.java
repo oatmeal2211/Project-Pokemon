@@ -3,6 +3,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,11 +30,14 @@ public class PokemonBattle extends javax.swing.JFrame {
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
     private Image backgroundImage;
+    private static String currentLocation;
 
-    public PokemonBattle(Player player) throws FontFormatException, IOException {
+    
+    public PokemonBattle(Player player,String currentLocation) throws FontFormatException, IOException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         this.player = player;
+        this.currentLocation = currentLocation;
         // Initialize Pokemon and battle
         initBattle();
         
@@ -373,7 +377,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new PokemonBattle(player).setVisible(true);
+                    new PokemonBattle(player, currentLocation).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

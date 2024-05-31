@@ -1,17 +1,20 @@
 import java.util.*;
+
 // Player class represents a player in the Pokémon game
 public class Player {
     private String name;  // Name of the player
     private String location;  // Current location of the player
     private List<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
-    private List<String> badges;  // List of badges earned by the player
+    private List<badge> badges;  // List of badges earned by the player
+    private RegionExplorer<String, Integer> map; // Map data for location tracking
 
-    // Constructor to initialize the Player object with a name and location
-    public Player(String name, String location) {
+    // Constructor to initialize the Player object with a name, location, and map data
+    public Player(String name, String location, RegionExplorer<String, Integer> map) {
         this.name = name;
         this.location = location;
         this.pokemonTeam = new ArrayList<>();
         this.badges = new ArrayList<>();
+        this.map = map;
     }
 
     // Getters and Setters for name, location, pokemonTeam, and badges
@@ -31,9 +34,14 @@ public class Player {
         return location;
     }
 
-    // Set the current location of the player
-    public void setLocation(String location) {//需要接map
-        this.location = location;
+      // Set the current location of the player
+      public void setLocation(String location) {
+        if (map.hasVertex(location)) {
+            this.location = location;
+            System.out.println("Moving to " + location + "...");
+        } else {
+            System.out.println("Invalid location.");
+        }
     }
 
     // Get the list of Pokémon in the player's team
@@ -42,16 +50,20 @@ public class Player {
     }
 
     // Get the list of badges earned by the player
-    public List<String> getBadges() {
+    public List<badge> getBadges() {
         return badges;
     }
 
     // Methods for the Player class
 
     // Move the player to a new location
-    public void move(String newLocation) { //需要接map
-        this.location = newLocation;
-        System.out.println("Moving to " + newLocation + "...");
+    public void move(String newLocation) {
+        if (map.hasEdge(location, newLocation)) {
+            this.location = newLocation;
+            System.out.println("Moving to " + newLocation + "...");
+        } else {
+            System.out.println("Cannot move to " + newLocation + " from current location.");
+        }
     }
 
     // Add a Pokémon to the player's team
@@ -75,10 +87,11 @@ public class Player {
     }
 
     // Add a badge to the player's collection of badges
-    public void earnBadge(String badge) {
-        badges.add(badge);
-        System.out.println("Badge earned: " + badge);
-    }
+    public void earnBadge(badge badge) {
+    badges.add(badge);
+    System.out.println("Badge earned: " + badge.getName()); // Assuming the Badge class has a getName() method
+}
+
 
     // Display the Pokémon in the player's team
     public void showPokemon() {
@@ -91,10 +104,11 @@ public class Player {
     // Display the badges earned by the player
     public void showBadges() {
         System.out.println("Your badges:");
-        for (String badge : badges) {
-            System.out.println(badge);
+        for (badge badge : badges) {
+            System.out.println(badge.getName());
         }
     }
+    
 
     // Save the player's progress using file I/O
     public void saveProgress() { //接数据库

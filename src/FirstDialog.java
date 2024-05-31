@@ -126,23 +126,24 @@ public class FirstDialog extends JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-         playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
-
+        playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
+    
         // If the user entered a name and clicked OK
         if (playerName != null && !playerName.isEmpty()) {
-            player = new Player(playerName, "Pallet Town");
+            player = new Player(playerName, "Pallet Town", MapPokemon.getMapData());
             // Pass the Player object to the ChoosePokemon constructor
             ChoosePokemon cp = new ChoosePokemon(player);
             cp.setVisible(true);
             cp.pack();
             cp.setLocationRelativeTo(null);
-            this.dispose();
+            this.dispose(); // Close the FirstDialog frame
         } else {
             // If the user clicked Cancel or did not enter a name
             JOptionPane.showMessageDialog(this, "Please enter a valid name.");
             playerName = JOptionPane.showInputDialog(this, "Please enter your name:");
         }
     }
+    
 
     public static String getPlayerName(){
         return playerName;

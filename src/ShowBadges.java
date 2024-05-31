@@ -81,10 +81,10 @@ public class ShowBadges extends javax.swing.JFrame {
     }
 
     private void displayBadges() {
-        List<String> badges = player.getBadges();
+        List<badge> badges = player.getBadges();
         jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
-        for (String badge : badges) {
-            JLabel badgeLabel = new JLabel(badge);
+        for (badge badge : badges) {
+            JLabel badgeLabel = new JLabel(badge.getName());
             badgeLabel.setFont(new Font("Press Start 2P", Font.PLAIN, 18));
             badgeLabel.setForeground(Color.WHITE); // Set text color to white for visibility
             jPanel1.add(badgeLabel);

@@ -156,6 +156,14 @@ public class Pokemon {
         }
     }
 
+    public Move getMove(int index) {
+        if (index >= 0 && index < moves.size()) {
+            return moves.get(index);
+        } else {
+            return null; // Or throw an exception if desired
+        }
+    }
+
     public void forgetMove(Move move) {
         moves.remove(move);
     }

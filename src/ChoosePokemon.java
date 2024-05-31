@@ -220,7 +220,7 @@ public class ChoosePokemon extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Player player = new Player("PlayerName", "Pallet Town");
+                    Player player = new Player("PlayerName", "Pallet Town", MapPokemon.getMapData());
                     new ChoosePokemon(player).setVisible(true); // Pass a valid player name
                 } catch (FontFormatException e) {
                     e.printStackTrace();
