@@ -301,6 +301,7 @@ public class PokemonBattle extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You won the battle!\nYou have gained " + expGained + " exp", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
     
             // Add the opponent's Pokémon to the player's team
+            opponentPokemon.setHp(opponentPokemon.getBaseHp());
             addPokemon(opponentPokemon);
             // Display message in JOptionPane
             JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);

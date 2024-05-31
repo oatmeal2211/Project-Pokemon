@@ -88,6 +88,10 @@ public class Pokemon {
         this.hp = hp;
     }
 
+    public int getBaseHp(){
+        return baseHp;
+    }
+
     public int getAttack() {
         return attack;
     }

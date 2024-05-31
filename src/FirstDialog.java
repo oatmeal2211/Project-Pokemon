@@ -130,7 +130,7 @@ public class FirstDialog extends JFrame {
     
         // If the user entered a name and clicked OK
         if (playerName != null && !playerName.isEmpty()) {
-            player = new Player(playerName, "Pallet Town", MapPokemon.getMapData());
+            player = new Player(playerName, "Pallet Town", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
             // Pass the Player object to the ChoosePokemon constructor
             ChoosePokemon cp = new ChoosePokemon(player);
             cp.setVisible(true);
