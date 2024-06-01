@@ -12,11 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShowMap extends javax.swing.JFrame {
-
+    static Player player;
     private RegionExplorer<String, Integer> map;
     String currentLocation = MainMenu.getCurrentLocation();
 
-    public ShowMap(RegionExplorer<String, Integer> map) throws FontFormatException {
+    public ShowMap(Player player,RegionExplorer<String, Integer> map) throws FontFormatException {
+        this.player = player;
         this.map = map;
         initComponents();
         setBackgroundImage();
@@ -91,11 +92,14 @@ public class ShowMap extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
 
-            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException {
-                MainMenu mm = new MainMenu();
+            private void jButton1ActionPerformed(ActionEvent evt) throws FontFormatException, IOException {
+                MainMenu mm = new MainMenu(player);
                 mm.setVisible(true);
                 mm.pack();
                 mm.setLocationRelativeTo(null);
@@ -192,7 +196,7 @@ public class ShowMap extends javax.swing.JFrame {
                 try {
                     // Call the getMapData() method from the Map class to retrieve the map data
                     RegionExplorer<String, Integer> map = new MapPokemon().getMapData();
-                    new ShowMap(map).setVisible(true);
+                    new ShowMap(player, map).setVisible(true);
                 } catch (FontFormatException e) {
                     e.printStackTrace();
                 }

@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Race extends javax.swing.JFrame {
-
+static Player player;
     private RegionExplorer<String, Integer> map;
     private String currentLocation;
     private String destination;
@@ -120,6 +120,9 @@ public class Race extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
@@ -189,8 +192,8 @@ public class Race extends javax.swing.JFrame {
         pack();
     }// </editor-fold>               
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {
-        MainMenu mm = new MainMenu();
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {
+        MainMenu mm = new MainMenu(player);
         mm.setVisible(true);
         mm.pack();
         mm.setLocationRelativeTo(null);
