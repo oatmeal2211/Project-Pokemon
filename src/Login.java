@@ -208,9 +208,6 @@ public class Login extends javax.swing.JFrame {
         this.dispose();}
 
 
-        }
-    }
-
     // Variables declaration - do not modify
     private javax.swing.JPanel Left;
     private javax.swing.JButton jButton1;

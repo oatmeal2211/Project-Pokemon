@@ -1,5 +1,3 @@
-package Pokemon;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 public class Pokemon {
     private String name;
@@ -51,7 +51,7 @@ public class Pokemon {
         this.speed = scaleStat(baseSpeed, level);
     }
 
-    private int scaleStat(int baseStat, int level) {
+    public static int scaleStat(int baseStat, int level) {
         return baseStat + (int)((baseStat * level / 100.0) * 2);
     }
 
@@ -86,6 +86,10 @@ public class Pokemon {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public int getBaseHp(){
+        return baseHp;
     }
 
     public int getAttack() {
@@ -136,6 +140,11 @@ public class Pokemon {
         this.level = level;
     }
 
+    public void restoreFullHealth() {
+        this.hp = this.scaleStat(this.baseHp, this.level);
+    }
+    
+
     public int getExperiencePoints() {
         return exp;
     }
@@ -153,6 +162,14 @@ public class Pokemon {
             moves.add(move);
         } else {
             System.out.println(name + " already knows 4 moves. Forget a move to learn a new one.");
+        }
+    }
+
+    public Move getMove(int index) {
+        if (index >= 0 && index < moves.size()) {
+            return moves.get(index);
+        } else {
+            return null; // Or throw an exception if desired
         }
     }
 
@@ -209,15 +226,26 @@ public class Pokemon {
 
     // Method to level up
     private void levelUp() {
-        this.level++;
-        this.hp += 10; // Simple stat increase for demonstration
-        this.attack += 2;
-        this.defense += 2;
-        this.sp_attack += 2;
-        this.sp_defense += 2;
-        this.speed += 2;
-        System.out.println(this.name + " leveled up to " + this.level + "!");
-    }
+    this.level++;
+    this.hp += 10; // Simple stat increase for demonstration
+    this.attack += 2;
+    this.defense += 2;
+    this.sp_attack += 2;
+    this.sp_defense += 2;
+    this.speed += 2;
+    
+    // Construct the message for JOptionPane
+    String message = this.name + " leveled up to " + this.level + "!\n";
+    message += "HP +10\n";
+    message += "Attack +2\n";
+    message += "Defense +2\n";
+    message += "Special Attack +2\n";
+    message += "Special Defense +2\n";
+    message += "Speed +2";
+    
+    JOptionPane.showMessageDialog(null, message, "Level Up", JOptionPane.INFORMATION_MESSAGE);
+}
+
 
     @Override
     public String toString() {

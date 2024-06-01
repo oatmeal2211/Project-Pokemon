@@ -1,10 +1,8 @@
-package Pokemon;
-
 import java.util.Scanner;
 
 public class SafariZone {
 
-  private final String[] pokemonList;
+  private static String[] pokemonList;
   private final String[] cutePokemon = {"Jigglypuff", "Pikachu"};
 
   public SafariZone(int numberOfPokemon) {
@@ -17,8 +15,8 @@ public class SafariZone {
     }
   }
 
-  public String[] sortPokemon() {
-    int centerIndex = pokemonList.length / 2;
+  public static String[] sortPokemon(int numberOfPokemon) {
+    int centerIndex = numberOfPokemon / 2;
 
     System.out.println("\nSorting Process:");
     System.out.println("  Initial List: " + String.join(", ", pokemonList));
@@ -73,7 +71,7 @@ public class SafariZone {
     return pokemonList;
   }
 
-  private int findIndex(String[] list, String target) {
+  private static int findIndex(String[] list, String target) {
     for (int i = 0; i < list.length; i++) {
       if (list[i].equals(target)) {
         return i;
@@ -82,7 +80,7 @@ public class SafariZone {
     return -1; // Target not found
   }
 
-  private void swapElements(String[] list, int index1, int index2) {
+  private static void swapElements(String[] list, int index1, int index2) {
     String temp = list[index1];
     list[index1] = list[index2];
     list[index2] = temp;
@@ -92,8 +90,8 @@ public class SafariZone {
     Scanner scanner = new Scanner(System.in);
     System.out.println("How many Pokemon do you want to sort? ");
     int numberOfPokemon = scanner.nextInt();
-    SafariZone sorter = new SafariZone(numberOfPokemon);
-    String[] sortedList = sorter.sortPokemon();
+    //SafariZone sorter = new SafariZone(numberOfPokemon);
+    String[] sortedList = SafariZone.sortPokemon(numberOfPokemon);
 
     System.out.println("\nSorted Pokemon List:");
     for (String pokemon : sortedList) {

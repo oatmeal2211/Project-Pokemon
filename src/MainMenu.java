@@ -14,25 +14,39 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 // Assuming RegionExplorer is a generic class with a method getNeighbours
 public class MainMenu extends javax.swing.JFrame {
     RegionExplorer<String, Integer> regionExplorer = MapPokemon.getMapData();
     ArrayList<String> list = new ArrayList<>();
-    static String currentLocation = "Pallet Town";
+    static String currentLocation;
+    static Player player;
+    private GymLeaders gymLeaders;
+    JButton pokemonSortButton;
+    JButton rivalRaceButton;
 
-    public MainMenu() throws FontFormatException {
+    /*private void updateCurrentLocation() {
+        currentLocation = player.getLocation();
+        jLabel2.setText(currentLocation); // Update jLabel2 with the current location
+    }*/
+
+    public MainMenu(Player player) throws FontFormatException, IOException {
+       this.player = player;
+        currentLocation = player.getLocation(); 
         initComponents();
         loadCustomFont();
         setBackgroundImage();
         MapPokemon map = new MapPokemon(); // Instantiate your MapPokemon class
-    
+        gymLeaders = new GymLeaders();
         // Set up jComboBox2
-        updateGymLeaderOptions(currentLocation);
-    
+        
+        updateGymLeaderOptions(player.getLocation());
         // Call setCurrentLocation with the initial current location
-        setCurrentLocation(currentLocation); // Set the current location after initializing components
+        setCurrentLocation(player.getLocation()); // Set the current location after initializing components
+        
+        updateCurrentLocation();
     }
     
 
@@ -134,61 +148,89 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void setCurrentLocation(String newLocation) {
         currentLocation = newLocation;
-        jLabel1.setText("You are currently at "); // Update jLabel1 with the current location
-        jLabel2.setText(currentLocation); // Update jLabel2 with the current location
-    
-        // Update jLabel3 text based on the new currentLocation
+        player.setLocation(newLocation); // Update the player's location
+        jLabel2.setText(currentLocation);
         jLabel3.setText(jLabel3Text(currentLocation));
-    
-        populateAdjacentCities(currentLocation); // Run populateAdjacentCities again with the new currentLocation
+        updateCurrentLocation();
+        populateAdjacentCities(currentLocation);
+        if (!regionExplorer.hasVertex(currentLocation)) {
+            System.out.println("Invalid location: " + currentLocation);
+        }
     }
-    
+
+    private void updateCurrentLocation() {
+        jLabel2.setText(currentLocation);
+        System.out.println("DEBUG: Current Location updated to: " + currentLocation);
+    }
+
     private void populateAdjacentCities(String currentCity) {
         ArrayList<String> adjacentCities = regionExplorer.getNeighbours(currentCity);
-        //System.out.println("Adjacent cities: " + adjacentCities); // Debugging line
         if (adjacentCities != null && !adjacentCities.isEmpty()) {
             jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(adjacentCities.toArray(new String[0])));
         } else {
             jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{""}));
         }
-    
-        // Clear any existing ActionListeners to avoid duplication
         for (ActionListener al : jComboBox1.getActionListeners()) {
             jComboBox1.removeActionListener(al);
         }
-    
-        // Add ActionListener to jComboBox1
         jComboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedCity = (String) jComboBox1.getSelectedItem();
-                if (selectedCity != null) {
+                if (selectedCity != null && !selectedCity.equals(currentLocation)) {
+                    System.out.println("DEBUG: Moving from " + currentLocation + " to " + selectedCity);
+                    setCurrentLocation(selectedCity);
                     try {
                         updateGymLeaderOptions(selectedCity);
-                    } catch (FontFormatException e1) {
-                        // TODO Auto-generated catch block
+                    } catch (FontFormatException | IOException e1) {
                         e1.printStackTrace();
                     }
-                    setCurrentLocation(selectedCity); // Update currentLocation variable and run populateAdjacentCities
                 }
             }
         });
+        System.out.println("DEBUG: Adjacent cities for " + currentCity + ": " + adjacentCities);
     }
 
+    
     private void jButton2ActionPerformed(ActionEvent evt) throws FontFormatException {
         // Assuming you have already retrieved the map data and stored it in a variable named 'map'
         RegionExplorer<String, Integer> map = MapPokemon.getMapData();
-
+    
         // Pass the map data to the ShowMap constructor
-        ShowMap sm = new ShowMap(map);
+        ShowMap sm = new ShowMap(player, map);
         sm.setVisible(true);
         sm.pack();
         sm.setLocationRelativeTo(null);
         dispose();
     }
+    
+    // Add similar setCurrentLocation calls in other relevant places where location changes occur
+    
+    /*private void setCurrentLocation(String newLocation) {
+        currentLocation = newLocation;
+        jLabel2.setText(currentLocation);
+        jLabel3.setText(jLabel3Text(currentLocation));
+        populateAdjacentCities(currentLocation);
+        if (!regionExplorer.hasVertex(currentLocation)) {
+            System.out.println("Invalid location: " + currentLocation);
+        }
+    }
+    
+
+    /*private void jButton2ActionPerformed(ActionEvent evt) throws FontFormatException {
+        // Assuming you have already retrieved the map data and stored it in a variable named 'map'
+        RegionExplorer<String, Integer> map = MapPokemon.getMapData();
+
+        // Pass the map data to the ShowMap constructor
+        ShowMap sm = new ShowMap(player, map);
+        sm.setVisible(true);
+        sm.pack();
+        sm.setLocationRelativeTo(null);
+        dispose();
+    }*/
 
     private void jButton3ActionPerformed(ActionEvent evt) throws FontFormatException {
-        ShowPokemon sp = new ShowPokemon();
+        ShowPokemon sp = new ShowPokemon(player);
         sp.setVisible(true);
         sp.pack();
         sp.setLocationRelativeTo(null);
@@ -200,7 +242,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
-        ShowBadges sb = new ShowBadges();
+        ShowBadges sb = new ShowBadges(player);
         sb.setVisible(true);
         sb.pack();
         sb.setLocationRelativeTo(null);
@@ -225,52 +267,151 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     
-    private void updateGymLeaderOptions(String currentCity) throws FontFormatException { //gym leader
-        switch (currentCity) {
-            case "Saffron City":
-            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Sabrina - Psychic Type"}));
-            JButton rivalRaceButton = new JButton("Rival's Race");
-            rivalRaceButton.setBackground(new Color(0, 0, 0));
-            rivalRaceButton.setForeground(new Color(255, 255, 255));
-            rivalRaceButton.setBorderPainted(false);
-            rivalRaceButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        Race race = new Race(regionExplorer, currentCity);
-                        race.setVisible(true);
-                        race.pack();
-                        race.setLocationRelativeTo(null);
-                        dispose();
-                    } catch (FontFormatException e) {
-                        e.printStackTrace();
+    private void updateGymLeaderOptions(String currentCity) throws FontFormatException, IOException { //gym leader
+        System.out.println("DEBUG: Current City: " + currentCity);
+        if (rivalRaceButton != null) {
+            jPanel1.remove(rivalRaceButton);
+            rivalRaceButton = null;
+        }
+        if (pokemonSortButton != null) {
+            jPanel1.remove(pokemonSortButton);
+            pokemonSortButton = null;
+        }
+        jPanel1.revalidate();
+        jPanel1.repaint();
+        
+        jComboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedGymLeader = (String) jComboBox2.getSelectedItem();
+                if (selectedGymLeader != null) {
+                    Player gymLeader = null;
+                    switch (selectedGymLeader) {
+                        case "Pewter City Leader":
+                            gymLeader = gymLeaders.getPewterCityLeader();
+                            break;
+                        case "Cerulean Leader":
+                            gymLeader = gymLeaders.getCeruleanLeader();
+                            break;
+                        case "Vermilion Leader":
+                            gymLeader = gymLeaders.getVermilionLeader();
+                            break;
+                        case "Celadon City Leader":
+                            gymLeader = gymLeaders.getCeladonCityLeader();
+                            break;
+                        case "Fuchsia City Leader":
+                            gymLeader = gymLeaders.getFuchsiaCityLeader();
+                            break;
+                        case "Saffron City Leader":
+                            gymLeader = gymLeaders.getSaffronCityLeader();
+                            break;
+                        case "Cinnabar Island Player":
+                            gymLeader = gymLeaders.getCinnabarIslandPlayer();
+                            break;
+                        case "Viridian City Leader":
+                            gymLeader = gymLeaders.getViridianCityLeader();
+                            break;
+                        default:
+                            System.out.println("Unknown gym leader: " + selectedGymLeader);
+                    }
+                    if (gymLeader != null) {
+                        // Open GymLeaderWithGUI window based on the selected gym leader
+                        try {
+                            openGymLeaderWindow(currentCity, player, gymLeader);
+                        } catch (FontFormatException | IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
-            });
-            // Add the button to the jPanel1
-            jPanel1.add(rivalRaceButton);
-            loadCustomFontSpecial(rivalRaceButton);
-            rivalRaceButton.setBounds(0, 525, 300, 100);
-            break;
-            case "Fuchsia City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Koga - Poison type"}));
+            }
+        });
+        
+    
+        switch (currentCity) {
+            case "Saffron City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Saffron City Leader"}));
+                
+                rivalRaceButton = new JButton("Rival's Race");
+                rivalRaceButton.setBackground(new Color(0, 0, 0));
+                rivalRaceButton.setForeground(new Color(255, 255, 255));
+                rivalRaceButton.setBorderPainted(false);
+                rivalRaceButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        try {
+                            Race race = new Race(regionExplorer, currentCity);
+                            race.setVisible(true);
+                            race.pack();
+                            race.setLocationRelativeTo(null);
+                            dispose();
+                        } catch (FontFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                // Add the button to the jPanel1
+                jPanel1.add(rivalRaceButton);
+                loadCustomFontSpecial(rivalRaceButton);
+                rivalRaceButton.setBounds(0, 525, 300, 100);
+                jPanel1.revalidate();
+                jPanel1.repaint();
                 break;
+    
+            case "Fuschia City":
+    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Fuchsia City Leader"}));
+    pokemonSortButton = new JButton("Safari Zone");
+    pokemonSortButton.setBackground(new Color(0, 0, 0));
+    pokemonSortButton.setForeground(new Color(255, 255, 255));
+    pokemonSortButton.setBorderPainted(false);
+    pokemonSortButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                // Prompt user for the number of Pokemon to sort
+                int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
+
+                // Create and show the PokemonSort frame
+                PokemonSort ps = new PokemonSort(numberOfPokemon, null);
+                ps.setVisible(true);
+                ps.setLocationRelativeTo(null);
+                
+                // Load the Pokemon with the specified number of Pokemon
+                ps.loadPokemon(numberOfPokemon);
+                
+                // Dispose of the current frame (main menu)
+                dispose();
+            } catch (NumberFormatException e) {
+                // Handle invalid input from JOptionPane
+                JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    // Add the button to the jPanel1
+    jPanel1.add(pokemonSortButton);
+    loadCustomFontSpecial(pokemonSortButton);
+    pokemonSortButton.setBounds(0, 525, 300, 100);
+    jPanel1.revalidate();
+    jPanel1.repaint();
+    break;
+
+
             case "Pewter City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Brock - Rock type"}));
-                break;
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Pewter City Leader"}));
+                 break;
             case "Viridian City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Giovanni"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Viridian City Leader"}));
                 break;
             case "Cinnabar Island":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Blaine - Fire type"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cinnabar Island Player"}));
                 break;
             case "Celadon City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Erica - Grass type"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Celadon City Leader"}));
                 break;
             case "Cerulean City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Misty - Water type"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cerulean Leader"}));
                 break;
-            case "Vermilion City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Lt. Surge - Electric type"}));
+            case "Vermillion City":
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
                 break;
             case "Pallet Town":
                 // Set the message for Pallet Town indicating no gym leader
@@ -322,6 +463,24 @@ public class MainMenu extends javax.swing.JFrame {
         }
         
     }
+
+    private void openGymLeaderWindow(String currentCity, Player player, Player player2) throws FontFormatException, IOException {
+        // Set the player's current location
+        if (!player.getPokemonTeam().isEmpty()) {
+            System.out.println("DEBUG: Gym Leader's City: " + currentCity);
+            GymLeaderWithGUI gym = new GymLeaderWithGUI(player, currentCity, player2);
+            gym.setVisible(true);
+            gym.pack();
+            gym.setLocationRelativeTo(null);
+            dispose();
+        } else {
+            // Handle the case when the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "You don't have any Pokémon in your team!");
+        }
+    }
+    
+    
+
     private void openPokemazeWindow() throws FontFormatException {
         // Create an instance of the PokemazeWindow class and show it
         PokemazeWithGUI pokemazeWindow = new PokemazeWithGUI();
@@ -330,8 +489,9 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void openTalkWithMomWindow() throws FontFormatException {
         // Create an instance of the PokemazeWindow class and show it
-        TalkWithMom twm = new TalkWithMom();
+        TalkWithMom twm = new TalkWithMom(player);
         twm.setVisible(true);
+        dispose();
     }
     
     public static String getCurrentLocation(){
@@ -388,7 +548,7 @@ public class MainMenu extends javax.swing.JFrame {
                 RegionExplorer<String, Integer> map = MapPokemon.getMapData();
             
                 // Pass the map data to the ShowMap constructor
-                ShowMap sm = new ShowMap(map);
+                ShowMap sm = new ShowMap(player,map);
                 sm.setVisible(true);
                 sm.pack();
                 sm.setLocationRelativeTo(null);
@@ -449,7 +609,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
 
             private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
-                ShowBadges sb = new ShowBadges();
+                ShowBadges sb = new ShowBadges(player);
         sb.setVisible(true);
         sb.pack();
         sb.setLocationRelativeTo(null);
@@ -492,7 +652,36 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2.setText(currentLocation);
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Start Battle!" }));
+jComboBox3.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JComboBox comboBox = (JComboBox) e.getSource();
+        String selectedItem = (String) comboBox.getSelectedItem();
+        if (selectedItem.equals("Start Battle!")) {
+            try {
+                startBattle();
+            } catch (FontFormatException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    }
+    private void startBattle() throws FontFormatException, IOException {
+        PokemonBattle pokemonBattle = new PokemonBattle(player, player.getLocation());
+        pokemonBattle.setVisible(true);
+        pokemonBattle.setLocationRelativeTo(null);
+        dispose(); // Close the current window
+    }
+});
+
+
+
+
+
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -596,7 +785,12 @@ public class MainMenu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new MainMenu().setVisible(true);
+                    try {
+                        new MainMenu(player).setVisible(true);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
