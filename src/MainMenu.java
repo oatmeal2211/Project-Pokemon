@@ -588,8 +588,36 @@ public class MainMenu extends javax.swing.JFrame {
             }
 
             private void jButton4ActionPerformed(ActionEvent evt) {
-                dispose(); // Corrected disposal of the current frame
-            } 
+                dispose(); // Correct disposal of the current frame
+            
+                // Printing player details
+                System.out.println("Player Name: " + player.getName());
+                System.out.println("Player Location: " + player.getLocation());
+            
+                // Check if player has any badges
+                if (player.getBadges() != null && !player.getBadges().isEmpty()) {
+                    System.out.println("Player Badges: " + player.getBadges());
+                } else {
+                    System.out.println("Player has no badges.");
+                }
+            
+                // Printing details of each Pokémon in the team
+                if (player.getPokemonTeam() != null && !player.getPokemonTeam().isEmpty()) {
+                    for (Pokemon pokemon : player.getPokemonTeam()) {
+                        System.out.println("Pokemon Name: " + pokemon.getName());
+                        System.out.println("Level: " + pokemon.getLevel());
+                        System.out.println("Experience Points: " + pokemon.getExperiencePoints());
+                    }
+                } else {
+                    System.out.println("No Pokémon in team.");
+                }
+
+                // Player player = new Player(currentLocation, currentLocation, regionExplorer, null);
+                player.saveProgress(1, 2, "3", "4", "5", "6", "7");
+
+                player.loadProgress(1);
+            }
+            
         }
     );
 
@@ -816,5 +844,4 @@ jComboBox3.addActionListener(new ActionListener() {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
-
 
