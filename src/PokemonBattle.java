@@ -311,7 +311,7 @@ public class PokemonBattle extends javax.swing.JFrame {
             opponentPokemon.setHp(opponentPokemon.getBaseHp());
             addPokemon(opponentPokemon);
             // Display message in JOptionPane
-            JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+           
             concludeBattle();
         }
     }
@@ -320,7 +320,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         if (player.getPokemonTeam().size() < 6) {
             pokemon.restoreFullHealth();
             player.getPokemonTeam().add(pokemon);
-            
+            JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // Display JOptionPane with combobox to remove a Pokémon
             JComboBox<String> comboBox = new JComboBox<>();
@@ -345,17 +345,18 @@ public class PokemonBattle extends javax.swing.JFrame {
                 for (Pokemon p : player.getPokemonTeam()) {
                     if (p.getName().equals(selectedPokemonName)) {
                         player.removePokemon(p);
+                        player.getPokemonTeam().add(pokemon); 
                         break;
                     }
                 }
                 
-                player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
+                /*player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
                 JOptionPane.showMessageDialog(
                     this, 
                     pokemon.getName() + " added to your team!", 
                     "Team Update", 
                     JOptionPane.INFORMATION_MESSAGE
-                );
+                );*/
             } else {
                 JOptionPane.showMessageDialog(
                     this, 
@@ -363,9 +364,9 @@ public class PokemonBattle extends javax.swing.JFrame {
                     "Team Update", 
                     JOptionPane.INFORMATION_MESSAGE
                 );
-            }
+        
             
-                
+        }           
     }
 }
     

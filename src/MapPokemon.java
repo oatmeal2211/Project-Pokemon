@@ -20,7 +20,7 @@ public class MapPokemon {
        map.addEdge("Saffron City", "Lavender Town", 3);
        map.addEdge("Vermillion City", "Lavender Town", 5);
        map.addEdge("Cerulean City", "Lavender Town", 9);
-       
+
  return map;
     }
   }

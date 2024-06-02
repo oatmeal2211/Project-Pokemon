@@ -26,7 +26,6 @@ public class MainMenu extends javax.swing.JFrame {
     private GymLeaders gymLeaders;
     JButton pokemonSortButton;
     JButton rivalRaceButton;
-    static Pokemon pokemon;
 
     /*private void updateCurrentLocation() {
         currentLocation = player.getLocation();
