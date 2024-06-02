@@ -338,7 +338,7 @@ public class MainMenu extends javax.swing.JFrame {
                 rivalRaceButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-                            Race race = new Race(regionExplorer, currentCity);
+                            Race race = new Race(regionExplorer, currentCity,player);
                             race.setVisible(true);
                             race.pack();
                             race.setLocationRelativeTo(null);
