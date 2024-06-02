@@ -14,9 +14,9 @@ public class ChoosePokemon extends JFrame {
         initComponents();
         loadCustomFont();
         setBackgroundImage();
-        scaleAndSetImage("/charmander.jpg", jLabel2);
-        scaleAndSetImage("/squirtle.jpg", jLabel3);
-        scaleAndSetImage("/bulbasaur.jpg", jLabel1);
+        scaleAndSetImage("src\\charmander.jpg", jLabel2);
+        scaleAndSetImage("src\\squirtle.jpg", jLabel3);
+        scaleAndSetImage("src\\bulbasaur.jpg", jLabel1);
         startTypewriterEffect();
     }
 
