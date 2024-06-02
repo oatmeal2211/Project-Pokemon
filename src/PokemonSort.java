@@ -10,20 +10,23 @@ import java.util.List;
 
 public class PokemonSort extends javax.swing.JFrame {
     private SafariZone safariZone;
+    static Player player;
     private static String[] pokemonList;
     private final String[] cutePokemon = {"Jigglypuff", "Pikachu"};
     static int numberOfPokemon;
     private static int selectedCount = 0;
     private Image backgroundImage;
-    static Player player;
+    
 
     public PokemonSort(int numberOfPokemon, Player player) throws IOException, FontFormatException {
         this.numberOfPokemon = numberOfPokemon;
+        this.player = player;
         pokemonList = new String[numberOfPokemon];
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         initComponents();
         loadCustomFont();
+        
     }
 
     private void loadCustomFont() throws FontFormatException {
@@ -284,7 +287,7 @@ public class PokemonSort extends javax.swing.JFrame {
             public void run() {
                 PokemonSort pokemonSort;
                 try {
-                    pokemonSort = new PokemonSort(numberOfPokemon, player);
+                    pokemonSort = new PokemonSort(numberOfPokemon,player);
                     pokemonSort.setVisible(true);
                     pokemonSort.setLocationRelativeTo(null);
                 } catch (IOException | FontFormatException e) {

@@ -369,7 +369,7 @@ public class MainMenu extends javax.swing.JFrame {
                 int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
 
                 // Create and show the PokemonSort frame
-                PokemonSort ps = new PokemonSort(numberOfPokemon, null);
+                PokemonSort ps = new PokemonSort(numberOfPokemon, player);
                 ps.setVisible(true);
                 ps.setLocationRelativeTo(null);
                 
