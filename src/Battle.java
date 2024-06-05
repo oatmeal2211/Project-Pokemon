@@ -204,7 +204,7 @@ public class Battle {
         String pokemonFilePath = "pokemon.csv";
 
         List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
-        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath);
 
         // Generate random Pokémon for player and opponent
         Random rand = new Random();

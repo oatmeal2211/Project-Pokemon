@@ -1,5 +1,9 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -91,7 +95,7 @@ private int originalPlayerPokemonHP;
             String pokemonFilePath = "src/pokemon.csv";
     
             List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
-            List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+            List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath);
     
             // Generate random Pokémon for player and a fixed gym leader's Pokémon
             Random rand = new Random();
@@ -115,10 +119,15 @@ private int originalPlayerPokemonHP;
         
     
         private void assignRandomMoves(Pokemon pokemon, List<Move> allMoves, Random rand) {
-            int movesToAssign = Math.min(4, allMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
-            //pokemon.clearMoves();  // Clear existing moves, if any
+            List<Move> nonStatusMoves = allMoves.stream().filter(move -> !"Status".equalsIgnoreCase(move.getCategory())).collect(Collectors.toList());
+            int movesToAssign = Math.min(4, nonStatusMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
+            Set<Move> assignedMoves = new HashSet<>();
             for (int i = 0; i < movesToAssign; i++) {
-                Move randomMove = allMoves.get(rand.nextInt(allMoves.size()));
+                Move randomMove;
+                do {
+                    randomMove = nonStatusMoves.get(rand.nextInt(nonStatusMoves.size()));
+                } while (assignedMoves.contains(randomMove));
+                assignedMoves.add(randomMove);
                 pokemon.learnMove(randomMove);
             }
         }
@@ -147,7 +156,7 @@ private int originalPlayerPokemonHP;
             return "Geodude";
         case "Cerulean City":
             return "Staryu";
-        case "Vermilion City":
+        case "Vermillion City":
             return "Pikachu";
         case "Celadon City":
             return "Tangela";
@@ -446,7 +455,7 @@ private String getBadgeForCurrentGymLeader() {
             return "Boulder Badge";
         case "Cerulean City":
             return "Cascade Badge";
-        case "Vermilion City":
+        case "Vermillion City":
             return "Thunder Badge";
         case "Celadon City":
             return "Rainbow Badge";

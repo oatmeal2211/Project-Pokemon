@@ -255,7 +255,7 @@ public class Pokemon {
     }
 
     // Method to load Pokémon from CSV file
-    public static List<Pokemon> loadPokemonFromCSV(String filePath, List<Move> availableMoves) {
+    public static List<Pokemon> loadPokemonFromCSV(String filePath) {
         List<Pokemon> pokemonList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -276,11 +276,6 @@ public class Pokemon {
                 int level = rand.nextInt(99) + 1;
 
                 Pokemon pokemon = new Pokemon(name, type1, type2, hp, attack, defense, sp_attack, sp_defense, speed, level);
-                
-                // Assign random moves (for demo purposes, you can enhance logic as needed)
-                for (int i = 0; i < 4 && i < availableMoves.size(); i++) {
-                    pokemon.learnMove(availableMoves.get(rand.nextInt(164) + 1));
-                }
 
                 pokemonList.add(pokemon);
             }

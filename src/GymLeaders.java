@@ -3,7 +3,7 @@ import java.util.*;
 public class GymLeaders {
     private Player pewterCityLeader;
     private Player ceruleanLeader;
-    private Player vermilionLeader;
+    private Player vermillionLeader;
     private Player celadonCityLeader;
     private Player fuchsiaCityLeader;
     private Player saffronCityLeader;
@@ -13,7 +13,7 @@ public class GymLeaders {
     public GymLeaders() {
         pewterCityLeader = new Player("Pewter City Leader", "Pewter City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
         ceruleanLeader = new Player("Cerulean Leader", "Cerulean City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
-        vermilionLeader = new Player("Vermilion Leader", "Vermilion City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
+        vermillionLeader = new Player("Vermillion Leader", "Vermillion City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
         celadonCityLeader = new Player("Celadon City Leader", "Celadon", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
         fuchsiaCityLeader = new Player("Fuchsia City Leader", "Fuschia City", MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
         saffronCityLeader = new Player("Saffron City Leader", "Saffron City",MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"));
@@ -30,7 +30,7 @@ public class GymLeaders {
 
         // vermilionLeader set up
         //vermilionLeader.addPokemon(new Pokemon("Voltorb","Electric","None",40,30,50,55,55,100,21));
-        vermilionLeader.addPokemon(new Pokemon("Pikachu","Electric","None",35,55,30,50,50,90,18));
+        vermillionLeader.addPokemon(new Pokemon("Pikachu","Electric","None",35,55,30,50,50,90,18));
 
         // celadonCityLeader set up
         celadonCityLeader.addPokemon(new Pokemon("Bellsprout","Grass","Poison",50,75,35,70,70,40,29));
@@ -76,8 +76,8 @@ public class GymLeaders {
         return ceruleanLeader;
     }
     
-    public Player getVermilionLeader() {
-        return vermilionLeader;
+    public Player getVermillionLeader() {
+        return vermillionLeader;
     }
     
     public Player getCeladonCityLeader() {

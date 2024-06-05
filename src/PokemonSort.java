@@ -256,7 +256,7 @@ public class PokemonSort extends javax.swing.JFrame {
 
         String pokemonFilePath = "src\\pokemon.csv";
         List<Move> availableMoves = new ArrayList<>(); // You need to populate this list with moves
-        List<Pokemon> pokemonData = Pokemon.loadPokemonFromCSV(pokemonFilePath, availableMoves);
+        List<Pokemon> pokemonData = Pokemon.loadPokemonFromCSV(pokemonFilePath);
 
         jComboBox1.removeAllItems();
 

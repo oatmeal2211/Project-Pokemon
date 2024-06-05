@@ -293,8 +293,8 @@ public class MainMenu extends javax.swing.JFrame {
                         case "Cerulean Leader":
                             gymLeader = gymLeaders.getCeruleanLeader();
                             break;
-                        case "Vermilion Leader":
-                            gymLeader = gymLeaders.getVermilionLeader();
+                        case "Vermillion Leader":
+                            gymLeader = gymLeaders.getVermillionLeader();
                             break;
                         case "Celadon City Leader":
                             gymLeader = gymLeaders.getCeladonCityLeader();
@@ -411,7 +411,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cerulean Leader"}));
                 break;
             case "Vermillion City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermillion Leader"}));
                 break;
             case "Pallet Town":
                 // Set the message for Pallet Town indicating no gym leader
