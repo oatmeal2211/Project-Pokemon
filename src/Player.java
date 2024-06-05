@@ -150,45 +150,64 @@ public class Player {
     
 
     // Save the player's progress using file I/O
-    public void saveProgress(Integer userId,Integer saveSlot,String playername,  String location,  String pokemonTeam,  String defeatedGymLeaders, String  badges) { //接数据库
+    public void saveProgress(String email,Integer saveSlot,String playername,  String location, String  badges,List<Pokemon> pokemonTeams) { //接数据库
         // Implement file I/O to save player data
-        System.out.println("Progress saved.");
-        
+
         DatabaseManager dbManager = new DatabaseManager();
-        String sql = "INSERT INTO game_progress (user_id, save_slot, player_name, location, pokemon_team, defeated_gym_leaders, badges) VALUES (?,?,?,?,?,?,?)";
-        try (Connection conn = dbManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, saveSlot);
-            pstmt.setString(3, playername);
-            pstmt.setString(4, location);
-            pstmt.setString(5, pokemonTeam);
-            pstmt.setString(6, defeatedGymLeaders);
-            pstmt.setString(7, badges);
-            System.out.println(pstmt.executeUpdate() > 0);
-        
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    // Load the player's progress using file I/O
-    public void loadProgress(Integer userId) { //接数据库
-        // Implement file I/O to load player data
-        System.out.println("Progress loaded.");
-          String query = "SELECT * FROM game_progress WHERE user_id = ? ";
-          DatabaseManager dbManager = new DatabaseManager();
-        try (Connection conn = dbManager.connect();
+        String query = "SELECT count(*) FROM game_progress WHERE email = ?";
+        int count = 0;
+        try (Connection conn =  dbManager.connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, userId);
+            pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getInt("user_id") + " " + rs.getInt("save_slot") + " " + rs.getString("player_name") + " " + rs.getString("location") + " " + rs.getString("pokemon_team") + " " + rs.getString("defeated_gym_leaders") + " " + rs.getString("badges"));
-    
+            while (true) {
+                if ( rs.next() ) {
+                    count = rs.getInt(1);
+                }else{
+                    break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+       
+        System.out.println("Progress saved.");
+        
+        if(count < 3){
+            String id = IdUtils.simpleUUID();
+            String sql = "INSERT INTO game_progress (id,email, save_slot, player_name, location, badges) VALUES (?,?,?,?,?,?)";
+            try (Connection conn = dbManager.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, id);
+                pstmt.setString(2, email);
+                pstmt.setInt(3, count + 1);
+                pstmt.setString(4, playername);
+                pstmt.setString(5, location);
+                pstmt.setString(6, badges);
+                System.out.println(pstmt.executeUpdate() > 0);
+            
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+    
+            if(pokemonTeams != null && pokemonTeams.size() > 0){
+                for(Pokemon pokemon : pokemonTeams){
+                   String sql2 = "INSERT INTO pokemon_team (game_progress_id, name, level, experience_points) VALUES (?,?,?,?)";
+                    try (Connection conn = dbManager.connect();
+                         PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+                        pstmt.setString(1, id);
+                        pstmt.setString(2, pokemon.getName());
+                        pstmt.setInt(3, pokemon.getLevel());
+                        pstmt.setInt(4, pokemon.getExperiencePoints());
+                        System.out.println(pstmt.executeUpdate() > 0);
+                    } catch (SQLException e2) {
+                        e2.printStackTrace();
+                    }
+                }
+            }
+        }else{
+            System.out.println("You have reached the maximum number of saves.");
+        }
+        
     }
 }

@@ -122,7 +122,8 @@ public class WelcomePage extends javax.swing.JFrame{
         pack();
     }// </editor-fold>                          
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {                                         
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {     
+                                    
         LoadGameAcc WFrame = new LoadGameAcc();
         WFrame.setVisible(true);
         WFrame.pack();

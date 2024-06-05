@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class ShowPokemon extends javax.swing.JFrame {
     static Player player;
@@ -145,6 +146,7 @@ public class ShowPokemon extends javax.swing.JFrame {
         jPanel1.removeAll(); // Clear any existing components in jPanel1
         jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS)); // Set layout to vertical BoxLayout
         
+        // ArrayList<Pokemon> pokemonTeam = player.loadPokemonTeam();
         for (Pokemon pokemon : player.getPokemonTeam()) {
             // Create a panel to display the Pokémon information
             JPanel pokemonPanel = new JPanel(new GridLayout(5, 9)); // 3 columns for name, experience points, and level

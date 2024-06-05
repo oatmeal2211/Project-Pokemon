@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LoadGameAcc extends javax.swing.JFrame {
 
@@ -72,22 +77,65 @@ public class LoadGameAcc extends javax.swing.JFrame {
                 }
             }
         });
-
-        jButton2.setText("Player Name");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    jButton2ActionPerformed(evt);
-                } catch (FontFormatException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+    
+        ArrayList<GameProcess> gameProcesses = loadProgress(Login.EMAIL);
+        GameProcess gameProcess1 = null;
+        GameProcess gameProcess2 = null;
+        GameProcess gameProcess3 = null;
+        if(gameProcesses != null){
+            if(gameProcesses.size() > 0){
+                gameProcess1 = gameProcesses.get(0);
             }
-        });
+            if(gameProcesses.size() > 1){
+                gameProcess2 = gameProcesses.get(1);
+            }
+            if(gameProcesses.size() > 2){
+                gameProcess3 = gameProcesses.get(2);
+            }
+        }
 
-        jButton3.setText("Player Name");
+        if(gameProcess1 != null){
+            jButton2.setText(gameProcess1.getPlayerName());
+            jButton2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        jButton2ActionPerformed(evt);
+                    } catch (FontFormatException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }); 
+            //
+        }else{
+            jButton2.setText("Player Name");     
+            jButton2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        jButton2ActionPerformed(evt);
+                    } catch (FontFormatException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }); 
+        }
+        
+        
+    
+        if(gameProcess2 != null){
+            jButton3.setText(gameProcess2.getPlayerName());
+            //
+        }else{
+            jButton3.setText("Player Name");     
+        }
 
-        jButton4.setText("Player Name");
+        if(gameProcess3 != null){
+            jButton4.setText(gameProcess3.getPlayerName());
+            //
+        }else{
+            jButton4.setText("Player Name");     
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,6 +203,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+            
                 new LoadGameAcc().setVisible(true);
             }
         });
@@ -169,4 +218,85 @@ public class LoadGameAcc extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     // End of variables declaration//GEN-END:variables
+
+    
+    // Load the player's progress using file I/O
+    public ArrayList<GameProcess> loadProgress(String email) { //接数据库
+        // Implement file I/O to load player data
+        System.out.println("Progress loaded.");
+          String query = "SELECT * FROM game_progress WHERE email = ? ";
+          DatabaseManager dbManager = new DatabaseManager();
+          GameProcess gameProcess;
+          ArrayList<GameProcess> list = new ArrayList<>();
+        try (Connection conn = dbManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                gameProcess = new GameProcess();
+                gameProcess.setId(rs.getString("id"));
+                gameProcess.setEmail(rs.getString("email"));
+                gameProcess.setSaveSlot(rs.getInt("save_slot"));
+                gameProcess.setPlayerName(rs.getString("player_name"));
+                gameProcess.setLocation(rs.getString("location"));
+                gameProcess.setBadges(rs.getString("badges"));
+                list.add(gameProcess);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public GameProcess loadProgressSimple(String id) { //接数据库
+        // Implement file I/O to load player data
+        System.out.println("Progress loaded.");
+          String query = "SELECT * FROM game_progress WHERE id = ? ";
+          DatabaseManager dbManager = new DatabaseManager();
+          GameProcess gameProcess = null;
+
+        try (Connection conn = dbManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                gameProcess = new GameProcess();
+                gameProcess.setId(rs.getString("id"));
+                gameProcess.setEmail(rs.getString("email"));
+                gameProcess.setSaveSlot(rs.getInt("save_slot"));
+                gameProcess.setPlayerName(rs.getString("player_name"));
+                gameProcess.setLocation(rs.getString("location"));
+                gameProcess.setBadges(rs.getString("badges"));
+            
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gameProcess;
+    }
+
+    public ArrayList<PokemonTeam> loadPokemonTeam(String gameProgressId) { //接数据库
+        // Implement file I/O to load player data
+        System.out.println("Progress loaded.");
+          String query = "SELECT * FROM pokemon_team WHERE game_progress_id = ? ";
+          DatabaseManager dbManager = new DatabaseManager();
+          PokemonTeam pokemonTeam;
+          ArrayList<PokemonTeam> list = new ArrayList<>();
+        try (Connection conn = dbManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, gameProgressId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                pokemonTeam = new PokemonTeam();
+                pokemonTeam.setId(rs.getInt ("id"));
+                pokemonTeam.setGameProgressId(rs.getString("game_progress_id"));
+                pokemonTeam.setName(rs.getString("name"));
+                pokemonTeam.setLevel(rs.getInt("level"));
+                pokemonTeam.setExperiencePoints(rs.getInt("experience_points"));
+                list.add(pokemonTeam);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -602,20 +603,19 @@ public class MainMenu extends javax.swing.JFrame {
                 }
             
                 // Printing details of each Pokémon in the team
-                if (player.getPokemonTeam() != null && !player.getPokemonTeam().isEmpty()) {
-                    for (Pokemon pokemon : player.getPokemonTeam()) {
-                        System.out.println("Pokemon Name: " + pokemon.getName());
-                        System.out.println("Level: " + pokemon.getLevel());
-                        System.out.println("Experience Points: " + pokemon.getExperiencePoints());
-                    }
-                } else {
+                if (player.getPokemonTeam() == null || player.getPokemonTeam().isEmpty()) {
                     System.out.println("No Pokémon in team.");
                 }
-
+            
+            
                 // Player player = new Player(currentLocation, currentLocation, regionExplorer, null);
-                player.saveProgress(1, 2, "3", "4", "5", "6", "7");
+                String bString = "";
+                if(player.getBadges() !=null && !player.getBadges().isEmpty()){
+                    bString = player.getBadges().stream().map(badge :: getName).collect(Collectors.joining(","));
+                }
+                player.saveProgress(Login.EMAIL, null, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
 
-                player.loadProgress(1);
+                // player.loadProgress(1);
             }
             
         }
