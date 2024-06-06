@@ -238,7 +238,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton4ActionPerformed(ActionEvent evt) {
-        dispose(); // Corrected disposal of the current frame
+        // Corrected disposal of the current frame
     }
 
     private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
@@ -584,11 +584,23 @@ public class MainMenu extends javax.swing.JFrame {
         jButton4.setBorderPainted(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                try {
+                    jButton4ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
-            private void jButton4ActionPerformed(ActionEvent evt) {
-                dispose(); // Correct disposal of the current frame
+            private void jButton4ActionPerformed(ActionEvent evt) throws FontFormatException {
+                Frame[] frames = Frame.getFrames();
+                for (Frame frame : frames) {
+                    frame.dispose();
+                }
+            
+                // Open WelcomePage
+                WelcomePage welcomePage = new WelcomePage();
+                welcomePage.setVisible(true);
             
                 // Printing player details
                 System.out.println("Player Name: " + player.getName());
