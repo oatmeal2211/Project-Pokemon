@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LoadGameAcc extends javax.swing.JFrame {
-
+    static Player player;
     public LoadGameAcc() {
         initComponents();
         try {
@@ -99,7 +99,12 @@ public class LoadGameAcc extends javax.swing.JFrame {
             jButton2.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        jButton2ActionPerformed(evt);
+                        try {
+                            jButton2ActionPerformed(evt);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     } catch (FontFormatException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -112,7 +117,12 @@ public class LoadGameAcc extends javax.swing.JFrame {
             jButton2.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        jButton2ActionPerformed(evt);
+                        try {
+                            jButton2ActionPerformed(evt);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     } catch (FontFormatException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -192,11 +202,11 @@ public class LoadGameAcc extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
-        FirstDialog fd = new FirstDialog();
-        fd.setVisible(true);
-        fd.pack();
-        fd.setLocationRelativeTo(null);
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu mm = new MainMenu(player);
+        mm.setVisible(true);
+        mm.pack();
+        mm.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
