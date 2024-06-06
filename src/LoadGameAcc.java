@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LoadGameAcc extends javax.swing.JFrame {
 
@@ -95,12 +96,14 @@ public class LoadGameAcc extends javax.swing.JFrame {
         }
 
         if(gameProcess1 != null){
+            final GameProcess gameProcess11 = gameProcess1;
             jButton2.setText(gameProcess1.getPlayerName());
             jButton2.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        jButton2ActionPerformed(evt);
-                    } catch (FontFormatException e) {
+                
+                        jButton2ExistActionPerformed(evt,gameProcess11);
+                    } catch (FontFormatException | IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -200,6 +203,54 @@ public class LoadGameAcc extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ExistActionPerformed(java.awt.event.ActionEvent evt,GameProcess gameProcess) throws FontFormatException, IOException {
+
+        Player player = new Player(gameProcess.getPlayerName(), gameProcess.getLocation(), MapPokemon.getMapData(), Move.loadMovesFromCSV("src\\Move.csv"),
+        gameProcess.getSaveSlot(),gameProcess.getId());
+        ArrayList<PokemonTeam> pokemonTeams = loadPokemonTeam(gameProcess.getId());
+
+        ArrayList<Pokemon> pokemonList = new ArrayList<>();
+        for (PokemonTeam pokemonTeam : pokemonTeams) {
+            if(pokemonTeam.getName().equals("Bulbasaur")){
+                pokemonList.add(new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
+            }else if(pokemonTeam.getName().equals("Charmander")){
+                pokemonList.add(new Pokemon("Charmander", "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
+            }else if(pokemonTeam.getName().equals("Charmander")){
+                pokemonList.add(new Pokemon("Squirtle", "Water", "None", 44, 48, 65, 50, 50, 43,5));
+            }else{
+                pokemonList.add(new Pokemon(pokemonTeam.getName(),"Ground","None",50,50,95,40,40,35,50));
+            }
+        }
+        player.setPokemonTeam(pokemonList);
+        if(gameProcess.getBadges() != null && !gameProcess.getBadges().isEmpty()){
+           String[] badgeArray = gameProcess.getBadges().split(",");
+            ArrayList<String> badges = new ArrayList<>(Arrays.asList(badgeArray));
+            ArrayList<badge> badgesList = new ArrayList();
+            for(String badge : badges){
+                badgesList.add(new badge(badge));
+            }
+            player.setBadges(badgesList);
+        }
+
+        // Create and add Bulbasaur to the player's team
+        // Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5);
+        // player.addPokemon(bulbasaur);
+    
+        // Proceed to the MainMenu only if the player has at least one Pokémon in their team
+        if (pokemonTeams != null && !pokemonTeams.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You chose Bulbasaur, an amazing choice. Best of luck!");
+            MainMenu mm = new MainMenu(player);
+            mm.setVisible(true);
+            mm.pack();
+            mm.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            // Display an error message if the player has no Pokémon in their team
+            JOptionPane.showMessageDialog(this, "Error: You must choose a Pokémon to start your journey!");
+        }
+    }
+
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -224,7 +275,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
     public ArrayList<GameProcess> loadProgress(String email) { //接数据库
         // Implement file I/O to load player data
         System.out.println("Progress loaded.");
-          String query = "SELECT * FROM game_progress WHERE email = ? ";
+          String query = "SELECT * FROM game_progress WHERE email = ? order by save_slot asc";
           DatabaseManager dbManager = new DatabaseManager();
           GameProcess gameProcess;
           ArrayList<GameProcess> list = new ArrayList<>();

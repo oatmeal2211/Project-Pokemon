@@ -29,6 +29,28 @@ public class Pokemon {
     private int speed;
     private List<Move> moves;
 
+    public Pokemon(String name,int level,int baseHp) {
+        this.name = name;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
+        this.level = level;
+        this.exp = 0; // Starting XP is 0
+        this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
+
     public Pokemon(String name, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
         this.name = name;
         this.type1 = type1;

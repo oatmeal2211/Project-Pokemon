@@ -10,7 +10,7 @@ public class DatabaseManager {
     private static final String USER = "root"; // 替换为你的MySQL用户名
     private static final String PASSWORD = "123456"; // 替换为你的MySQL密码
 
-    public Connection connect() {
+    public  static Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
