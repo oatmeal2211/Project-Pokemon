@@ -2,8 +2,8 @@ import java.util.List;
 
 public class TestPokemon {
     public static void main(String[] args) {
-        String movesFilePath = "Pokemon/Move.csv";
-        String pokemonFilePath = "Pokemon/pokemon.csv";
+        String movesFilePath = "src\\Move.csv";
+        String pokemonFilePath = "src\\pokemon.csv";
 
         // Load moves from CSV
         List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
