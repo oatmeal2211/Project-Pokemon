@@ -131,7 +131,7 @@ public class WelcomePage extends javax.swing.JFrame{
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {                                         
-        NewGameAcc NFrame = new NewGameAcc();
+        FirstDialog NFrame = new FirstDialog();
         NFrame.setVisible(true);
         NFrame.pack();
         NFrame.setLocationRelativeTo(null);

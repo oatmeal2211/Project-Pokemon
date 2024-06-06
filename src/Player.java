@@ -105,7 +105,7 @@ public class Player {
                 Pokemon.learnMove(allMoves.get(rand.nextInt(allMoves.size())));
             }
             pokemonTeam.add(Pokemon);
-            System.out.println(Pokemon.getName() + " added to your team!");
+            //System.out.println(Pokemon.getName() + " added to your team!");
         } else {
             System.out.println("You can only have 6 Pokémon in your team.");
         }
