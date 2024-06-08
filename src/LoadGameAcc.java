@@ -114,7 +114,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
             //
         }else{
             jButton2.setText("Player Name");     
-            jButton2.addActionListener(new java.awt.event.ActionListener() {
+            /*jButton2.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         try {
@@ -128,21 +128,51 @@ public class LoadGameAcc extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                 }
-            }); 
+            }); */
         }
         
         
     
         if(gameProcess2 != null){
             jButton3.setText(gameProcess2.getPlayerName());
+            jButton3.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        try {
+                            jButton3ActionPerformed(evt);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } catch (FontFormatException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }); 
             //
         }else{
             jButton3.setText("Player Name");     
         }
+        
 
         if(gameProcess3 != null){
             jButton4.setText(gameProcess3.getPlayerName());
-            //
+            jButton4.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        try {
+                            jButton4ActionPerformed(evt);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } catch (FontFormatException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }); 
         }else{
             jButton4.setText("Player Name");     
         }
@@ -208,8 +238,24 @@ public class LoadGameAcc extends javax.swing.JFrame {
         mm.pack();
         mm.setLocationRelativeTo(null);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu mm = new MainMenu(player);
+        mm.setVisible(true);
+        mm.pack();
+        mm.setLocationRelativeTo(null);
+        this.dispose();
+    }
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu mm = new MainMenu(player);
+        mm.setVisible(true);
+        mm.pack();
+        mm.setLocationRelativeTo(null);
+        this.dispose();
+    }
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

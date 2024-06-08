@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Race extends javax.swing.JFrame {
-static Player player;
+    static Player player;
     private RegionExplorer<String, Integer> map;
     private String currentLocation;
     private String destination;
@@ -19,7 +19,7 @@ static Player player;
      * Creates new form Race
      * @throws FontFormatException 
      */
-    public Race(RegionExplorer<String, Integer> map, String currentLocation) throws FontFormatException {
+    public Race(RegionExplorer<String, Integer> map, String currentLocation, Player player) throws FontFormatException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         this.map = map;
@@ -29,6 +29,7 @@ static Player player;
         initComponents();
         loadCustomFont();
         startRace();
+        this.player=player;
     }
 
     private void setBackgroundImage() {
@@ -307,7 +308,7 @@ static Player player;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Race(map, currentLocation).setVisible(true);
+                    new Race(map, currentLocation,player).setVisible(true);
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -239,7 +238,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton4ActionPerformed(ActionEvent evt) {
-        dispose(); // Corrected disposal of the current frame
+        // Corrected disposal of the current frame
     }
 
     private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
@@ -294,8 +293,8 @@ public class MainMenu extends javax.swing.JFrame {
                         case "Cerulean Leader":
                             gymLeader = gymLeaders.getCeruleanLeader();
                             break;
-                        case "Vermilion Leader":
-                            gymLeader = gymLeaders.getVermilionLeader();
+                        case "Vermillion Leader":
+                            gymLeader = gymLeaders.getVermillionLeader();
                             break;
                         case "Celadon City Leader":
                             gymLeader = gymLeaders.getCeladonCityLeader();
@@ -339,7 +338,7 @@ public class MainMenu extends javax.swing.JFrame {
                 rivalRaceButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-                            Race race = new Race(regionExplorer, currentCity);
+                            Race race = new Race(regionExplorer, currentCity,player);
                             race.setVisible(true);
                             race.pack();
                             race.setLocationRelativeTo(null);
@@ -370,7 +369,7 @@ public class MainMenu extends javax.swing.JFrame {
                 int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
 
                 // Create and show the PokemonSort frame
-                PokemonSort ps = new PokemonSort(numberOfPokemon, null);
+                PokemonSort ps = new PokemonSort(numberOfPokemon, player);
                 ps.setVisible(true);
                 ps.setLocationRelativeTo(null);
                 
@@ -412,7 +411,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cerulean Leader"}));
                 break;
             case "Vermillion City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermillion Leader"}));
                 break;
             case "Pallet Town":
                 // Set the message for Pallet Town indicating no gym leader
@@ -585,11 +584,23 @@ public class MainMenu extends javax.swing.JFrame {
         jButton4.setBorderPainted(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                try {
+                    jButton4ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
-            private void jButton4ActionPerformed(ActionEvent evt) {
-                dispose(); // Correct disposal of the current frame
+            private void jButton4ActionPerformed(ActionEvent evt) throws FontFormatException {
+                Frame[] frames = Frame.getFrames();
+                for (Frame frame : frames) {
+                    frame.dispose();
+                }
+            
+                // Open WelcomePage
+                WelcomePage welcomePage = new WelcomePage();
+                welcomePage.setVisible(true);
             
                 // Printing player details
                 System.out.println("Player Name: " + player.getName());
@@ -603,19 +614,15 @@ public class MainMenu extends javax.swing.JFrame {
                 }
             
                 // Printing details of each Pokémon in the team
-                if (player.getPokemonTeam() == null || player.getPokemonTeam().isEmpty()) {
+                if (player.getPokemonTeam() != null && !player.getPokemonTeam().isEmpty()) {
+                    for (Pokemon pokemon : player.getPokemonTeam()) {
+                        System.out.println("Pokemon Name: " + pokemon.getName());
+                        System.out.println("Level: " + pokemon.getLevel());
+                        System.out.println("Experience Points: " + pokemon.getExperiencePoints());
+                    }
+                } else {
                     System.out.println("No Pokémon in team.");
                 }
-            
-            
-                // Player player = new Player(currentLocation, currentLocation, regionExplorer, null);
-                String bString = "";
-                if(player.getBadges() !=null && !player.getBadges().isEmpty()){
-                    bString = player.getBadges().stream().map(badge :: getName).collect(Collectors.joining(","));
-                }
-                player.saveProgress(Login.EMAIL, null, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
-
-                // player.loadProgress(1);
             }
             
         }
@@ -844,4 +851,5 @@ jComboBox3.addActionListener(new ActionListener() {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
+
 

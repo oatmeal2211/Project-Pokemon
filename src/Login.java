@@ -18,7 +18,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+        try (InputStream is = getClass().getResourceAsStream("src\\PressStart2P-Regular.ttf")) {
             if (is == null) {
                 throw new FileNotFoundException("Font file not found in resources");
             }

@@ -43,7 +43,8 @@ public class WelcomePage extends javax.swing.JFrame{
         setPreferredSize(new java.awt.Dimension(2147483647, 2147483647));
         setResizable(false);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Downloads\\pokemon-logo-image-minecraft-pixel-art-pokemon-logo-pac-man-text-fire-truck-vehicle-transparent-png-2526549-removebg-preview.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("src\\pokemon-logo-image-minecraft-pixel-art-pokemon-logo-pac-man-text-fire-truck-vehicle-transparent-png-2526549-removebg-preview.png")); // NOI18N
+
 
         jLabel2.setText("Welcome to Pokemon - Kanto Adventures");
         jLabel2.setForeground(new java.awt.Color(28, 103, 88));
@@ -132,7 +133,7 @@ public class WelcomePage extends javax.swing.JFrame{
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {                                         
-        NewGameAcc NFrame = new NewGameAcc();
+        FirstDialog NFrame = new FirstDialog();
         NFrame.setVisible(true);
         NFrame.pack();
         NFrame.setLocationRelativeTo(null);
@@ -140,7 +141,7 @@ public class WelcomePage extends javax.swing.JFrame{
     }                                        
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+       dispose();
     }                                        
 
     /**
