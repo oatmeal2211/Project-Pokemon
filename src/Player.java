@@ -8,10 +8,24 @@ import java.util.*;
 public class Player {
     private String name;  // Name of the player
     private String location;  // Current location of the player
-    private List<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
+    private ArrayList<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
     private List<badge> badges;  // List of badges earned by the player
     private RegionExplorer<String, Integer> map; // Map data for location tracking
     private List<Move> allMoves;
+    private Integer saveSlot; // Save slot for the player
+    private String gameProcessId; // Game process id for the player
+
+    public Player(String name, String location, RegionExplorer<String, Integer> map,List<Move> allMoves,Integer saveSlot,String gameProcessId) {
+        this.name = name;
+        this.location = location;
+        this.pokemonTeam = new ArrayList<>();
+        this.badges = new ArrayList<>();
+        this.map = map;
+        this.allMoves = allMoves;
+        this.saveSlot = saveSlot;
+        this.gameProcessId = gameProcessId;
+    }
+
 
     // Constructor to initialize the Player object with a name, location, and map data
     public Player(String name, String location, RegionExplorer<String, Integer> map,List<Move> allMoves) {
@@ -22,7 +36,23 @@ public class Player {
         this.map = map;
         this.allMoves = allMoves;
     }
+// Getters and Setters for saveSlot, gameProcessId
 
+    public Integer getSaveSlot() {
+        return saveSlot;
+    }
+
+    public void setSaveSlot(Integer saveSlot) {
+        this.saveSlot = saveSlot;
+    }
+
+    public String getGameProcessId() {
+        return gameProcessId;
+    }
+
+    public void setGameProcessId(String gameProcessId) {
+        this.gameProcessId = gameProcessId;
+    }
     // Getters and Setters for name, location, pokemonTeam, and badges
 
     // Get the name of the player
@@ -51,8 +81,12 @@ public class Player {
     }
 
     // Get the list of Pokémon in the player's team
-    public List<Pokemon> getPokemonTeam() {
+    public ArrayList<Pokemon> getPokemonTeam() {
         return pokemonTeam;
+    }
+
+    public void setPokemonTeam(ArrayList<Pokemon> pokemonTeams) {
+        this.pokemonTeam = pokemonTeams;
     }
 
     public int getPokemonTeamSize(){
@@ -71,6 +105,10 @@ public class Player {
     // Get the list of badges earned by the player
     public List<badge> getBadges() {
         return badges;
+    }
+
+    public void setBadges(List<badge> badges) {
+        this.badges = badges;
     }
 
     public boolean hasBadge(String badgeName) {
@@ -147,67 +185,5 @@ public class Player {
             System.out.println(badge.getName());
         }
     }
-    
 
-    // Save the player's progress using file I/O
-    public void saveProgress(String email,Integer saveSlot,String playername,  String location, String  badges,List<Pokemon> pokemonTeams) { //接数据库
-        // Implement file I/O to save player data
-
-        DatabaseManager dbManager = new DatabaseManager();
-        String query = "SELECT count(*) FROM game_progress WHERE email = ?";
-        int count = 0;
-        try (Connection conn =  dbManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-            while (true) {
-                if ( rs.next() ) {
-                    count = rs.getInt(1);
-                }else{
-                    break;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-       
-        System.out.println("Progress saved.");
-        
-        if(count < 3){
-            String id = IdUtils.simpleUUID();
-            String sql = "INSERT INTO game_progress (id,email, save_slot, player_name, location, badges) VALUES (?,?,?,?,?,?)";
-            try (Connection conn = dbManager.connect();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, id);
-                pstmt.setString(2, email);
-                pstmt.setInt(3, count + 1);
-                pstmt.setString(4, playername);
-                pstmt.setString(5, location);
-                pstmt.setString(6, badges);
-                System.out.println(pstmt.executeUpdate() > 0);
-            
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-    
-            if(pokemonTeams != null && pokemonTeams.size() > 0){
-                for(Pokemon pokemon : pokemonTeams){
-                   String sql2 = "INSERT INTO pokemon_team (game_progress_id, name, level, experience_points) VALUES (?,?,?,?)";
-                    try (Connection conn = dbManager.connect();
-                         PreparedStatement pstmt = conn.prepareStatement(sql2)) {
-                        pstmt.setString(1, id);
-                        pstmt.setString(2, pokemon.getName());
-                        pstmt.setInt(3, pokemon.getLevel());
-                        pstmt.setInt(4, pokemon.getExperiencePoints());
-                        System.out.println(pstmt.executeUpdate() > 0);
-                    } catch (SQLException e2) {
-                        e2.printStackTrace();
-                    }
-                }
-            }
-        }else{
-            System.out.println("You have reached the maximum number of saves.");
-        }
-        
-    }
 }
