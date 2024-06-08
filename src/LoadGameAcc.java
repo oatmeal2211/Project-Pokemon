@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LoadGameAcc extends javax.swing.JFrame {
-
+    static Player player;
     public LoadGameAcc() {
         initComponents();
         try {
@@ -66,7 +66,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     jButton1ActionPerformed(evt);
-                } catch (FontFormatException e) {
+                } catch (FontFormatException | IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -81,13 +81,42 @@ public class LoadGameAcc extends javax.swing.JFrame {
                 } catch (FontFormatException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         });
 
         jButton3.setText("Player Name");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    jButton3ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 
         jButton4.setText("Player Name");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    jButton4ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,7 +165,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
         WelcomePage WFrame = new WelcomePage();
         WFrame.setVisible(true);
         WFrame.pack();
@@ -144,8 +173,24 @@ public class LoadGameAcc extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
-        FirstDialog fd = new FirstDialog();
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu fd = new MainMenu(player);
+        fd.setVisible(true);
+        fd.pack();
+        fd.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu fd = new MainMenu(player);
+        fd.setVisible(true);
+        fd.pack();
+        fd.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException, IOException {//GEN-FIRST:event_jButton1ActionPerformed
+        MainMenu fd = new MainMenu(player);
         fd.setVisible(true);
         fd.pack();
         fd.setLocationRelativeTo(null);
