@@ -393,7 +393,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
 
     
     // Load the player's progress using file I/O
-    public ArrayList<GameProcess> loadProgress(String email) { //接数据库
+    public static ArrayList<GameProcess> loadProgress(String email) { //接数据库
         // Implement file I/O to load player data
         System.out.println("Progress loaded.");
           String query = "SELECT * FROM game_progress WHERE email = ? order by save_slot asc";

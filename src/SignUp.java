@@ -184,15 +184,28 @@ public class SignUp extends javax.swing.JFrame {
         pack();
     }
 
+    private boolean isValidEmail(String email) {
+        // Simple email format validation using regular expression
+        String emailRegex = "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
         String username = jTextField5.getText();
         String email = jTextField6.getText();
         String password = new String(jPasswordField4.getPassword());
-
+    
+        // Validate email before proceeding
+        if (!isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Invalid Email", JOptionPane.ERROR_MESSAGE);
+            return; // Exit the method if the email is not valid
+        }
+    
+        // Clear the input fields
         jTextField5.setText("");
         jTextField6.setText("");
         jPasswordField4.setText("");
-
+    
         DatabaseManager dbManager = new DatabaseManager();
 
         if (dbManager.userExists(email)) {

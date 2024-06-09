@@ -4,6 +4,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 public class WelcomePage extends javax.swing.JFrame{
 
@@ -132,17 +135,74 @@ public class WelcomePage extends javax.swing.JFrame{
         this.dispose();
     }                                        
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {                                         
+    private boolean areSaveSlotsFull() {
+    ArrayList<GameProcess> gameProcesses = LoadGameAcc.loadProgress(Login.EMAIL);
+    return gameProcesses != null && gameProcesses.size() >= 3;
+}
+
+// This method shows the dialog to the user when save slots are full
+private void showSaveSlotFullDialog() throws FontFormatException {
+    // Define the options for the user
+    Object[] options = {"Override Slot 1", "Override Slot 2", "Override Slot 3", "Cancel"};
+    
+    // Show the JOptionPane dialog with the options
+    int selectedOption = JOptionPane.showOptionDialog(
+        this,
+        "The save slots are full. Do you want to override your current slot?",
+        "Save Slot Full",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[3]
+    );
+
+    // Handle the user's choice
+    if (selectedOption != 3 && selectedOption != JOptionPane.CLOSED_OPTION) {
+        // If user selected to override any slot (not "Cancel" or closed the dialog)
+        ArrayList<GameProcess> gameProcesses = LoadGameAcc.loadProgress(Login.EMAIL);
+        if (gameProcesses != null) { // logic to override over here
+            if (selectedOption == 0) {
+                gameProcesses.set(0, new GameProcess(/* pass necessary parameters */));
+            } else if (selectedOption == 1) {
+                gameProcesses.set(1, new GameProcess(/* pass necessary parameters */));
+            } else if (selectedOption == 2) {
+                gameProcesses.set(2, new GameProcess(/* pass necessary parameters */));
+            }
+            // Save the updated gameProcesses list back to storage
+        }
+
         FirstDialog NFrame = new FirstDialog();
         NFrame.setVisible(true);
         NFrame.pack();
         NFrame.setLocationRelativeTo(null);
         this.dispose();
-    }                                        
+    }
+}
+
+// This method is called when the user clicks the "Start New Adventure" button
+private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {                                         
+    // Check if the save slots are full
+    if (areSaveSlotsFull()) {
+        // Show the dialog if slots are full
+        showSaveSlotFullDialog();
+    } else {
+        // Proceed normally if slots are not full
+        FirstDialog NFrame = new FirstDialog();
+        NFrame.setVisible(true);
+        NFrame.pack();
+        NFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }
+}
+
+                                          
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
        dispose();
     }                                        
+
+    
 
     /**
      * @param args the command line arguments
