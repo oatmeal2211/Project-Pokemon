@@ -1,5 +1,8 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -89,7 +92,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         String pokemonFilePath = "src/pokemon.csv";
 
         List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
-        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath);
 
         // Generate random Pokémon for player and opponent
         Random rand = new Random();
@@ -97,7 +100,14 @@ public class PokemonBattle extends javax.swing.JFrame {
             playerPokemon = player.getPokemonTeam().get(rand.nextInt(player.getPokemonTeam().size()));
             originalPlayerPokemonHP = playerPokemon.getHp();
         }
+        // Ensure opponent Pokemon's level is within 5 levels of player Pokemon's level, but not below 1
+        int playerLevel = playerPokemon.getLevel();
+        int minLevel = Math.max(1, playerLevel - 5);
+        int maxLevel = playerLevel + 5;
+        
         opponentPokemon = pokemonList.get(rand.nextInt(pokemonList.size()));
+        opponentPokemon.setLevel(rand.nextInt(maxLevel - minLevel + 1) + minLevel); // Generate level within [minLevel, maxLevel]
+        
         opponentPokemon.setLevel(playerPokemon.getLevel() + rand.nextInt(5) - rand.nextInt(5));
         opponentPokemon.setHp(Pokemon.scaleStat(opponentPokemon.getBaseHp(), opponentPokemon.getLevel()));
         opponentPokemon.setAttack(Pokemon.scaleStat(opponentPokemon.getAttack(), opponentPokemon.getLevel()));
@@ -106,15 +116,24 @@ public class PokemonBattle extends javax.swing.JFrame {
         opponentPokemon.setSpecialDefense(Pokemon.scaleStat(opponentPokemon.getSpecialDefense(), opponentPokemon.getLevel()));
         opponentPokemon.setSpeed(Pokemon.scaleStat(opponentPokemon.getSpeed(), opponentPokemon.getLevel()));
         assignRandomMoves(playerPokemon, moves, rand);
+        assignRandomMoves(opponentPokemon, moves, rand);
 
         // Initialize the battle
         battle = new Battle(playerPokemon, opponentPokemon);
     }
 
     private void assignRandomMoves(Pokemon pokemon, List<Move> allMoves, Random rand) {
-        int movesToAssign = Math.min(4, allMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
+        // Filter out the status moves from the list
+        List<Move> nonStatusMoves = allMoves.stream().filter(move -> !"Status".equalsIgnoreCase(move.getCategory())).collect(Collectors.toList());
+        System.out.println(nonStatusMoves);
+        int movesToAssign = Math.min(4, nonStatusMoves.size());  // Assign up to 4 moves, or less if there aren't enough moves available
+        Set<Move> assignedMoves = new HashSet<>();
         for (int i = 0; i < movesToAssign; i++) {
-            Move randomMove = allMoves.get(rand.nextInt(allMoves.size()));
+            Move randomMove;
+            do {
+                randomMove = nonStatusMoves.get(rand.nextInt(nonStatusMoves.size()));
+            } while (assignedMoves.contains(randomMove));
+            assignedMoves.add(randomMove);
             pokemon.learnMove(randomMove);
         }
     }
@@ -311,7 +330,7 @@ public class PokemonBattle extends javax.swing.JFrame {
             opponentPokemon.setHp(opponentPokemon.getBaseHp());
             addPokemon(opponentPokemon);
             // Display message in JOptionPane
-            JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
+           
             concludeBattle();
         }
     }
@@ -320,7 +339,7 @@ public class PokemonBattle extends javax.swing.JFrame {
         if (player.getPokemonTeam().size() < 6) {
             pokemon.restoreFullHealth();
             player.getPokemonTeam().add(pokemon);
-            
+            JOptionPane.showMessageDialog(this, opponentPokemon.getName() + " added to your team!", "Battle Result", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // Display JOptionPane with combobox to remove a Pokémon
             JComboBox<String> comboBox = new JComboBox<>();
@@ -345,17 +364,18 @@ public class PokemonBattle extends javax.swing.JFrame {
                 for (Pokemon p : player.getPokemonTeam()) {
                     if (p.getName().equals(selectedPokemonName)) {
                         player.removePokemon(p);
+                        player.getPokemonTeam().add(pokemon); 
                         break;
                     }
                 }
                 
-                player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
+                /*player.getPokemonTeam().add(pokemon); // Add the new Pokémon after removing one
                 JOptionPane.showMessageDialog(
                     this, 
                     pokemon.getName() + " added to your team!", 
                     "Team Update", 
                     JOptionPane.INFORMATION_MESSAGE
-                );
+                );*/
             } else {
                 JOptionPane.showMessageDialog(
                     this, 
@@ -363,9 +383,9 @@ public class PokemonBattle extends javax.swing.JFrame {
                     "Team Update", 
                     JOptionPane.INFORMATION_MESSAGE
                 );
-            }
+        
             
-                
+        }           
     }
 }
     

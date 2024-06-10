@@ -9,7 +9,7 @@ public class TestPokemon {
         List<Move> moves = Move.loadMovesFromCSV(movesFilePath);
 
         // Load Pokémon from CSV and assign moves
-        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath, moves);
+        List<Pokemon> pokemonList = Pokemon.loadPokemonFromCSV(pokemonFilePath);
 
         // Display loaded Pokémon and their moves
         for (Pokemon pokemon : pokemonList) {

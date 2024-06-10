@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -238,7 +243,7 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     private void jButton4ActionPerformed(ActionEvent evt) {
-        dispose(); // Corrected disposal of the current frame
+        // Corrected disposal of the current frame
     }
 
     private void jButton5ActionPerformed(ActionEvent evt) throws FontFormatException {
@@ -293,8 +298,8 @@ public class MainMenu extends javax.swing.JFrame {
                         case "Cerulean Leader":
                             gymLeader = gymLeaders.getCeruleanLeader();
                             break;
-                        case "Vermilion Leader":
-                            gymLeader = gymLeaders.getVermilionLeader();
+                        case "Vermillion Leader":
+                            gymLeader = gymLeaders.getVermillionLeader();
                             break;
                         case "Celadon City Leader":
                             gymLeader = gymLeaders.getCeladonCityLeader();
@@ -338,7 +343,7 @@ public class MainMenu extends javax.swing.JFrame {
                 rivalRaceButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-                            Race race = new Race(regionExplorer, currentCity);
+                            Race race = new Race(regionExplorer, currentCity,player);
                             race.setVisible(true);
                             race.pack();
                             race.setLocationRelativeTo(null);
@@ -369,7 +374,7 @@ public class MainMenu extends javax.swing.JFrame {
                 int numberOfPokemon = Integer.parseInt(JOptionPane.showInputDialog(null, "How many Pokemon do you want to sort?"));
 
                 // Create and show the PokemonSort frame
-                PokemonSort ps = new PokemonSort(numberOfPokemon, null);
+                PokemonSort ps = new PokemonSort(numberOfPokemon, player);
                 ps.setVisible(true);
                 ps.setLocationRelativeTo(null);
                 
@@ -411,7 +416,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Cerulean Leader"}));
                 break;
             case "Vermillion City":
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermilion Leader"}));
+                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Vermillion Leader"}));
                 break;
             case "Pallet Town":
                 // Set the message for Pallet Town indicating no gym leader
@@ -584,15 +589,75 @@ public class MainMenu extends javax.swing.JFrame {
         jButton4.setBorderPainted(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                try {
+                    jButton4ActionPerformed(evt);
+                } catch (FontFormatException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
-            private void jButton4ActionPerformed(ActionEvent evt) {
-                dispose(); // Corrected disposal of the current frame
-            } 
+            private void jButton4ActionPerformed(ActionEvent evt) throws FontFormatException {
+                Frame[] frames = Frame.getFrames();
+                for (Frame frame : frames) {
+                    frame.dispose();
+                }
+            
+                // Open WelcomePage
+                WelcomePage welcomePage = new WelcomePage();
+                welcomePage.setVisible(true);
+            
+                // Printing player details
+                System.out.println("Player Name: " + player.getName());
+                System.out.println("Player Location: " + player.getLocation());
+            
+                // Check if player has any badges
+                if (player.getBadges() != null && !player.getBadges().isEmpty()) {
+                    System.out.println("Player Badges: " + player.getBadges());
+                } else {
+                    System.out.println("Player has no badges.");
+                }
+            
+                // Printing details of each Pokémon in the team
+                if (player.getPokemonTeam() != null && !player.getPokemonTeam().isEmpty()) {
+                    for (Pokemon pokemon : player.getPokemonTeam()) {
+                        System.out.println("Pokemon Name: " + pokemon.getName());
+                        System.out.println("Level: " + pokemon.getLevel());
+                        System.out.println("Experience Points: " + pokemon.getExperiencePoints());
+                    }
+                } else {
+                    System.out.println("No Pokémon in team.");
+                }
+            
+            
+                // Player player = new Player(currentLocation, currentLocation, regionExplorer, null);
+                String bString = "";
+                if(player.getBadges() !=null && !player.getBadges().isEmpty()){
+                    bString = player.getBadges().stream().map(badge :: getName).collect(Collectors.joining(","));
+                }
+                // player.saveProgress(Login.EMAIL, null, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
+                if(player.getGameProcessId()!= null && !player.getGameProcessId().isEmpty()){
+                    deleteGameProcess(player.getGameProcessId());
+                    deletePokemonTeams(player.getGameProcessId());
+                    saveProgress(Login.EMAIL, player.getSaveSlot(), player.getName(), player.getLocation(), bString,player.getPokemonTeam());
+                }else{
+                    int count = getCount(Login.EMAIL);
+                    if(count<3){
+                        Integer svaeSlot;
+                        if(WelcomePage.slot != null){
+                            svaeSlot = WelcomePage.slot;
+                        }else{
+                            svaeSlot =  count+1;
+                        }
+                        saveProgress(Login.EMAIL, svaeSlot, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
+                    }
+                }
+
+                // player.loadProgress(1);
+            }
+            
         }
     );
-
       
         jButton5.setBackground(new java.awt.Color(0, 0, 0));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
@@ -815,6 +880,95 @@ jComboBox3.addActionListener(new ActionListener() {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    
+ // Save the player's progress using file I/O
+ public void saveProgress(String email,Integer saveSlot,String playername,  String location, String  badges,ArrayList<Pokemon> pokemonTeams) { //接数据库
+    // Implement file I/O to save player data
+
+    
+    System.out.println("Progress saved.");
+    DatabaseManager dbManager = new DatabaseManager();
+    
+    String id = IdUtils.simpleUUID();
+        String sql = "INSERT INTO game_progress (id,email, save_slot, player_name, location, badges) VALUES (?,?,?,?,?,?)";
+        try (Connection conn = dbManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            pstmt.setString(2, email);
+            pstmt.setInt(3, saveSlot);
+            pstmt.setString(4, playername);
+            pstmt.setString(5, location);
+            pstmt.setString(6, badges);
+            System.out.println(pstmt.executeUpdate() > 0);
+        
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        if(pokemonTeams != null && pokemonTeams.size() > 0){
+            for(Pokemon pokemon : pokemonTeams){
+               String sql2 = "INSERT INTO pokemon_team (game_progress_id, name, level, experience_points) VALUES (?,?,?,?)";
+                try (Connection conn = dbManager.connect();
+                     PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+                    pstmt.setString(1, id);
+                    pstmt.setString(2, pokemon.getName());
+                    pstmt.setInt(3, pokemon.getLevel());
+                    pstmt.setInt(4, pokemon.getExperiencePoints());
+                    System.out.println(pstmt.executeUpdate() > 0);
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                }
+            }
+        }
 }
 
+public boolean deletePokemonTeams(String gameProcessId) {
+    DatabaseManager dbManager = new DatabaseManager();
+    String sql = "DELETE FROM pokemon_team WHERE game_progress_id = ?";
+    try (Connection conn = dbManager.connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, gameProcessId);
+        return pstmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
+public boolean deleteGameProcess(String id) {
+    DatabaseManager dbManager = new DatabaseManager();
+    String sql = "DELETE FROM game_progress WHERE id = ?";
+    try (Connection conn = dbManager.connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, id);
+        return pstmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+public int getCount(String email){
+    int count = 0;
+    DatabaseManager dbManager = new DatabaseManager();
+    String query = "SELECT count(*) FROM game_progress WHERE email = ?";
+
+    try (Connection conn =  dbManager.connect();
+         PreparedStatement pstmt = conn.prepareStatement(query)) {
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+        while (true) {
+            if ( rs.next() ) {
+                count = rs.getInt(1);
+            }else{
+                break;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+   return count;
+}
+
+}

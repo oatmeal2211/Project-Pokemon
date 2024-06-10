@@ -10,13 +10,15 @@ import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
+    public static String EMAIL = "";
+
     public Login() throws FontFormatException {
         initComponents();
         loadCustomFont();
     }
 
     private void loadCustomFont() throws FontFormatException {
-        try (InputStream is = getClass().getResourceAsStream("/PressStart2P-Regular.ttf")) {
+        try (InputStream is = getClass().getResourceAsStream("src\\PressStart2P-Regular.ttf")) {
             if (is == null) {
                 throw new FileNotFoundException("Font file not found in resources");
             }
@@ -186,26 +188,25 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FontFormatException {//GEN-FIRST:event_jButton1ActionPerformed
-        // Handle sign up button click event
+        // 获取用户输入的邮箱和密码
         String email = jTextField1.getText();
         String password = new String(jPasswordField1.getPassword());
-
+    
         DatabaseManager dbManager = new DatabaseManager();
         if (dbManager.validateUser(email, password)) {
+            EMAIL = email;
             JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
             WelcomePage WelcomeFrame = new WelcomePage();
             WelcomeFrame.setVisible(true);
             WelcomeFrame.pack();
             WelcomeFrame.setLocationRelativeTo(null);
-            this.dispose();
+            this.dispose(); // 登录成功，关闭登录窗口，打开主页面
         } else {
             JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            // 登录失败，只显示错误消息，不关闭登录窗口
         }
-        WelcomePage WelcomeFrame = new WelcomePage();
-        WelcomeFrame.setVisible(true);
-        WelcomeFrame.pack();
-        WelcomeFrame.setLocationRelativeTo(null);
-        this.dispose();}
+    }
+    
 
 
     // Variables declaration - do not modify

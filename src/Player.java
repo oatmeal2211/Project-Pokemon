@@ -1,13 +1,31 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 // Player class represents a player in the Pokémon game
 public class Player {
     private String name;  // Name of the player
     private String location;  // Current location of the player
-    private List<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
+    private ArrayList<Pokemon> pokemonTeam;  // List of Pokémon in the player's team
     private List<badge> badges;  // List of badges earned by the player
     private RegionExplorer<String, Integer> map; // Map data for location tracking
     private List<Move> allMoves;
+    private Integer saveSlot; // Save slot for the player
+    private String gameProcessId; // Game process id for the player
+
+    public Player(String name, String location, RegionExplorer<String, Integer> map,List<Move> allMoves,Integer saveSlot,String gameProcessId) {
+        this.name = name;
+        this.location = location;
+        this.pokemonTeam = new ArrayList<>();
+        this.badges = new ArrayList<>();
+        this.map = map;
+        this.allMoves = allMoves;
+        this.saveSlot = saveSlot;
+        this.gameProcessId = gameProcessId;
+    }
+
 
     // Constructor to initialize the Player object with a name, location, and map data
     public Player(String name, String location, RegionExplorer<String, Integer> map,List<Move> allMoves) {
@@ -18,7 +36,23 @@ public class Player {
         this.map = map;
         this.allMoves = allMoves;
     }
+// Getters and Setters for saveSlot, gameProcessId
 
+    public Integer getSaveSlot() {
+        return saveSlot;
+    }
+
+    public void setSaveSlot(Integer saveSlot) {
+        this.saveSlot = saveSlot;
+    }
+
+    public String getGameProcessId() {
+        return gameProcessId;
+    }
+
+    public void setGameProcessId(String gameProcessId) {
+        this.gameProcessId = gameProcessId;
+    }
     // Getters and Setters for name, location, pokemonTeam, and badges
 
     // Get the name of the player
@@ -47,8 +81,12 @@ public class Player {
     }
 
     // Get the list of Pokémon in the player's team
-    public List<Pokemon> getPokemonTeam() {
+    public ArrayList<Pokemon> getPokemonTeam() {
         return pokemonTeam;
+    }
+
+    public void setPokemonTeam(ArrayList<Pokemon> pokemonTeams) {
+        this.pokemonTeam = pokemonTeams;
     }
 
     public int getPokemonTeamSize(){
@@ -67,6 +105,10 @@ public class Player {
     // Get the list of badges earned by the player
     public List<badge> getBadges() {
         return badges;
+    }
+
+    public void setBadges(List<badge> badges) {
+        this.badges = badges;
     }
 
     public boolean hasBadge(String badgeName) {
@@ -143,17 +185,5 @@ public class Player {
             System.out.println(badge.getName());
         }
     }
-    
 
-    // Save the player's progress using file I/O
-    public void saveProgress() { //接数据库
-        // Implement file I/O to save player data
-        System.out.println("Progress saved.");
-    }
-
-    // Load the player's progress using file I/O
-    public void loadProgress() { //接数据库
-        // Implement file I/O to load player data
-        System.out.println("Progress loaded.");
-    }
 }

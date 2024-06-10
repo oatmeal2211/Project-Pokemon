@@ -29,6 +29,28 @@ public class Pokemon {
     private int speed;
     private List<Move> moves;
 
+    public Pokemon(String name,int level,int baseHp) {
+        this.name = name;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
+        this.level = level;
+        this.exp = 0; // Starting XP is 0
+        this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
+
     public Pokemon(String name, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
         this.name = name;
         this.type1 = type1;
@@ -41,6 +63,27 @@ public class Pokemon {
         this.baseSpeed = baseSpeed;
         this.level = level;
         this.exp = 0; // Starting XP is 0
+        this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
+    public Pokemon(String name,Integer exp, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
+        this.name = name;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
+        this.level = level;
+        this.exp = exp; // Starting XP is 0
         this.moves = new ArrayList<>();
 
         this.hp = scaleStat(baseHp, level);
@@ -255,7 +298,7 @@ public class Pokemon {
     }
 
     // Method to load Pokémon from CSV file
-    public static List<Pokemon> loadPokemonFromCSV(String filePath, List<Move> availableMoves) {
+    public static List<Pokemon> loadPokemonFromCSV(String filePath) {
         List<Pokemon> pokemonList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -276,11 +319,6 @@ public class Pokemon {
                 int level = rand.nextInt(99) + 1;
 
                 Pokemon pokemon = new Pokemon(name, type1, type2, hp, attack, defense, sp_attack, sp_defense, speed, level);
-                
-                // Assign random moves (for demo purposes, you can enhance logic as needed)
-                for (int i = 0; i < 4 && i < availableMoves.size(); i++) {
-                    pokemon.learnMove(availableMoves.get(rand.nextInt(164) + 1));
-                }
 
                 pokemonList.add(pokemon);
             }
