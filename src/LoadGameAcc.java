@@ -79,22 +79,8 @@ public class LoadGameAcc extends javax.swing.JFrame {
             }
         });
     
-        ArrayList<GameProcess> gameProcesses = loadProgress(Login.EMAIL);
-        GameProcess gameProcess1 = null;
-        GameProcess gameProcess2 = null;
-        GameProcess gameProcess3 = null;
-        if(gameProcesses != null){
-            if(gameProcesses.size() > 0){
-                gameProcess1 = gameProcesses.get(0);
-            }
-            if(gameProcesses.size() > 1){
-                gameProcess2 = gameProcesses.get(1);
-            }
-            if(gameProcesses.size() > 2){
-                gameProcess3 = gameProcesses.get(2);
-            }
-        }
-
+        
+        GameProcess gameProcess1 = loadProgress(Login.EMAIL, 1);
         if(gameProcess1 != null){
             final GameProcess gameProcess11 = gameProcess1;
             jButton2.setText(gameProcess1.getPlayerName());
@@ -125,7 +111,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
         }
         
         
-    
+        GameProcess gameProcess2 = loadProgress(Login.EMAIL, 2);
         if(gameProcess2 != null){
             final GameProcess gameProcess22 = gameProcess2;
             jButton3.setText(gameProcess2.getPlayerName());
@@ -147,10 +133,10 @@ public class LoadGameAcc extends javax.swing.JFrame {
         
 
         
-
+        GameProcess gameProcess3 = loadProgress(Login.EMAIL, 3);
         if(gameProcess3 != null){
             final GameProcess gameProcess33 = gameProcess3;
-            jButton4.setText(gameProcess2.getPlayerName());
+            jButton4.setText(gameProcess3.getPlayerName());
             jButton4.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
@@ -189,9 +175,9 @@ public class LoadGameAcc extends javax.swing.JFrame {
                             .addGap(322, 322, 322)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(171, 171, 171)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(167, 167, 167)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -240,13 +226,13 @@ public class LoadGameAcc extends javax.swing.JFrame {
         ArrayList<Pokemon> pokemonList = new ArrayList<>();
         for (PokemonTeam pokemonTeam : pokemonTeams) {
             if(pokemonTeam.getName().equals("Bulbasaur")){
-                pokemonList.add(new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
+                pokemonList.add(new Pokemon("Bulbasaur",pokemonTeam.getExperiencePoints(), "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Charmander", "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
+                pokemonList.add(new Pokemon("Charmander",pokemonTeam.getExperiencePoints(), "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Squirtle", "Water", "None", 44, 48, 65, 50, 50, 43,5));
+                pokemonList.add(new Pokemon("Squirtle",pokemonTeam.getExperiencePoints(), "Water", "None", 44, 48, 65, 50, 50, 43,5));
             }else{
-                pokemonList.add(new Pokemon(pokemonTeam.getName(),"Ground","None",50,50,95,40,40,35,50));
+                pokemonList.add(new Pokemon(pokemonTeam.getName(),pokemonTeam.getExperiencePoints(),"Ground","None",50,50,95,40,40,35,50));
             }
         }
         player.setPokemonTeam(pokemonList);
@@ -287,13 +273,13 @@ public class LoadGameAcc extends javax.swing.JFrame {
         ArrayList<Pokemon> pokemonList = new ArrayList<>();
         for (PokemonTeam pokemonTeam : pokemonTeams) {
             if(pokemonTeam.getName().equals("Bulbasaur")){
-                pokemonList.add(new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
+                pokemonList.add(new Pokemon("Bulbasaur",pokemonTeam.getExperiencePoints(), "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Charmander", "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
+                pokemonList.add(new Pokemon("Charmander",pokemonTeam.getExperiencePoints(), "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Squirtle", "Water", "None", 44, 48, 65, 50, 50, 43,5));
+                pokemonList.add(new Pokemon("Squirtle",pokemonTeam.getExperiencePoints(), "Water", "None", 44, 48, 65, 50, 50, 43,5));
             }else{
-                pokemonList.add(new Pokemon(pokemonTeam.getName(),"Ground","None",50,50,95,40,40,35,50));
+                pokemonList.add(new Pokemon(pokemonTeam.getName(),pokemonTeam.getExperiencePoints(),"Ground","None",50,50,95,40,40,35,50));
             }
         }
         player.setPokemonTeam(pokemonList);
@@ -334,13 +320,13 @@ public class LoadGameAcc extends javax.swing.JFrame {
         ArrayList<Pokemon> pokemonList = new ArrayList<>();
         for (PokemonTeam pokemonTeam : pokemonTeams) {
             if(pokemonTeam.getName().equals("Bulbasaur")){
-                pokemonList.add(new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
+                pokemonList.add(new Pokemon("Bulbasaur",pokemonTeam.getExperiencePoints(), "Grass", "Poison", 45, 49, 49, 65, 65, 45, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Charmander", "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
+                pokemonList.add(new Pokemon("Charmander",pokemonTeam.getExperiencePoints(), "Fire", "None", 39, 52, 43, 50, 50, 65, 5));
             }else if(pokemonTeam.getName().equals("Charmander")){
-                pokemonList.add(new Pokemon("Squirtle", "Water", "None", 44, 48, 65, 50, 50, 43,5));
+                pokemonList.add(new Pokemon("Squirtle",pokemonTeam.getExperiencePoints(), "Water", "None", 44, 48, 65, 50, 50, 43,5));
             }else{
-                pokemonList.add(new Pokemon(pokemonTeam.getName(),"Ground","None",50,50,95,40,40,35,50));
+                pokemonList.add(new Pokemon(pokemonTeam.getName(),pokemonTeam.getExperiencePoints(),"Ground","None",50,50,95,40,40,35,50));
             }
         }
         player.setPokemonTeam(pokemonList);
@@ -418,6 +404,33 @@ public class LoadGameAcc extends javax.swing.JFrame {
             e.printStackTrace();
         }
         return list;
+    }
+    public static GameProcess loadProgress(String email,Integer saveSlot) { //接数据库
+        // Implement file I/O to load player data
+        System.out.println("Progress loaded.");
+          String query = "SELECT * FROM game_progress WHERE email = ? and save_slot = ? limit 1";
+          DatabaseManager dbManager = new DatabaseManager();
+          GameProcess gameProcess = null;
+        
+        try (Connection conn = dbManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, email);
+            pstmt.setInt(2, saveSlot);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                gameProcess = new GameProcess();
+                gameProcess.setId(rs.getString("id"));
+                gameProcess.setEmail(rs.getString("email"));
+                gameProcess.setSaveSlot(rs.getInt("save_slot"));
+                gameProcess.setPlayerName(rs.getString("player_name"));
+                gameProcess.setLocation(rs.getString("location"));
+                gameProcess.setBadges(rs.getString("badges"));
+            
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gameProcess;
     }
     public GameProcess loadProgressSimple(String id) { //接数据库
         // Implement file I/O to load player data

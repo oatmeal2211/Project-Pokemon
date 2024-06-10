@@ -72,6 +72,27 @@ public class Pokemon {
         this.sp_defense = scaleStat(baseSpecialDefense, level);
         this.speed = scaleStat(baseSpeed, level);
     }
+    public Pokemon(String name,Integer exp, String type1, String type2, int baseHp, int baseAttack, int baseDefense, int baseSpecialAttack, int baseSpecialDefense, int baseSpeed, int level) {
+        this.name = name;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.baseHp = baseHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.baseSpecialAttack = baseSpecialAttack;
+        this.baseSpecialDefense = baseSpecialDefense;
+        this.baseSpeed = baseSpeed;
+        this.level = level;
+        this.exp = exp; // Starting XP is 0
+        this.moves = new ArrayList<>();
+
+        this.hp = scaleStat(baseHp, level);
+        this.attack = scaleStat(baseAttack, level);
+        this.defense = scaleStat(baseDefense, level);
+        this.sp_attack = scaleStat(baseSpecialAttack, level);
+        this.sp_defense = scaleStat(baseSpecialDefense, level);
+        this.speed = scaleStat(baseSpeed, level);
+    }
 
     public static int scaleStat(int baseStat, int level) {
         return baseStat + (int)((baseStat * level / 100.0) * 2);

@@ -643,7 +643,13 @@ public class MainMenu extends javax.swing.JFrame {
                 }else{
                     int count = getCount(Login.EMAIL);
                     if(count<3){
-                        saveProgress(Login.EMAIL, count+1, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
+                        Integer svaeSlot;
+                        if(WelcomePage.slot != null){
+                            svaeSlot = WelcomePage.slot;
+                        }else{
+                            svaeSlot =  count+1;
+                        }
+                        saveProgress(Login.EMAIL, svaeSlot, player.getName(), player.getLocation(), bString,player.getPokemonTeam());
                     }
                 }
 
