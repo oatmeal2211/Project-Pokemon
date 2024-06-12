@@ -42,7 +42,7 @@ public class LoadGameAcc extends javax.swing.JFrame {
     }
 
     private void setBackgroundImage() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/pinwheel-forest-pokemon-pixel-thumb.jpg")) {
+        try (InputStream is = getClass().getResourceAsStream("498-4988462_pokemon-sprite-trainer-png-transparent-pokemon-trainer-sprite.png resize1.png")) {
             if (is == null) {
                 throw new FileNotFoundException("Image file not found in resources");
             }
